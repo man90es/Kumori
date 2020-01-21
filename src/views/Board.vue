@@ -2,7 +2,7 @@
 	<div id='board'>
 		<NavBar :boards='boards' />
 		<MainSection>
-			<PageHeader :title='$route.params.boardID' />
+			<PageHeader :title='$route.params.board' />
 			<Thread :key='thread.number' :thread='thread' v-for='thread in threads'/>
 		</MainSection>
 		<MenuBar />
@@ -33,8 +33,18 @@
 				threads: []
 			}
 		},
+		methods: {
+			fetchThreads(board) {
+				API.readThreads('Default', board, (data) => this.threads = data.threads)
+			}
+		},
+		watch: {
+			$route(to) {
+				this.fetchThreads(to.params.board)
+			}
+		},
 		created() {
-			API.readThreads('Default', this.$route.params.boardID, (data) => this.threads = data.threads)
+			this.fetchThreads(this.$route.params.board)
 		}
 	}
 </script>
