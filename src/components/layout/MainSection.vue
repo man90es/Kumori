@@ -1,5 +1,6 @@
 <template>
 	<main>
+		<PageHeader :title='$route.params.board' />
 		<slot />
 	</main>
 </template>
@@ -15,7 +16,7 @@
 	}
 </script>
 
-<style scoped>
+<style>
 	main{
 		width: 50em;
 		margin: 0.5rem;

@@ -19,5 +19,6 @@
 		display: flex;
 		flex-direction: column;
 		text-align: right;
+		top: 0;
 	}
 </style>

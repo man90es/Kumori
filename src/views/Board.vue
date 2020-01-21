@@ -2,7 +2,7 @@
 	<div id='board'>
 		<NavBar :boards='boards' />
 		<MainSection>
-			<PageHeader :title='$route.params.board' />
+			
 			<Thread :key='thread.number' :thread='thread' v-for='thread in threads'/>
 		</MainSection>
 		<MenuBar />
@@ -15,7 +15,6 @@
 	import MainSection from '../components/layout/MainSection.vue'
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
-	import PageHeader from '../components/misc/PageHeader.vue'
 	import Thread from '../components/misc/Thread.vue'
 
 	export default {
@@ -24,7 +23,6 @@
 			MainSection,
 			NavBar,
 			MenuBar,
-			PageHeader,
 			Thread
 		},
 		props: ["boards"],
@@ -49,7 +47,7 @@
 	}
 </script>
 
-<style scoped>
+<style>
 	#board{
 		display: flex;
 		justify-content: center;

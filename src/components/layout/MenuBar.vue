@@ -31,6 +31,7 @@
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
+		top: 0;
 		position: sticky;
 		justify-content: space-between;
 	}
