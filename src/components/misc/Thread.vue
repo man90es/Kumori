@@ -1,5 +1,5 @@
 <template>
-	<div class='Thread'>
+	<div>
 		<Post :key='post.number' :post='post' v-for='post in thread.posts'/>
 	</div>
 </template>
@@ -15,7 +15,3 @@
 		props: ['thread']
 	}
 </script>
-
-<style scoped>
-
-</style>

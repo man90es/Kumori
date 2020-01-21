@@ -45,4 +45,9 @@
 	a:hover {
 		color: #47769d;
 	}
+
+	.icon{
+		filter: invert(69%);
+		vertical-align: middle;
+	}
 </style>
