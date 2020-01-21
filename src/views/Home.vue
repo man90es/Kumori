@@ -2,7 +2,7 @@
 	<div id='Home'>
 		<img src='logo.png'>
 		<div id='links'>
-			<router-link :key='board.id' :to='{name: "board", params: {board: board.id}}' v-for='board in boards'>/{{board.id}}</router-link>
+			<router-link :key='board.id' :to='{name: "board", params: {boardId: board.id}}' v-for='board in boards'>/{{board.id}}</router-link>
 		</div>
 	</div>
 </template>

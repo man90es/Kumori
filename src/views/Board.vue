@@ -1,9 +1,8 @@
 <template>
 	<div id='board'>
 		<NavBar :boards='boards' />
-		<MainSection>
-			
-			<Thread :key='thread.number' :thread='thread' v-for='thread in threads'/>
+		<MainSection :board='board'>
+			<Thread :key='thread.number' :thread='thread' :defaultSubject='board.defaultSubject' v-for='thread in threads'/>
 		</MainSection>
 		<MenuBar />
 	</div>
@@ -28,21 +27,25 @@
 		props: ["boards"],
 		data() {
 			return {
-				threads: []
+				threads: [],
+				board: {}
 			}
 		},
 		methods: {
-			fetchThreads(board) {
-				API.readThreads('Default', board, (data) => this.threads = data.threads)
+			fetchThreads(boardId) {
+				API.readThreads('Default', boardId, (data) => {
+					this.board = this.boards.filter((board) => board.id === boardId)[0]
+					this.threads = data.threads
+				})
 			}
 		},
 		watch: {
 			$route(to) {
-				this.fetchThreads(to.params.board)
+				this.fetchThreads(to.params.boardId)
 			}
 		},
 		created() {
-			this.fetchThreads(this.$route.params.board)
+			this.fetchThreads(this.$route.params.boardId)
 		}
 	}
 </script>

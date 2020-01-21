@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Post :key='post.number' :post='post' v-for='post in thread.posts'/>
+		<Post :key='post.number' :post='post' :defaultSubject='defaultSubject' v-for='post in thread.posts'/>
 	</div>
 </template>
 
@@ -12,6 +12,9 @@
 		components: {
 			Post
 		},
-		props: ['thread']
+		props: [
+			'thread',
+			'defaultSubject'
+		]
 	}
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<PageHeader :title='$route.params.board' />
+		<PageHeader :board='board' />
 		<slot />
 	</main>
 </template>
@@ -12,13 +12,14 @@
 		name: 'MainSection',
 		components: {
 			PageHeader
-		}
+		},
+		props: ['board']
 	}
 </script>
 
 <style>
 	main{
 		width: 50em;
-		margin: 0.5rem;
+		margin: 0 0.5rem;
 	}
 </style>

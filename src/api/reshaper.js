@@ -5,6 +5,8 @@ module.exports = {
 		Object.keys(data0).forEach((key) => {
 			let obj = data0[key]
 			obj.id = key
+			obj.defaultSubject = obj.defaultUsername
+			delete obj.defaultUsername
 
 			data1.boards.push(obj)
 		})
