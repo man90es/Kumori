@@ -30,7 +30,7 @@
 
 <style>
 	#app {
-		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		font-family: 'Noto Sans', 'Avenir', Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		color: #a8afbc;
