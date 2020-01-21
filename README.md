@@ -1,4 +1,5 @@
 # kumori
+An alternative client for [Foxtan imageboard engine](https://bitbucket.org/bakaso/foxtan).
 
 ## Project setup
 ```
