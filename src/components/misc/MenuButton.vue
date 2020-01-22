@@ -1,12 +1,20 @@
 <template>
 	<button>
-
+		<img class='icon' :src='getIconSrc()'>
 	</button>
 </template>
 
 <script>
+
 	export default {
-		name: 'MenuButton'
+		name: 'MenuButton',
+		props: ['icon'],
+		methods: {
+			getIconSrc() {
+				let images = require.context('../../assets/icons', false, /\.svg$/)
+				return images(`./${this.icon}.svg`)
+			}
+		},
 	}
 </script>
 
@@ -21,5 +29,9 @@
 		background-color: #282c34;
 		border-radius: .3rem;
 		border: none;
+	}
+
+	img{
+
 	}
 </style>

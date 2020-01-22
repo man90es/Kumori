@@ -1,11 +1,11 @@
 <template>
 	<article v-if='post'>
 		<div class='postDetails'>
-			<span v-if='post.sage'><img class='icon' src='../../assets/icons/material-icons/ic_arrow_downward_24px.svg'></span>
+			<span v-if='post.sage'><img class='icon' src='../../assets/icons/down.svg'></span>
 			<a class='refLink' href='#'><span class='subject'>{{post.subject || defaultSubject}}</span> #{{post.number}}</a>
-			<span><img class='icon' src='../../assets/icons/material-icons/ic_menu_24px.svg'></span>
-			<span><img class='icon' src='../../assets/icons/material-icons/ic_reply_24px.svg'></span>
-			<span class='star'><img class='icon' src='../../assets/icons/material-icons/ic_star_24px.svg'></span>
+			<span><img class='icon' src='../../assets/icons/menu.svg'></span>
+			<span><img class='icon' src='../../assets/icons/reply.svg'></span>
+			<span class='star'><img class='icon' src='../../assets/icons/star.svg'></span>
 			<time>{{post.createdAt}}</time>
 		</div>
 		<div class='postBody'>

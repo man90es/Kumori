@@ -1,16 +1,15 @@
 <template>
 	<div id='MenuBar'>
 		<div>
-			<MenuButton />
-			<MenuButton />
-			<MenuButton />
-			<MenuButton />
+			<MenuButton :icon='"up"' />
+			<MenuButton :icon='"search"' />
+			<MenuButton :icon='"settings"' />
+			<MenuButton :icon='"nsfw"' />
 		</div>
 		<div>
-			<MenuButton />
-			<MenuButton />
-			<MenuButton />
-			<MenuButton />
+			<MenuButton :icon='"chat"' />
+			<MenuButton :icon='"star"' />
+			<MenuButton :icon='"down"' />
 		</div>
 	</div>
 </template>
