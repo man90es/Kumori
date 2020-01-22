@@ -1,8 +1,8 @@
 <template>
 	<header>
 		<router-link :to='{name: "board", params: {boardId: board.id}}'>
-			<h2>/{{board.id}}/ — {{board.title}}</h2>
-			<h4>{{board.subtitle}}</h4>
+			<div>/{{board.id}}/ — {{board.title}}</div>
+			<div>{{board.subtitle}}</div>
 		</router-link>
 	</header>
 </template>
@@ -22,15 +22,8 @@
 		display: flex;
 	}
 
-	h2, h4{
-		margin: 0;
-	}
-
-	h2{
+	div:first-child{
 		color: #a8afbc;
-	}
-
-	h4{
-		font-weight: normal;
+		font-size: 1.5rem;
 	}
 </style>

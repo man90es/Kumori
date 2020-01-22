@@ -1,6 +1,6 @@
 <template>
 	<div id='board'>
-		<NavBar :boards='boards' />
+		<NavBar :boards='boards' :siteTitle='siteTitle' />
 		<MainSection :board='board'>
 			<Thread :key='thread.number' :thread='thread' :defaultSubject='board.defaultSubject' v-for='thread in threads'/>
 		</MainSection>
@@ -24,7 +24,10 @@
 			MenuBar,
 			Thread
 		},
-		props: ["boards"],
+		props: [
+			'boards',
+			'siteTitle'
+		],
 		data() {
 			return {
 				threads: [],

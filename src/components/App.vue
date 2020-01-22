@@ -1,11 +1,12 @@
 <template>
 	<div id='app'>
-		<router-view :boards='boards'/>
+		<router-view :boards='boards' :siteTitle='siteTitle' />
 	</div>
 </template>
 
 <script type='text/javascript'>
 	import API from '../api'
+	import config from '../../config'
 
 	export default {
 		name: 'App',
@@ -14,7 +15,8 @@
 		},
 		data() {
 			return {
-				boards: []
+				boards: [],
+				siteTitle: config.siteTitle
 			}
 		},
 		methods: {
