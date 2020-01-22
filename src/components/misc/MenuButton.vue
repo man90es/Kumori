@@ -1,11 +1,10 @@
 <template>
 	<button>
-		<img class='icon' :src='getIconSrc()'>
+		<img class='icon' :src='getIconSrc()' @click="dispatchEvent()">
 	</button>
 </template>
 
 <script>
-
 	export default {
 		name: 'MenuButton',
 		props: ['icon'],
@@ -13,6 +12,10 @@
 			getIconSrc() {
 				let images = require.context('../../assets/icons', false, /\.svg$/)
 				return images(`./${this.icon}.svg`)
+			},
+
+			dispatchEvent() {
+				document.dispatchEvent(new CustomEvent('menuButtonPressed', {detail: {icon: this.icon}}))
 			}
 		},
 	}
@@ -29,9 +32,5 @@
 		background-color: #282c34;
 		border-radius: .3rem;
 		border: none;
-	}
-
-	img{
-
 	}
 </style>
