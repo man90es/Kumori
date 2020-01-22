@@ -5,15 +5,15 @@
 			<a class='refLink' href='#'><span class='subject'>{{post.subject || defaultSubject}}</span> #{{post.number}}</a>
 			<span><img class='icon' src='../../assets/icons/menu.svg'></span>
 			<span><img class='icon' src='../../assets/icons/reply.svg'></span>
-			<span class='star'><img class='icon' src='../../assets/icons/star.svg'></span>
-			<time>{{post.createdAt}}</time>
+			<span><img class='icon' src='../../assets/icons/star.svg'></span>
+			<time>{{calculateDate()}}</time>
 		</div>
-		<div class='postBody'>
-			<div class='thumbnails' v-if='post.files'>
+		<div>
+			<div v-if='post.files'>
 				<PostAttachment :file='post.files[0]' />
 			</div>
 
-			<div class='postText'>
+			<div v-if='post.rawText'>
 				{{ post.rawText }}
 			</div>
 		</div>
@@ -22,6 +22,7 @@
 
 <script>
 	import PostAttachment from './PostAttachment'
+	import utils from '../../utils'
 
 	export default {
 		name: 'Post',
@@ -31,7 +32,38 @@
 		props: [
 			'post',
 			'defaultSubject'
-		]
+		],
+		methods: {
+			calculateDate() {
+				let date = new Date(this.post.createdAt)
+				let diff = new Date() - date
+
+				if (diff < 6048e5) {
+					if (diff < 4e4){
+						return "recently"
+					}
+
+					let minutes = Math.round(diff / 6e4)
+					if (minutes < 50){
+						return `${minutes} ${utils.num2Word(minutes, ['minute', 'minutes'])} ago`
+					}
+
+					let hours = Math.round(diff / 3.6e6)
+					if (hours < 20){
+						return `${hours} ${utils.num2Word(hours, ['hour', 'hours'])} ago`
+					}
+
+					let days = Math.round(diff / 8.64e7)
+					if (days == 1){
+						return "yesterday"	
+					}
+
+					return `${days} ${utils.num2Word(days, ['day', 'days'])} ago`
+				} else {
+					return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
+				}
+			}
+		}
 	}
 </script>
 
@@ -53,7 +85,7 @@
 
 	time{
 		position: absolute;
-		right: 0.5rem;
+		right: 0;
 		color: #888f9c;
 	}
 
