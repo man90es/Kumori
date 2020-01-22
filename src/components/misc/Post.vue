@@ -2,11 +2,11 @@
 	<article v-if='post'>
 		<div class='postDetails'>
 			<span v-if='post.sage'><img class='icon' src='../../assets/icons/down.svg'></span>
-			<a class='refLink' href='#'><span class='subject'>{{post.subject || defaultSubject}}</span> #{{post.number}}</a>
+			<a class='refLink' href='#'><span class='subject'>{{formatSubject()}}</span> #{{post.number}}</a>
 			<span><img class='icon' src='../../assets/icons/menu.svg'></span>
 			<span><img class='icon' src='../../assets/icons/reply.svg'></span>
 			<span><img class='icon' src='../../assets/icons/star.svg'></span>
-			<time>{{calculateDate()}}</time>
+			<time>{{formatDate()}}</time>
 		</div>
 		<div>
 			<div v-if='post.files'>
@@ -34,7 +34,7 @@
 			'defaultSubject'
 		],
 		methods: {
-			calculateDate() {
+			formatDate() {
 				let date = new Date(this.post.createdAt)
 				let diff = new Date() - date
 
@@ -62,6 +62,11 @@
 				} else {
 					return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
 				}
+			},
+
+			formatSubject() {
+				let subject = this.post.subject || this.defaultSubject
+				return subject.length > 55 ? utils.truncateString(subject, 55) : subject
 			}
 		}
 	}
