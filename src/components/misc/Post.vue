@@ -13,9 +13,7 @@
 				<PostAttachment :file='post.files[0]' />
 			</div>
 
-			<div v-if='post.rawText'>
-				{{ post.rawText }}
-			</div>
+			<div v-if='post.rawText' v-html='parsedText'></div>
 		</div>
 	</article>
 </template>
@@ -23,6 +21,7 @@
 <script>
 	import PostAttachment from './PostAttachment'
 	import utils from '../../utils'
+	import markup from '../../utils/markup'
 
 	export default {
 		name: 'Post',
@@ -33,6 +32,11 @@
 			'post',
 			'defaultSubject'
 		],
+		data() {
+			return {
+				parsedText: this.post.rawText
+			}
+		},
 		methods: {
 			formatDate() {
 				let date = new Date(this.post.createdAt)
@@ -67,7 +71,14 @@
 			formatSubject() {
 				let subject = this.post.subject || this.defaultSubject
 				return subject.length > 55 ? utils.truncateString(subject, 55) : subject
+			},
+
+			async formatText() {
+				this.parsedText = await markup.process(this.post.rawText)
 			}
+		},
+		created() {
+			this.formatText()
 		}
 	}
 </script>

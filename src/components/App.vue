@@ -42,6 +42,8 @@
 
 	a {
 		color: #5facec;
+		cursor: pointer;
+		transition: color 0.1s;
 	}
 
 	a:hover {
@@ -51,5 +53,49 @@
 	.icon{
 		filter: invert(69%);
 		vertical-align: middle;
+	}
+
+	q::before{
+		content: ''
+	}
+
+	q::after{
+		content: ''
+	}
+
+	q{
+		color: #98c379
+	}
+
+	span.spoiler{
+		background: 0 0;
+		transition: text-shadow 0.1s, color 0.1s;
+	}
+
+	span.spoiler:not(:hover){
+		color: transparent;
+		text-shadow: 0 0 .3em #a8afbc;
+	}
+
+	code {
+		background: #21252b;
+		padding: .1rem .3rem;
+		font-size: 1rem;
+		user-select: all;
+	}
+
+	pre {
+		margin: 0;
+		white-space: pre-wrap;
+
+		& > code {
+			display: block;
+			padding: 0.5rem;
+			margin: 0.5rem 0;
+		}
+	}
+
+	u {
+		text-decoration-skip-ink: none;
 	}
 </style>
