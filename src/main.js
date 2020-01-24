@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './components/App.vue'
 import router from './router'
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
 
 Vue.config.productionTip = false
 

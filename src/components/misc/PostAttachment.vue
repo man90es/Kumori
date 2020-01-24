@@ -1,8 +1,6 @@
 <template>
-	<div v-if='file.thumb && !file.nsfw' class="thumbnail" :style="`background-image: url(https://foxtan.tumba.ch/res/thumb/${file.thumb.path}); width: ${file.thumb.width}px; height: ${file.thumb.height}px`"></div>
-	<div v-else class='missingThumbnail'>
-		{{file.nsfw ? 'NSFW' : 'Preview unavailable'}}
-	</div>
+	<img v-if='file.thumb && !file.nsfw' :width='`${file.thumb.width}px`' :height='`${file.thumb.height}px`' v-lazy='`https://foxtan.tumba.ch/res/thumb/${file.thumb.path}`'>
+	<div v-else class='missingThumbnail'>{{file.nsfw ? 'NSFW' : 'Preview unavailable'}}</div>
 </template>
 
 <script>
