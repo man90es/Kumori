@@ -5,7 +5,6 @@
 			<a class='refLink' href='#'><span class='subject'>{{formatSubject()}}</span> #{{post.number}}</a>
 			<span><img class='icon' src='../../assets/icons/menu.svg'></span>
 			<span><img class='icon' src='../../assets/icons/reply.svg'></span>
-			<span><img class='icon' src='../../assets/icons/star.svg'></span>
 			<time>{{formatDate()}}</time>
 		</div>
 		<div>
