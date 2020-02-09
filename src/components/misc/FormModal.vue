@@ -1,8 +1,8 @@
 <template>
 	<form>
 		<img class="icon" src="../../assets/icons/down.svg">
-		<img class="icon" src="../../assets/icons/person.svg">
-		<img class="icon" src="../../assets/icons/person.svg">
+		<img class="icon" src="../../assets/icons/trip_origin.svg">
+		<img class="icon" src="../../assets/icons/person_pin.svg">
 		<input type="text">
 		
 		<textarea></textarea>
