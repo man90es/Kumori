@@ -1,8 +1,8 @@
 <template>
 	<form>
-		<img class="icon" src="../../assets/icons/down.svg">
-		<img class="icon" src="../../assets/icons/trip_origin.svg">
-		<img class="icon" src="../../assets/icons/person_pin.svg">
+		<img :class="`icon ${sage ? 'active' : ''}`" src="../../assets/icons/down.svg" @click="sage = !sage">
+		<img :class="`icon ${op ? 'active' : ''}`" src="../../assets/icons/trip_origin.svg" @click="op = !op">
+		<img :class="`icon ${user ? 'active' : ''}`" src="../../assets/icons/person_pin.svg" @click="user = !user">
 		<input type="text">
 		
 		<textarea></textarea>
@@ -14,7 +14,16 @@
 </template>
 
 <script>
-
+	export default {
+		name: 'FormModal',
+		data() {
+			return {
+				sage: false,
+				op: false,
+				user: false
+			}
+		}
+	}
 </script>
 
 <style scoped>
@@ -59,10 +68,16 @@
 
 	.icon {
 		height: 100%;
+		cursor: pointer;
+	}
+
+	.icon:not(.active) {
+		opacity: 0.5;
 	}
 
 	#submit {
 		padding: 25%;
 		height: 50%;
+		opacity: 1;
 	}
 </style>
