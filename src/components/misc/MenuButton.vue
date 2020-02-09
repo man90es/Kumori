@@ -30,7 +30,6 @@
 		display: flex;
 		color: #a8afbc;
 		background-color: #282c34;
-		border-radius: .3rem;
 		border: none;
 	}
 </style>
