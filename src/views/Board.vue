@@ -5,6 +5,8 @@
 			<Thread :key='thread.number' :thread='thread' :defaultSubject='board.defaultSubject' v-for='thread in threads'/>
 		</MainSection>
 		<MenuBar />
+
+		<ModalsLayer />
 	</div>
 </template>
 
@@ -14,6 +16,7 @@
 	import MainSection from '../components/layout/MainSection.vue'
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
+	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Thread from '../components/misc/Thread.vue'
 
 	export default {
@@ -22,6 +25,7 @@
 			MainSection,
 			NavBar,
 			MenuBar,
+			ModalsLayer,
 			Thread
 		},
 		props: [

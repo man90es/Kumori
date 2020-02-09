@@ -1,6 +1,6 @@
 <template>
-	<button>
-		<img class='icon' :src='getIconSrc()' @click="dispatchEvent()">
+	<button @click="dispatchEvent()">
+		<img class='icon' :src='getIconSrc()'>
 	</button>
 </template>
 
@@ -15,9 +15,9 @@
 			},
 
 			dispatchEvent() {
-				document.dispatchEvent(new CustomEvent('menuButtonPressed', {detail: {icon: this.icon}}))
+				this.$bus.emit(`menu-${this.icon}-button-click`)
 			}
-		},
+		}
 	}
 </script>
 
