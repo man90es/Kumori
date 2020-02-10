@@ -1,5 +1,13 @@
 <template>
 	<div id='app'>
+		<svg> <!-- Used for blurring NSFW images -->
+			<filter id='sharpBlur'>
+				<feGaussianBlur stdDeviation='5'></feGaussianBlur>
+				<feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0'></feColorMatrix>
+				<feComposite in2='SourceGraphic' operator='in'></feComposite>
+			</filter>
+		</svg>
+
 		<router-view :boards='boards' :siteTitle='siteTitle' />
 	</div>
 </template>

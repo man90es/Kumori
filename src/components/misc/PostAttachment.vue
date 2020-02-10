@@ -1,6 +1,5 @@
 <template>
-	<img v-if='file.thumb && !file.nsfw' :width='`${file.thumb.width}px`' :height='`${file.thumb.height}px`' v-lazy='`https://foxtan.tumba.ch/res/thumb/${file.thumb.path}`'>
-	<div v-else class='missingThumbnail'>{{file.nsfw ? 'NSFW' : 'Preview unavailable'}}</div>
+	<img :class="{nsfw: file.nsfw}" :width='`${file.thumb.width || 256}px`' :height='`${file.thumb.height || 200}px`' v-lazy='`https://foxtan.tumba.ch/res/thumb/${file.thumb.path}`'>
 </template>
 
 <script>
@@ -10,13 +9,8 @@
 	}
 </script>
 
-<style scoped>
-	.missingThumbnail{
-		width: 256px;
-		height: 200px;
-
-		justify-content: center;
-		align-items: center;
-		display: flex;
+<style>
+	img.nsfw {
+		filter: url("#sharpBlur");
 	}
 </style>
