@@ -21,7 +21,11 @@
 		name: 'MenuBar',
 		components: {
 			MenuButton
-		}
+		},
+		created() {
+			this.$bus.on('menu-up-button-click', () => scrollTo({top: 0, behavior: 'smooth'}))
+			this.$bus.on('menu-down-button-click', () => scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}))
+		},
 	}
 </script>
 
