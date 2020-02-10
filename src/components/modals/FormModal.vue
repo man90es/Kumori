@@ -1,8 +1,8 @@
 <template>
 	<form>
-		<img :class="`icon ${sage ? 'active' : ''}`" src="../../assets/icons/down.svg" @click="sage = !sage">
-		<img :class="`icon ${op ? 'active' : ''}`" src="../../assets/icons/trip_origin.svg" @click="op = !op">
-		<img :class="`icon ${user ? 'active' : ''}`" src="../../assets/icons/person_pin.svg" @click="user = !user">
+		<img class="icon" :class="{active: sage}" src="../../assets/icons/down.svg" @click="sage = !sage">
+		<img class="icon" :class="{active: op}" src="../../assets/icons/trip_origin.svg" @click="op = !op">
+		<img class="icon" :class="{active: user}" src="../../assets/icons/person_pin.svg" @click="user = !user">
 		<input type="text">
 		
 		<textarea></textarea>

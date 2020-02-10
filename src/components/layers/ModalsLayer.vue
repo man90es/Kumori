@@ -1,14 +1,12 @@
 <template>
 	<div id="ModalsLayer">
-		<div v-if="modals.length > 0" v-for="(modal, index) in modals" :key="index">
-			<div>Header</div>
-			<component :is="modal"></component>
-		</div>
+		<Modal v-if="modals.length > 0" v-for="(modalBody, index) in modals" :modalBody="modalBody" :key="index" />
 	</div>
 </template>
 
 <script>
-	import FormModal from '../misc/FormModal'
+	import Modal from '../misc/Modal'
+	import FormModal from '../modals/FormModal'
 
 	export default {
 		data() {
@@ -16,14 +14,17 @@
 				modals: []
 			}
 		},
+		components: {
+			Modal
+		},
 		methods: {
-			toggle(modal) {
-				let i = this.modals.indexOf(modal)
+			toggle(modalBody) {
+				let i = this.modals.indexOf(modalBody)
 
 				if (i > -1) {
 					this.modals.splice(i, 1)
 				} else {
-					this.modals.push(modal)
+					this.modals.push(modalBody)
 				}
 			}
 		},
@@ -45,19 +46,5 @@
 		align-items: center;
 		display: flex;
 		pointer-events: none;
-	}
-
-	#ModalsLayer > * {
-		pointer-events: auto;
-		height: 25vh;
-		width: 50vh;
-		background-color: #282c34;
-		box-shadow: 0 0 10px #0008;
-		padding: 0.5rem;
-	}
-
-	#ModalsLayer > * > div {
-		height: 2rem;
-		text-align: center;
 	}
 </style>
