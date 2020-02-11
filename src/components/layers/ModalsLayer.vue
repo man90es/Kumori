@@ -7,6 +7,9 @@
 <script>
 	import Modal from '../misc/Modal'
 	import FormModal from '../modals/FormModal'
+	import SearchModal from '../modals/SearchModal'
+	import StarredModal from '../modals/StarredModal'
+	import SettingsModal from '../modals/SettingsModal'
 
 	export default {
 		data() {
@@ -30,6 +33,9 @@
 		},
 		created() {
 			this.$bus.on('menu-chat-button-click', () => this.toggle(FormModal))
+			this.$bus.on('menu-search-button-click', () => this.toggle(SearchModal))
+			this.$bus.on('menu-star-button-click', () => this.toggle(StarredModal))
+			this.$bus.on('menu-settings-button-click', () => this.toggle(SettingsModal))
 		},
 	}
 </script>
@@ -40,7 +46,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		z-index: 100;
+		/*z-index: 100;*/
 		position: fixed;
 		justify-content: center;
 		align-items: center;
