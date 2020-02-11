@@ -5,7 +5,9 @@
 </template>
 
 <script>
-
+	export default {
+		name: 'SettingsModal'
+	}
 </script>
 
 <style>

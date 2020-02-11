@@ -5,7 +5,9 @@
 </template>
 
 <script>
-
+	export default {
+		name: 'StarredModal'
+	}
 </script>
 
 <style>

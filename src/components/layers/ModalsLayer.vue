@@ -1,6 +1,6 @@
 <template>
 	<div id="ModalsLayer">
-		<Modal v-if="modals.length > 0" v-for="(modalBody, index) in modals" :modalBody="modalBody" :key="index" />
+		<Modal v-if="modals.length > 0" v-for="modalBody in modals" :modalBody="modalBody" :key="modalBody.name" />
 	</div>
 </template>
 
