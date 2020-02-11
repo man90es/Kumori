@@ -67,8 +67,6 @@
 		background-color: #282c34;
 		box-shadow: 0 0 0.5rem #0005;
 		padding: 0.5rem;
-		/*left: 0;*/
-		/*top: 0;*/
 		position: fixed;
 	}
 

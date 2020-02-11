@@ -1,6 +1,6 @@
 <template>
 	<div id='app'>
-		<svg> <!-- Used for blurring NSFW images -->
+		<svg class="zero"> <!-- Used for blurring NSFW images -->
 			<filter id='sharpBlur'>
 				<feGaussianBlur stdDeviation='5'></feGaussianBlur>
 				<feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0'></feColorMatrix>
@@ -105,5 +105,10 @@
 
 	u {
 		text-decoration-skip-ink: none;
+	}
+
+	.zero {
+		height: 0;
+		width: 0;
 	}
 </style>
