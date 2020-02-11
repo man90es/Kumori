@@ -4,7 +4,6 @@
 			<MenuButton :icon='"up"' />
 			<MenuButton :icon='"search"' />
 			<MenuButton :icon='"settings"' />
-			<MenuButton :icon='"nsfw"' />
 		</div>
 		<div>
 			<MenuButton :icon='"chat"' />
