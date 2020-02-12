@@ -39,6 +39,6 @@
 	}
 
 	button{
-		margin: 0.5rem 0;
+		margin: calc(var(--gap-size) / 2) 0;
 	}
 </style>

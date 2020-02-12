@@ -46,7 +46,6 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		/*z-index: 100;*/
 		position: fixed;
 		justify-content: center;
 		align-items: center;

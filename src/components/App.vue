@@ -1,5 +1,5 @@
 <template>
-	<div id='app'>
+	<div id='app' :style="theme">
 		<svg class="zero"> <!-- Used for blurring NSFW images -->
 			<filter id='sharpBlur'>
 				<feGaussianBlur stdDeviation='5'></feGaussianBlur>
@@ -18,17 +18,22 @@
 
 	export default {
 		name: 'App',
-		components: {
-
-		},
 		data() {
 			return {
 				boards: [],
-				siteTitle: config.siteTitle
+				siteTitle: config.siteTitle,
+				theme: {
+					'--text-color': '#bbc',
+					'--text-secondary-color': '#99a',
+					'--text-green-color': '#98c379',
+					'--card-color': '#292d35',
+					'--card-secondary-color': '#252931',
+					'--background-color': '#21252b',
+					'--link-over-color': '#40c0f3',
+					'--link-hover-color': '#108fbf',
+					'--gap-size': '1rem'
+				}
 			}
-		},
-		methods: {
-
 		},
 		created() {
 			API.readBoards('Default', (data) => {
@@ -43,23 +48,23 @@
 		font-family: 'Noto Sans', 'Avenir', Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		color: #a8afbc;
+		color: var(--text-color);
 		display: flex;
-		background-color: #21252b;
+		background-color: var(--background-color);
 	}
 
 	a {
-		color: #5facec;
+		color: var(--link-over-color);
 		cursor: pointer;
 		transition: color 0.1s;
 	}
 
 	a:hover {
-		color: #47769d;
+		color: var(--link-hover-color);
 	}
 
 	.icon{
-		filter: invert(69%);
+		filter: invert(75%);
 		vertical-align: middle;
 	}
 
@@ -72,7 +77,7 @@
 	}
 
 	q{
-		color: #98c379
+		color: var(--text-green-color)
 	}
 
 	span.spoiler{
@@ -82,11 +87,11 @@
 
 	span.spoiler:not(:hover){
 		color: transparent;
-		text-shadow: 0 0 .3em #a8afbc;
+		text-shadow: 0 0 .3em var(--text-color);
 	}
 
 	code {
-		background: #21252b;
+		background: var(--background-color);
 		padding: .1rem .3rem;
 		font-size: 1rem;
 		user-select: all;
@@ -98,8 +103,8 @@
 
 		& > code {
 			display: block;
-			padding: 0.5rem;
-			margin: 0.5rem 0;
+			padding: calc(var(--gap-size) / 2);
+			margin: calc(var(--gap-size) / 2) 0;
 		}
 	}
 

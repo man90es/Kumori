@@ -28,8 +28,7 @@
 		justify-content: center;
 		align-items: center;
 		display: flex;
-		color: #a8afbc;
-		background-color: #282c34;
+		background-color: var(--card-color);
 		border: none;
 	}
 </style>

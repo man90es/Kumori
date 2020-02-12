@@ -85,13 +85,17 @@
 <style scoped>
 	article{
 		min-height: 2em;
-		background-color: #282c34;
-		margin: 0.5rem 0;
-		padding: 0.5rem;
+		margin: calc(var(--gap-size) / 2) 0;
+		padding: calc(var(--gap-size) / 2);
+	}
+
+	article:first-child{
+		background-color: var(--card-color);
 	}
 
 	article:not(:first-child){
-		margin-left: 2rem;
+		background-color: var(--card-secondary-color);
+		margin-left: calc(var(--gap-size) * 2);
 	}
 
 	.postDetails{
@@ -101,10 +105,10 @@
 	time{
 		position: absolute;
 		right: 0;
-		color: #888f9c;
+		color: var(--text-secondary-color);
 	}
 
 	.subject{
-		color: #888f9c;
+		color: var(--text-secondary-color);
 	}
 </style>

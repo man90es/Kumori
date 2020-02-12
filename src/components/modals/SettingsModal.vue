@@ -9,7 +9,3 @@
 		name: 'SettingsModal'
 	}
 </script>
-
-<style>
-
-</style>

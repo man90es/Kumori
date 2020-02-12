@@ -64,9 +64,9 @@
 		pointer-events: auto;
 		height: 25vh;
 		width: 50vh;
-		background-color: #282c34;
-		box-shadow: 0 0 0.5rem #0005;
-		padding: 0.5rem;
+		background-color: var(--card-color);
+		box-shadow: 0 0 calc(var(--gap-size) / 2) #0005;
+		padding: calc(var(--gap-size) / 2);
 		position: fixed;
 	}
 

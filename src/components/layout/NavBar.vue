@@ -26,7 +26,7 @@
 	}
 
 	a:first-child{
-		color: #a8afbc;
+		color: var(--text-color);
 		font-size: 2rem;
 		font-weight: bold;
 	}

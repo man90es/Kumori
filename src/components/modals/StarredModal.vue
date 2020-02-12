@@ -9,7 +9,3 @@
 		name: 'StarredModal'
 	}
 </script>
-
-<style>
-
-</style>

@@ -31,7 +31,7 @@
 		display: grid;
 		grid-template-rows: 1.75rem 1fr 3.5rem;
 		grid-template-columns: 3rem 3rem 3rem 1fr 3rem;
-		grid-gap: 0.5rem;
+		grid-gap: calc(var(--gap-size) / 2);
 		height: calc(100% - 2rem);
 		justify-items: center;
 	}
@@ -42,8 +42,8 @@
 		border: none;
 		padding: 2%;
 		box-sizing: border-box;
-		background-color: #21252b;
-		color: #a8afbc;
+		background-color: var(--background-color);
+		color: var(--text-color);
 		text-align: center;
 		font-size: 1rem;
 		width: 100%;
@@ -55,9 +55,9 @@
 		width: 100%;
 		height: 100%;
 		resize: none;
-		background-color: #21252b;
+		background-color: var(--background-color);
 		border: none;
-		color: #a8afbc;
+		color: var(--text-color);
 		font-size: 1rem;
 		box-sizing: border-box;
 	}

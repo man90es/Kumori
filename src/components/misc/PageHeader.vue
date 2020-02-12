@@ -16,14 +16,14 @@
 
 <style scoped>
 	header{
-		background-color: #282c34;
-		margin-bottom: 0.25rem;
-		padding: 0.5rem;
+		background-color: var(--card-color);
+		margin-bottom: calc(var(--gap-size) / 4);
+		padding: calc(var(--gap-size) / 2);
 		display: flex;
 	}
 
 	div:first-child{
-		color: #a8afbc;
+		color: var(--text-color);
 		font-size: 1.5rem;
 	}
 </style>

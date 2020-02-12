@@ -9,7 +9,3 @@
 		name: 'SearchModal'
 	}
 </script>
-
-<style>
-
-</style>
