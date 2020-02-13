@@ -52,8 +52,10 @@
 	textarea {
 		padding: 2%;
 		grid-column: 1/6;
+		min-height: 10em;
+		min-width: 30em;
 		width: 100%;
-		height: 100%;
+		/*height: 100%;*/
 		resize: none;
 		background-color: var(--background-color);
 		border: none;

@@ -1,7 +1,7 @@
 <template>
 	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
 		<div @mousedown="mouseDownHandler" @mouseup="mouseUpHandler">Header</div>
-		<component :is="modalBody"></component>
+		<component :is="modalBody" :data="data"></component>
 	</div>
 </template>
 
@@ -11,15 +11,24 @@
 			return {
 				transform: [0, 0],
 				cursorPosition: [null, null],
-				position: [null, null],
-				initialPosition: [null, null]
+				position: [null, null]
 			}
 		},
 		props: [
 			'modalBody',
+			'data'
 		],
 		methods: {
 			mouseDownHandler(event) {
+				if (this.position.includes(null)) {
+					let computedStyle = getComputedStyle(this.$refs.modal)
+
+					this.position = [
+						parseInt(computedStyle.getPropertyValue('left')) || 0, 
+						parseInt(computedStyle.getPropertyValue('top')) || 0
+					]
+				}
+
 				this.cursorPosition = [event.clientX, event.clientY]
 				document.addEventListener('mousemove', this.dragHandler)
 			},
@@ -47,14 +56,7 @@
 			}
 		},
 		mounted() {
-			let computedStyle = getComputedStyle(this.$refs.modal)
-			
-			this.initialPosition = [
-				parseInt(computedStyle.getPropertyValue('left')) || 0, 
-				parseInt(computedStyle.getPropertyValue('top')) || 0
-			]
-
-			this.position = this.initialPosition
+			this.position = [null, null]
 		}
 	}
 </script>
@@ -62,8 +64,8 @@
 <style>
 	.modal {
 		pointer-events: auto;
-		height: 25vh;
-		width: 50vh;
+		min-height: 10em;
+		min-width: 10em;
 		background-color: var(--card-color);
 		box-shadow: 0 0 calc(var(--gap-size) / 2) #0005;
 		padding: calc(var(--gap-size) / 2);
