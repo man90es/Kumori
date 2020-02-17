@@ -8,8 +8,8 @@
 			<time>{{formatDate()}}</time>
 		</div>
 		<div>
-			<div v-if='post.files'>
-				<PostAttachment :file='post.files[0]' />
+			<div v-if="post.files" class="attachments">
+				<PostAttachment v-for="file in post.files" :file="file" :key="file.path" />
 			</div>
 
 			<div v-if='post.rawText' v-html='parsedText'></div>
@@ -110,5 +110,9 @@
 
 	.subject{
 		color: var(--text-secondary-color);
+	}
+
+	.attachments *{
+		margin-right: calc(var(--gap-size) / 2);
 	}
 </style>
