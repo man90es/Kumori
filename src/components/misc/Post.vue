@@ -9,7 +9,7 @@
 		</div>
 		<div>
 			<div v-if="post.files" class="attachments">
-				<PostAttachment v-for="file in post.files" :file="file" :key="file.path" />
+				<PostAttachment v-for="(file, index) in post.files" :file="file" :key="index" />
 			</div>
 
 			<div v-if='post.rawText' v-html='parsedText'></div>
