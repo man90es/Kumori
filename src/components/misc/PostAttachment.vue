@@ -14,7 +14,11 @@
 	}
 </script>
 
-<style>
+<style scoped>
+	img {
+		cursor: pointer;
+	}
+
 	img.nsfw {
 		filter: url("#sharpBlur");
 	}
