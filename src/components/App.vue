@@ -121,5 +121,7 @@
 		border: none;
 		background-color: transparent;
 		cursor: pointer;
+		vertical-align: middle;
+		padding: 0 0.25em;
 	}
 </style>

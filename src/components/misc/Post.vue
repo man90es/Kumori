@@ -3,8 +3,8 @@
 		<div class='postDetails'>
 			<span v-if='post.sage'><img class='icon' src='../../assets/icons/down.svg'></span>
 			<a class='refLink' href='#'><span class='subject'>{{formatSubject()}}</span> #{{post.number}}</a>
-			<span><img class='icon' src='../../assets/icons/menu.svg'></span>
-			<span><img class='icon' src='../../assets/icons/reply.svg'></span>
+			<button><img class='icon' src='../../assets/icons/menu.svg'></button>
+			<button><img class='icon' src='../../assets/icons/reply.svg'></button>
 			<time>{{formatDate()}}</time>
 		</div>
 		<div>
