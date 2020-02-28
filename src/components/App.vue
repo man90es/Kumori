@@ -57,6 +57,7 @@
 		color: var(--link-over-color);
 		cursor: pointer;
 		transition: color 0.1s;
+		text-decoration: none;
 	}
 
 	a:hover {
