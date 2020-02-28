@@ -5,9 +5,11 @@ import router from './router'
 import VueLazyload from 'vue-lazyload'
 import './registerServiceWorker'
 import store from './store'
-
+import Vue2TouchEvents from 'vue2-touch-events'
+ 
 Vue.use(VueLazyload)
 Vue.use(VueBus)
+Vue.use(Vue2TouchEvents)
 
 Vue.config.productionTip = false
 

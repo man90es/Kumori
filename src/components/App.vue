@@ -1,5 +1,5 @@
 <template>
-	<div id='app' :style="theme">
+	<div id='app' :style="theme" v-touch:swipe="swipeHandler">
 		<svg class="zero"> <!-- Used for blurring NSFW images -->
 			<filter id='sharpBlur'>
 				<feGaussianBlur stdDeviation='5'></feGaussianBlur>
@@ -33,6 +33,11 @@
 					'--link-hover-color': '#108fbf',
 					'--gap-size': '1rem'
 				}
+			}
+		},
+		methods: {
+			swipeHandler(direction) {
+				this.$bus.emit(`swipe-${direction}`)
 			}
 		},
 		created() {

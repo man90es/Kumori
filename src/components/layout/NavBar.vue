@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if="!mobile">
 		<router-link to="/">{{siteTitle}}</router-link>
 		<router-link :key='board.id' :to='{name: "board", params: {boardId: board.id}}' v-for='board in boards'>/{{board.id}}</router-link>
 	</div>
@@ -11,7 +11,12 @@
 		props: [
 			'boards', 
 			'siteTitle'
-		]
+		],
+		data() {
+			return {
+				mobile: window.innerWidth < window.innerHeight
+			}
+		},
 	}
 </script>
 
