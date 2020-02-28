@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
-		<div @mousedown="mouseDownHandler" @mouseup="mouseUpHandler">Header</div>
+		<div @mousedown="mouseDownHandler" @mouseup="mouseUpHandler">Header<button @click="close"><img class='icon' src='../../assets/icons/close.svg'></button></div>
 		<component :is="modalBody" :data="data"></component>
 	</div>
 </template>
@@ -53,6 +53,10 @@
 					event.clientX, 
 					event.clientY
 				]
+			},
+
+			close(event) {
+				this.$bus.emit('modal-close-button-click', {key: this.$vnode.key})
 			}
 		},
 		mounted() {
@@ -77,5 +81,10 @@
 		text-align: center;
 		user-select: none;
 		cursor: move;
+	}
+
+	.modal button{
+		position: absolute;
+		right: 0;
 	}
 </style>

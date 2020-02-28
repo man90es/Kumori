@@ -39,6 +39,16 @@
 				this.datas.push(data)
 				this.keys.push(+new Date)
 			},
+
+			close(data) {
+				let i = this.keys.indexOf(data.key)
+
+				if (i > -1) {
+					this.modals.splice(i, 1)
+					this.datas.splice(i, 1)
+					this.keys.splice(i, 1)
+				} 
+			}
 		},
 		created() {
 			this.$bus.on('menu-chat-button-click', (data) => this.toggle(FormModal, data))
@@ -46,6 +56,8 @@
 			this.$bus.on('menu-star-button-click', (data) => this.toggle(StarredModal, data))
 			this.$bus.on('menu-settings-button-click', (data) => this.toggle(SettingsModal, data))
 			this.$bus.on('post-attachment-preview-click', (data) => this.toggle(MediaModal, data, true))
+
+			this.$bus.on('modal-close-button-click', (data) => this.close(data))
 		},
 	}
 </script>
