@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
-		<div @mousedown="mouseDownHandler" @mouseup="mouseUpHandler">Header<button @click="close"><img class='icon' src='../../assets/icons/close.svg'></button></div>
+		<div @mousedown="mouseDownHandler">Header<button @click="close"><img class='icon' src='../../assets/icons/close.svg'></button></div>
 		<component :is="modalBody" :data="data"></component>
 	</div>
 </template>
@@ -31,10 +31,12 @@
 
 				this.cursorPosition = [event.clientX, event.clientY]
 				document.addEventListener('mousemove', this.dragHandler)
+				document.addEventListener('mouseup', this.mouseUpHandler.bind(this))
 			},
 
 			mouseUpHandler(event) {
 				document.removeEventListener('mousemove', this.dragHandler)
+				document.removeEventListener('mouseup', this.mouseUpHandler)
 			},
 
 			dragHandler(event) {
