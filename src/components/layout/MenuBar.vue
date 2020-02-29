@@ -52,6 +52,11 @@
 	#MenuBar.mobile {
 		position: fixed;
 		right: -3.5em;
+		transition-duration: .2s;
+	}
+
+	#MenuBar.mobile button {
+		border: 1px solid var(--background-color);
 	}
 
 	#MenuBar.mobile.visible {
