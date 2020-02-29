@@ -7,9 +7,17 @@
 		
 		<textarea></textarea>
 		
-		<div></div>
+		<button type="button" id="attachFile">
+			<img class="icon" src="../../assets/icons/attach_file.svg">
+		</button>
 
-		<img id="submit" class="icon" src="../../assets/icons/send.svg">
+		<div>
+			<!--Attached file thumbnails go here-->	
+		</div>
+
+		<button type="button" id="submit">
+			<img class="icon" src="../../assets/icons/send.svg">
+		</button>
 	</form>
 </template>
 
@@ -31,7 +39,6 @@
 		display: grid;
 		grid-template-rows: 1.75rem 1fr 3.5rem;
 		grid-template-columns: 3rem 3rem 3rem 1fr 3rem;
-		grid-gap: calc(var(--gap-size) / 2);
 		height: calc(100% - 2rem);
 		justify-items: center;
 	}
@@ -52,20 +59,24 @@
 	textarea {
 		padding: 2%;
 		grid-column: 1/6;
-		min-height: 10em;
+		min-height: 7em;
 		min-width: 30em;
 		width: 100%;
-		/*height: 100%;*/
 		resize: none;
 		background-color: var(--background-color);
 		border: none;
 		color: var(--text-color);
 		font-size: 1rem;
 		box-sizing: border-box;
+		margin-top: calc(var(--gap-size) / 2);
+		margin-bottom: 0;
 	}
 
 	div {
-		grid-column: 1/5;
+		grid-column: 2/5;
+		width: 100%;
+		height: 100%;
+		background-color: var(--background-color);
 	}
 
 	.icon {
@@ -77,9 +88,13 @@
 		opacity: 0.5;
 	}
 
-	#submit {
-		padding: 25%;
-		height: 50%;
+	#submit, #attachFile {
+		background-color: var(--background-color);
+		width: 100%;
+	}
+
+	#submit .icon, #attachFile .icon {
 		opacity: 1;
+		height: 50%;
 	}
 </style>

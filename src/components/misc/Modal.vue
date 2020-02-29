@@ -67,7 +67,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.modal {
 		pointer-events: auto;
 		min-height: 10em;
