@@ -7,12 +7,12 @@
 		
 		<textarea></textarea>
 		
-		<button type="button" id="attachFile">
+		<button type="button" id="attachFile" @click="attachHandler">
 			<img class="icon" src="../../assets/icons/attach_file.svg">
 		</button>
 
 		<div>
-			<!--Attached file thumbnails go here-->	
+			<div class="thumb" :key="i" v-for="(file, i) in files" :style="`background-image:url(${thumbs[i]})`"></div>
 		</div>
 
 		<button type="button" id="submit">
@@ -28,7 +28,39 @@
 			return {
 				sage: false,
 				op: false,
-				user: false
+				user: false,
+				files: [],
+				thumbs: [],
+				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
+			}
+		},
+		methods: {
+			attachHandler() {
+				if (this.files.length == this.fileLimit) return
+
+				let f = document.createElement('input')
+				f.type = 'file'
+				f.style = 'display:none'
+				f.addEventListener('change', this.attachmentChangeHandler.bind(this))
+
+				this.files.push(f)
+				f.click()
+			},
+
+			attachmentChangeHandler(event) {
+				let file = event.target.files[0]
+				
+				if (file.type.match('image.*')) {
+					let reader = new FileReader()
+
+					reader.onload = ((file) => (event) => {
+						this.thumbs.push(event.target.result)
+					})(file)
+
+					reader.readAsDataURL(file)
+				} else {
+					this.thumbs.push(null)
+				}
 			}
 		}
 	}
@@ -77,6 +109,7 @@
 		width: 100%;
 		height: 100%;
 		background-color: var(--background-color);
+		display: flex;
 	}
 
 	.icon {
@@ -96,5 +129,13 @@
 	#submit .icon, #attachFile .icon {
 		opacity: 1;
 		height: 50%;
+	}
+
+	.thumb{
+		height: 3.5rem;
+		width: 3.5rem;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 </style>
