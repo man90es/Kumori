@@ -1,4 +1,4 @@
 module.exports = {
-	APIServer: 'wss://foxtan.tumba.ch/ws',
+	APIServer: 'ws://localhost:6749/ws',
 	siteTitle: 'Kumori'
 }

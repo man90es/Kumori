@@ -8,7 +8,7 @@
 			</filter>
 		</svg>
 
-		<router-view :boards='boards' :siteTitle='siteTitle' />
+		<router-view :siteTitle='siteTitle' />
 	</div>
 </template>
 
@@ -20,7 +20,6 @@
 		name: 'App',
 		data() {
 			return {
-				boards: [],
 				siteTitle: config.siteTitle,
 				theme: {
 					'--text-color': '#bbc',
@@ -41,9 +40,7 @@
 			}
 		},
 		created() {
-			API.readBoards('Default', (data) => {
-				this.boards = data.boards
-			})
+			this.$store.dispatch('updateBoardsList')
 		}
 	}
 </script>

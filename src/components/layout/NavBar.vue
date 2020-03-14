@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!mobile">
 		<router-link to="/">{{siteTitle}}</router-link>
-		<router-link :key='board.id' :to='{name: "board", params: {boardId: board.id}}' v-for='board in boards'>/{{board.id}}</router-link>
+		<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in boards'>/{{boardName}}</router-link>
 	</div>
 </template>
 
@@ -9,7 +9,6 @@
 	export default {
 		name: 'NavBar',
 		props: [
-			'boards', 
 			'siteTitle'
 		],
 		data() {
@@ -17,6 +16,11 @@
 				mobile: window.innerWidth < window.innerHeight
 			}
 		},
+		computed: {
+			boards: function() {
+				return this.$store.state.boards
+			}
+		}
 	}
 </script>
 
