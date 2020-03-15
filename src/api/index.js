@@ -7,13 +7,24 @@ WS.onopen = () => ready = true
 WS.onclose = () => ready = false
 window.onbeforeunload = () => WS.close()
 
-function request(req, expect) {
+function request(req) {
 	return new Promise((resolve, reject) => {
 		WS.addEventListener('message', (message) => {
 			let msg = JSON.parse(message.data)
 
-			if (msg.request == expect.request) {
-				resolve(msg.data)
+			let match = true
+			Object.keys(req).forEach((key) => {
+				if (req[key] !== msg.what[key]) {
+					match = false
+				}
+			})
+
+			if (match) {
+				if('error' in msg) {
+					reject(msg.error)
+				} else {
+					resolve(msg.data)
+				}
 			}
 		})
 
@@ -29,11 +40,11 @@ function request(req, expect) {
 
 module.exports = {
 	sync: (type) => {
-		return request({request: 'sync', type}, {request: 'sync'})
+		return request({request: 'sync', type})
 	},
 
 	getBoards: () => {
-		return request({request: 'boards'}, {request: 'boards'})
+		return request({request: 'boards'})
 	}
 }
 
