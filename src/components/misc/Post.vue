@@ -1,18 +1,18 @@
 <template>
 	<article v-if='post'>
 		<div class='postDetails'>
-			<span v-if='post.sage'><img class='icon' src='../../assets/icons/down.svg'></span>
+			<span v-if='"sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
 			<a class='refLink' href='#'><span class='subject'>{{formatSubject()}}</span> #{{post.number}}</a>
 			<button><img class='icon' src='../../assets/icons/menu.svg'></button>
 			<button><img class='icon' src='../../assets/icons/reply.svg'></button>
 			<time>{{formatDate()}}</time>
 		</div>
 		<div>
-			<div v-if="post.files" class="attachments">
-				<PostAttachment v-for="(file, index) in post.files" :file="file" :key="index" />
+			<div v-if="post.attachments" class="attachments">
+				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
 
-			<div v-if='post.rawText' v-html='parsedText'></div>
+			<div v-if='post.text' v-html='parsedText'></div>
 		</div>
 	</article>
 </template>
@@ -28,12 +28,11 @@
 			PostAttachment
 		},
 		props: [
-			'post',
-			'defaultSubject'
+			'post'
 		],
 		data() {
 			return {
-				parsedText: this.post.rawText
+				parsedText: this.post.text
 			}
 		},
 		methods: {
@@ -68,12 +67,12 @@
 			},
 
 			formatSubject() {
-				let subject = this.post.subject || this.defaultSubject
+				let subject = this.post.subject
 				return subject.length > 55 ? utils.truncateString(subject, 55) : subject
 			},
 
 			async formatText() {
-				this.parsedText = await markup.process(this.post.rawText)
+				this.parsedText = await markup.process(this.post.text)
 			}
 		},
 		created() {

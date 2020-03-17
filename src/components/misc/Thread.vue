@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<Post :key='post.number' :post='post' :defaultSubject='defaultSubject' v-for='post in thread.posts'/>
+		<Post :post='thread.head'/>
+		<!-- TODO: Add replies -->
 	</div>
 </template>
 
@@ -14,7 +15,6 @@
 		},
 		props: [
 			'thread',
-			'defaultSubject'
 		]
 	}
 </script>

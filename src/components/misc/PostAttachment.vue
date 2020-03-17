@@ -1,5 +1,5 @@
 <template>
-	<img :class="{nsfw: file.nsfw}" :width='`${file.thumb.width || 256}px`' :height='`${file.thumb.height || 200}px`' v-lazy='`https://foxtan.tumba.ch/res/thumb/${file.thumb.path}`' @click="clickHandler">
+	<img :class="{nsfw: file.nsfw}" :width='`${file.thumb.width || 256}px`' :height='`${file.thumb.height || 200}px`' v-lazy='`http://localhost:6749/res/thumb/${file.thumb.path}`' @click="clickHandler">
 </template>
 
 <script>

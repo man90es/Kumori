@@ -45,6 +45,10 @@ module.exports = {
 
 	getBoards: () => {
 		return request({request: 'boards'})
+	},
+
+	getThreads: (boardName, count, page) => {
+		return request({request: 'threads', boardName, count, page})
 	}
 }
 

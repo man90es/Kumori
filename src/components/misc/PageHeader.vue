@@ -1,16 +1,18 @@
 <template>
-	<header>
-		<router-link :to='{name: "board", params: {boardId: board.id}}'>
-			<div>/{{board.id}}/ — {{board.title}}</div>
-			<div>{{board.subtitle}}</div>
-		</router-link>
+	<header v-if="board">
+		<div>/{{board.name}}/ — {{board.title}}</div>
+		<div>{{board.subtitle}}</div>
 	</header>
 </template>
 
 <script>
 	export default {
 		name: 'PageHeader',
-		props: ['board']
+		computed: {
+			board: function() {
+				return this.$store.state.boards[this.$route.params.boardName]
+			}
+		}
 	}
 </script>
 
@@ -19,11 +21,14 @@
 		background-color: var(--card-color);
 		margin-bottom: calc(var(--gap-size) / 4);
 		padding: calc(var(--gap-size) / 2);
-		display: flex;
+		cursor: default;
 	}
 
 	div:first-child{
-		color: var(--text-color);
 		font-size: 1.5rem;
+	}
+
+	div:last-child{
+		color: var(--link-over-color);
 	}
 </style>
