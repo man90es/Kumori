@@ -8,19 +8,15 @@
 			</filter>
 		</svg>
 
-		<router-view :siteTitle='siteTitle' />
+		<router-view />
 	</div>
 </template>
 
 <script type='text/javascript'>
-	import API from '../api'
-	import config from '../../config'
-
 	export default {
 		name: 'App',
 		data() {
 			return {
-				siteTitle: config.siteTitle,
 				theme: {
 					'--text-color': '#bbc',
 					'--text-secondary-color': '#99a',

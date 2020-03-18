@@ -19,8 +19,7 @@
 
 <script>
 	import PostAttachment from './PostAttachment'
-	import utils from '../../utils'
-	import markup from '../../utils/markup'
+	import { num2Word, truncateString, processMarkup } from '../../utils'
 
 	export default {
 		name: 'Post',
@@ -47,12 +46,12 @@
 
 					let minutes = Math.round(diff / 6e4)
 					if (minutes < 50){
-						return `${minutes} ${utils.num2Word(minutes, ['minute', 'minutes'])} ago`
+						return `${minutes} ${num2Word(minutes, ['minute', 'minutes'])} ago`
 					}
 
 					let hours = Math.round(diff / 3.6e6)
 					if (hours < 20){
-						return `${hours} ${utils.num2Word(hours, ['hour', 'hours'])} ago`
+						return `${hours} ${num2Word(hours, ['hour', 'hours'])} ago`
 					}
 
 					let days = Math.round(diff / 8.64e7)
@@ -60,7 +59,7 @@
 						return "yesterday"	
 					}
 
-					return `${days} ${utils.num2Word(days, ['day', 'days'])} ago`
+					return `${days} ${num2Word(days, ['day', 'days'])} ago`
 				} else {
 					return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
 				}
@@ -68,11 +67,11 @@
 
 			formatSubject() {
 				let subject = this.post.subject
-				return subject.length > 55 ? utils.truncateString(subject, 55) : subject
+				return subject.length > 55 ? truncateString(subject, 55) : subject
 			},
 
 			async formatText() {
-				this.parsedText = await markup.process(this.post.text)
+				this.parsedText = await processMarkup(this.post.text)
 			}
 		},
 		created() {

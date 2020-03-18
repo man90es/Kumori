@@ -1,6 +1,6 @@
 <template>
-	<button @click="dispatchEvent()">
-		<img class='icon' :src='getIconSrc()'>
+	<button @click="dispatchEvent">
+		<img class='icon' :src='src'>
 	</button>
 </template>
 
@@ -9,14 +9,15 @@
 		name: 'MenuButton',
 		props: ['icon'],
 		methods: {
-			getIconSrc() {
-				let images = require.context('../../assets/icons', false, /\.svg$/)
-				return images(`./${this.icon}.svg`)
-			},
-
 			dispatchEvent() {
 				this.$bus.emit(`menu-${this.icon}-button-click`)
 			}
+		},
+		computed: {
+			src() {
+				let images = require.context('../../assets/icons', false, /\.svg$/)
+				return images(`./${this.icon}.svg`)
+			},
 		}
 	}
 </script>

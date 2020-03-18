@@ -1,6 +1,5 @@
-let markup = module.exports = {
-	reduceNewLines: 4 // 4 = 1 + 3: 1 line break and 3 empty lines
-}
+let markup = {}
+const reduceNewLines = 4 // 4 = 1 + 3: 1 line break and 3 empty lines
 
 let escapeMap = {
 	'&': '&amp;',
@@ -77,7 +76,7 @@ let tagMap = {
 		/\r?\n/g,
 	],
 	reduceNewLines: [
-		new RegExp(`(<br \/>){${markup.reduceNewLines},}`, 'gi'),
+		new RegExp(`(<br \/>){${reduceNewLines},}`, 'gi'),
 	],
 }
 
@@ -94,43 +93,7 @@ let typeMap = {
 	link: processURL('<a data-link="$1" title="$1">$1</a>'),
 	spoiler: '<span class="spoiler">$1</span>',
 	newLine: '<br />',
-	reduceNewLines: new Array(markup.reduceNewLines + 1).join('$1'),
-}
-
-markup.process = async (text) => {
-	if (!text) return ''
-
-	// Step 0.
-	text = escapeHTML(text)
-
-	// Step 1. Bypass code tags.
-	// Step 2. Replace other tags.
-	let tagTypes = Object.keys(tagMap); // select tag types and their template strings
-	for (let i = 0; i < tagTypes.length; i++) {
-		let tagType = tagTypes[i] // bold, italic, underline...
-		let tags = tagMap[tagType]
-		for (let j = 0; j < tags.length; j++) {
-			if (!Array.isArray(tags[j])) {
-				tags[j] = [ tags[j] ];
-			}
-
-			let [opening, closing = opening, params = 'gi'] = tags[j] // create regexp or get it
-			let regex = (opening instanceof RegExp)
-				? opening
-				: new RegExp(escapeRX(opening) + '(.+?)' + escapeRX(closing), params)
-
-			if (typeof typeMap[tagType] === 'function') {
-				let {matches, capture} = getMatches(text, regex)
-				for (let k = 0; k < capture.length; k++) {
-					text = text.replace(capture[k], await typeMap[tagType](capture[k], matches[k]))
-				}
-				continue
-			}
-			text = text.replace(regex, typeMap[tagType])
-		}
-	}
-
-	return text
+	reduceNewLines: new Array(reduceNewLines + 1).join('$1'),
 }
 
 function getMatches(string, regex) {
@@ -185,4 +148,40 @@ function processURL(tagString) {
 
 		return tagString.replace(/\$1/g, href).replace('$2', title)
 	}
+}
+
+export default async function processMarkup(text) {
+	if (!text) return ''
+
+	// Step 0.
+	text = escapeHTML(text)
+
+	// Step 1. Bypass code tags.
+	// Step 2. Replace other tags.
+	let tagTypes = Object.keys(tagMap); // select tag types and their template strings
+	for (let i = 0; i < tagTypes.length; i++) {
+		let tagType = tagTypes[i] // bold, italic, underline...
+		let tags = tagMap[tagType]
+		for (let j = 0; j < tags.length; j++) {
+			if (!Array.isArray(tags[j])) {
+				tags[j] = [ tags[j] ];
+			}
+
+			let [opening, closing = opening, params = 'gi'] = tags[j] // create regexp or get it
+			let regex = (opening instanceof RegExp)
+				? opening
+				: new RegExp(escapeRX(opening) + '(.+?)' + escapeRX(closing), params)
+
+			if (typeof typeMap[tagType] === 'function') {
+				let {matches, capture} = getMatches(text, regex)
+				for (let k = 0; k < capture.length; k++) {
+					text = text.replace(capture[k], await typeMap[tagType](capture[k], matches[k]))
+				}
+				continue
+			}
+			text = text.replace(regex, typeMap[tagType])
+		}
+	}
+
+	return text
 }

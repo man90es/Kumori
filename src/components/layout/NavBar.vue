@@ -1,24 +1,19 @@
 <template>
 	<div v-if="!mobile">
 		<router-link to="/">{{siteTitle}}</router-link>
-		<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in boards'>/{{boardName}}</router-link>
+		<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in $store.state.boards'>/{{boardName}}</router-link>
 	</div>
 </template>
 
 <script>
+	import { siteTitle } from '../../../config'
+
 	export default {
 		name: 'NavBar',
-		props: [
-			'siteTitle'
-		],
 		data() {
 			return {
-				mobile: window.innerWidth < window.innerHeight
-			}
-		},
-		computed: {
-			boards: function() {
-				return this.$store.state.boards
+				mobile: window.innerWidth < window.innerHeight,
+				siteTitle: siteTitle
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 <template>
 	<div id='board'>
-		<NavBar :siteTitle='siteTitle' />
+		<NavBar />
 		<MainSection>
 			<Thread :key='id' :thread='thread' v-for='(thread, id) in threads'/>
 		</MainSection>
@@ -11,8 +11,6 @@
 </template>
 
 <script>
-	import API from '../api'
-	
 	import MainSection from '../components/layout/MainSection.vue'
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
@@ -28,9 +26,6 @@
 			ModalsLayer,
 			Thread
 		},
-		props: [
-			'siteTitle'
-		],
 		methods: {
 			getThreads(boardName) {
 				this.$store.dispatch('updateThreadsList', {boardName, amount: 10, page: 0})

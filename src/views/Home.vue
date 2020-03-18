@@ -2,19 +2,14 @@
 	<div id='Home'>
 		<img src='logo.png'>
 		<div id='links'>
-			<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in boards'>/{{boardName}}</router-link>
+			<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in $store.state.boards'>/{{boardName}}</router-link>
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'home',
-		computed: {
-			boards: function() {
-				return this.$store.state.boards
-			}
-		}
+		name: 'home'
 	}
 </script>
 
