@@ -1,7 +1,18 @@
 <template>
 	<header v-if="board">
-		<div>/{{board.name}}/ — {{board.title}}</div>
-		<div>{{board.subtitle}}</div>
+		<div>
+			<router-link :to="{name: 'board', params: {boardName: board.name}}">
+				<div class="title" v-if="type === 'board'">/{{board.name}}/ — {{board.title}}</div>
+				<div class="title" v-if="type === 'feed'">/{{board.name}}/'s feed — {{board.title}}</div>
+				<div>{{board.subtitle}}</div>
+			</router-link>	
+		</div>
+
+		<div>
+			<router-link class="feedLink" v-if="type === 'board'" :to="{name: 'feed', params: {boardName: board.name}}">
+				<img class="icon" src="../../assets/icons/view_list.svg">
+			</router-link>
+		</div>
 	</header>
 </template>
 
@@ -12,7 +23,10 @@
 			board: function() {
 				return this.$store.state.boards[this.$route.params.boardName]
 			}
-		}
+		},
+		props: [
+			'type'
+		]
 	}
 </script>
 
@@ -21,14 +35,23 @@
 		background-color: var(--card-color);
 		margin-bottom: calc(var(--gap-size) / 4);
 		padding: calc(var(--gap-size) / 2);
-		cursor: default;
+		display: flex;
+		justify-content: space-between;
 	}
 
-	div:first-child{
+	.title {
 		font-size: 1.5rem;
+		color: var(--text-color);
 	}
 
-	div:last-child{
-		color: var(--link-over-color);
+	header > div:last-child {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
+
+	.feedLink img {
+		height: 2em;
+	}
+
 </style>

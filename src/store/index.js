@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		boards: {},
-		threads: {}
+		threads: [],
+		feed: []
 	},
 	mutations: {
 		updateBoardsList(state, payload) {
@@ -16,6 +17,10 @@ export default new Vuex.Store({
 
 		updateThreadsList(state, payload) {
 			state.threads = payload
+		},
+
+		updateFeed(state, payload) {
+			state.feed = payload
 		}
 	},
 	actions: {
@@ -25,6 +30,10 @@ export default new Vuex.Store({
 
 		updateThreadsList(context, payload) {
 			API.getThreads(payload.boardName, payload.count, payload.page).then((data) => context.commit('updateThreadsList', data))
+		},
+
+		updateFeed(context, payload) {
+			API.getPosts(payload.boardName, payload.count, payload.page).then((data) => context.commit('updateFeed', data))
 		}
 	},
 	modules: {

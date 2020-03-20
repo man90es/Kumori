@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Board from '../views/Board.vue'
+import Feed from '../views/Feed.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
 		path: '/:boardName', 
 		name: 'board',
 		component: Board
+	},
+	{
+		path: '/:boardName/feed', 
+		name: 'feed',
+		component: Feed
 	}
 ]
 

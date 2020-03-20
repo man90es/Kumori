@@ -12,4 +12,7 @@ export function getThreads(boardName, count, page) {
 	return request({request: 'threads', boardName, count, page})
 }
 
+export function getPosts(boardName, count, page) {
+	return request({request: 'posts', boardName, count, page})
+}
 

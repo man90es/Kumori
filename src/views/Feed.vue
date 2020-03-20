@@ -1,8 +1,8 @@
 <template>
 	<div id="board">
 		<NavBar />
-		<MainSection :type="'board'">
-			<Thread :key="id" :thread="thread" v-for="(thread, id) in this.$store.state.threads"/>
+		<MainSection :type="'feed'">
+			<Post :key="id" :post="post" v-for="(post, id) in this.$store.state.feed"/>
 		</MainSection>
 		<MenuBar />
 
@@ -15,29 +15,29 @@
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
-	import Thread from '../components/misc/Thread.vue'
+	import Post from '../components/misc/Post.vue'
 
 	export default {
-		name: 'Board',
+		name: 'Feed',
 		components: {
 			MainSection,
 			NavBar,
 			MenuBar,
 			ModalsLayer,
-			Thread
+			Post
 		},
 		methods: {
-			getThreads(boardName) {
-				this.$store.dispatch('updateThreadsList', {boardName, count: 10, page: 0})
+			getFeed(boardName) {
+				this.$store.dispatch('updateFeed', {boardName, count: 10, page: 0})
 			}
 		},
 		watch: {
 			$route(to) {
-				this.getThreads(to.params.boardName)
+				this.getFeed(to.params.boardName)
 			}
 		},
 		created() {
-			this.getThreads(this.$route.params.boardName)
+			this.getFeed(this.$route.params.boardName)
 		}
 	}
 </script>
