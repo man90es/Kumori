@@ -1,4 +1,5 @@
 import { APIServer } from '../../config'
+import { promiseTimeout } from '../utils'
 
 const WS = new WebSocket(APIServer)
 
@@ -7,7 +8,7 @@ WS.onopen = () => ready = true
 WS.onclose = () => ready = false
 window.onbeforeunload = () => WS.close()
 
-export default function request(req) {
+function _request(req) {
 	return new Promise((resolve, reject) => {
 		WS.addEventListener('message', (message) => {
 			let msg = JSON.parse(message.data)
@@ -36,4 +37,8 @@ export default function request(req) {
 			})
 		}
 	})
+}
+
+export default function request(req) {
+	return promiseTimeout(_request(req), 1e3)
 }
