@@ -1,18 +1,14 @@
-import request from './request'
+import { request } from './request'
+import store from '../store'
 
-export function sync(type) {
-	return request({request: 'sync', type})
+request.init((message) => {
+	switch (message.what.request) {
+		case 'boards':
+			store.commit("updateBoardsList", message.data)
+			break
+	}
+})
+
+export function requestBoards() {
+	request.ws({request: 'boards'})
 }
-
-export function getBoards() {
-	return request({request: 'boards'})
-}
-
-export function getThreads(boardName, count, page) {
-	return request({request: 'threads', boardName, count, page})
-}
-
-export function getPosts(boardName, count, page) {
-	return request({request: 'posts', boardName, count, page})
-}
-

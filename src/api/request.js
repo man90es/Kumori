@@ -1,44 +1,47 @@
 import { APIServer } from '../../config'
-import { promiseTimeout } from '../utils'
 
-const WS = new WebSocket(APIServer)
+export const request = {
+	meta: null,
+	wsGate: null,
+	ready: false,
 
-let ready = false
-WS.onopen = () => ready = true
-WS.onclose = () => ready = false
-window.onbeforeunload = () => WS.close()
+	init: function(messageHandler) {
+		let xhr = new XMLHttpRequest()
+		xhr.open('GET', `${APIServer}/api/meta`)
 
-function _request(req) {
-	return new Promise((resolve, reject) => {
-		WS.addEventListener('message', (message) => {
-			let msg = JSON.parse(message.data)
+		xhr.onload = () => {
+			if (xhr.status == 200) {
+				this.meta = JSON.parse(xhr.response)
+				this.wsGate = new WebSocket(this.meta.ws)
 
-			let match = true
-			Object.keys(req).forEach((key) => {
-				if (req[key] !== msg.what[key]) {
-					match = false
-				}
-			})
+				this.wsGate.onopen = () => this.ready = true
+				this.wsGate.onclose = () => this.ready = false
+				window.onbeforeunload = () => this.wsGate.close()
 
-			if (match) {
-				if('error' in msg) {
-					reject(msg.error)
-				} else {
-					resolve(msg.data)
-				}
+				this.wsGate.addEventListener('message', (message) => {
+					messageHandler(JSON.parse(message.data))
+				})
 			}
-		})
-
-		if (ready) {
-			WS.send(JSON.stringify(req))
-		} else {
-			WS.addEventListener('open', () => {
-				WS.send(JSON.stringify(req))
-			})
 		}
-	})
-}
 
-export default function request(req) {
-	return promiseTimeout(_request(req), 1e3)
+		xhr.send(null)
+	},
+
+	ws: function(req) {
+		let i = setInterval(() => {
+			if (this.wsGate == null) {
+				return
+			} else {
+				clearInterval(i)
+			}
+			
+			if (this.ready) {
+				this.wsGate.send(JSON.stringify(req))
+			} else {
+				this.wsGate.addEventListener('open', () => {
+					this.wsGate.send(JSON.stringify(req))
+				})
+			}
+		}, 1e2)
+	}
 }

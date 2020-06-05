@@ -28,7 +28,7 @@
 		},
 		methods: {
 			getFeed(boardName) {
-				this.$store.dispatch('updateFeed', {boardName, count: 10, page: 0})
+				// this.$store.dispatch('updateFeed', {boardName, count: 10, page: 0})
 			}
 		},
 		watch: {

@@ -13,6 +13,8 @@
 </template>
 
 <script type='text/javascript'>
+	import { requestBoards } from '../api'
+
 	export default {
 		name: 'App',
 		data() {
@@ -36,7 +38,8 @@
 			}
 		},
 		created() {
-			this.$store.dispatch('updateBoardsList')
+			requestBoards()
+			// this.$store.dispatch('updateBoardsList')
 		}
 	}
 </script>

@@ -28,7 +28,7 @@
 		},
 		methods: {
 			getThreads(boardName) {
-				this.$store.dispatch('updateThreadsList', {boardName, count: 10, page: 0})
+				// this.$store.dispatch('updateThreadsList', {boardName, count: 10, page: 0})
 			}
 		},
 		watch: {

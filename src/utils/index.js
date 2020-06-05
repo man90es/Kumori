@@ -27,16 +27,16 @@ export function	truncateString(string, targetLength) {
 	return string.substr(0, frontChars) + "..." + string.substr(string.length - backChars)
 }
 
-export function promiseTimeout(promise, ms) {
-	let timeout = new Promise((resolve, reject) => {
-		let id = setTimeout(() => {
-			clearTimeout(id)
-			reject(`Timed out in ${ms} ms.`)
-		}, ms)
-	})
+// export function promiseTimeout(promise, ms) {
+// 	let timeout = new Promise((resolve, reject) => {
+// 		let id = setTimeout(() => {
+// 			clearTimeout(id)
+// 			reject(`Timed out in ${ms} ms.`)
+// 		}, ms)
+// 	})
 
-	return Promise.race([
-		promise,
-		timeout
-	])
-}
+// 	return Promise.race([
+// 		promise,
+// 		timeout
+// 	])
+// }
