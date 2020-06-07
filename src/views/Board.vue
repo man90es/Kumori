@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection :type="'board'">
-			<Thread :key="id" :thread="thread" v-for="(thread, id) in this.$store.state.threads"/>
+			<Thread :key="thread.id" :thread="thread" v-for="thread in filteredThreads"/>
 		</MainSection>
 		<MenuBar />
 
@@ -16,6 +16,7 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Thread from '../components/misc/Thread.vue'
+	import { requestThreads } from '../api'
 
 	export default {
 		name: 'Board',
@@ -26,18 +27,30 @@
 			ModalsLayer,
 			Thread
 		},
+		data() {
+			return {
+				boardName: null
+			}
+		},
 		methods: {
-			getThreads(boardName) {
-				// this.$store.dispatch('updateThreadsList', {boardName, count: 10, page: 0})
+			requestThreads() {
+				requestThreads({boardName: this.boardName, count: 10, page: 0})
 			}
 		},
 		watch: {
 			$route(to) {
-				this.getThreads(to.params.boardName)
+				this.boardName = to.params.boardName 
+				this.requestThreads()
 			}
 		},
 		created() {
-			this.getThreads(this.$route.params.boardName)
+			this.boardName = this.$route.params.boardName
+			this.requestThreads()
+		},
+		computed: {
+			filteredThreads: function () {
+				return this.$store.state.threads.filter((thread) => thread.boardName == this.boardName)
+			}
 		}
 	}
 </script>

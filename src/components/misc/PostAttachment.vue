@@ -13,7 +13,7 @@
 			}
 		},
 		methods: {
-			clickHandler(event) {
+			clickHandler() {
 				this.$bus.emit('post-attachment-preview-click', this.file)
 			}
 		}

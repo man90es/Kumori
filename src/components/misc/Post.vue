@@ -1,8 +1,8 @@
 <template>
 	<article v-if='post'>
 		<div class='postDetails'>
-			<span v-if='"sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
-			<a class='refLink' href='#'><span class='subject'>{{formatSubject()}}</span> #{{post.number}}</a>
+			<span v-if='post.modifiers && "sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
+			<a class='refLink' href='#'><span class='subject' v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}</a>
 			<button><img class='icon' src='../../assets/icons/menu.svg'></button>
 			<button><img class='icon' src='../../assets/icons/reply.svg'></button>
 			<time>{{formatDate()}}</time>
@@ -36,7 +36,7 @@
 		},
 		methods: {
 			formatDate() {
-				let date = new Date(this.post.createdAt)
+				let date = new Date(this.post.created)
 				let diff = new Date() - date
 
 				if (diff < 6048e5) {

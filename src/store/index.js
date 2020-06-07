@@ -11,8 +11,12 @@ export default new Vuex.Store({
 	},
 	
 	mutations: {
-		updateBoardsList(state, payload) {
-			state.boards = payload
+		updateBoardList(state, payload) {
+			state.boards = payload.data
+		},
+
+		updateThreadList(state, payload) {
+			state.threads = state.threads.filter((thread) => thread.boardName != payload.boardName).concat(payload.data)
 		},
 	}
 })

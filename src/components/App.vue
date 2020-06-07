@@ -39,7 +39,6 @@
 		},
 		created() {
 			requestBoards()
-			// this.$store.dispatch('updateBoardsList')
 		}
 	}
 </script>
