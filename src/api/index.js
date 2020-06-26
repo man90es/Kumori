@@ -4,13 +4,13 @@ import store from '../store'
 request.init((message) => {
 	switch (message.what.request) {
 		case 'boards':
-			store.commit("updateBoardList", {data: message.data})
+			store.commit("updateBoardList", message.data)
 			break
 		case 'threads':
-			store.commit("updateThreadList", {boardName: message.what.boardName, data: message.data})
+			store.commit("updateThreadList", message.data)
 			break
 		case 'posts':
-			store.commit("updatePostList", {threadId: message.what.threadId, data: message.data})
+			store.commit("updatePostList", message.data)
 			break
 	}
 })

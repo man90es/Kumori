@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Post :post='thread.head'/>
-		<Post :key="post.id" :post="post" v-for="post in filteredPosts"/>
+		<Post :key="post.id" :post="post" v-for="post in $store.getters.getThreadTail(thread.id, thread.head.id)"/>
 	</div>
 </template>
 
@@ -18,12 +18,9 @@
 			'thread',
 		],
 		created() {
-			requestPosts({boardName: this.boardName, threadId: this.thread.id, count: 3, page: 'tail'})
-		},
-		computed: {
-			filteredPosts: function () {
-				return this.$store.state.posts.filter((post) => post.threadId == this.thread.id && post.id != this.thread.head.id)
-			}
+			const tailSize = 3 // TODO: Make this user-configurable through UI
+
+			tailSize > 0 ? requestPosts({boardName: this.boardName, threadId: this.thread.id, count: tailSize, page: 'tail'}) : null
 		}
 	}
 </script>

@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection :type="'board'">
-			<Thread :key="thread.id" :thread="thread" v-for="thread in filteredThreads"/>
+			<Thread :key="thread.id" :thread="thread" v-for="thread in $store.state.threads"/>
 		</MainSection>
 		<MenuBar />
 
@@ -46,11 +46,6 @@
 		created() {
 			this.boardName = this.$route.params.boardName
 			this.requestThreads()
-		},
-		computed: {
-			filteredThreads: function () {
-				return this.$store.state.threads.filter((thread) => thread.boardName == this.boardName)
-			}
 		}
 	}
 </script>
