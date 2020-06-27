@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Post :post='thread.head'/>
-		<Post :key="post.id" :post="post" v-for="post in $store.getters.getThreadTail(thread.id, thread.head.id)"/>
+		<Post :key="post.id" :post="post" v-for="post in $store.getters.getThreadPosts(thread.id, thread.head.id)"/>
 	</div>
 </template>
 
@@ -16,11 +16,11 @@
 		},
 		props: [
 			'thread',
+			'pageSize',
+			'tail'
 		],
 		created() {
-			const tailSize = 3 // TODO: Make this user-configurable through UI
-
-			tailSize > 0 ? requestPosts({boardName: this.boardName, threadId: this.thread.id, count: tailSize, page: 'tail'}) : null
+			requestPosts({threadId: this.thread.id, count: this.pageSize, page: this.tail ? 'tail' : 0})
 		}
 	}
 </script>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Board from '../views/Board.vue'
 import Feed from '../views/Feed.vue'
+import SingleThread from '../views/SingleThread.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
 		path: '/:boardName/feed', 
 		name: 'feed',
 		component: Feed
+	},
+	{
+		path: '/:boardName/:threadId', 
+		name: 'thread',
+		component: SingleThread
 	}
 ]
 

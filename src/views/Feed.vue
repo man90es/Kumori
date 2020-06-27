@@ -1,8 +1,8 @@
 <template>
-	<div id="board">
+	<div id="feed">
 		<NavBar />
 		<MainSection :type="'feed'">
-			<Post :key="id" :post="post" v-for="(post, id) in this.$store.state.posts"/>
+			<Post :key="id" :post="post" v-for="(post, id) in $store.state.posts"/>
 		</MainSection>
 		<MenuBar />
 
@@ -32,22 +32,24 @@
 				const postsPerPage = 10 // TODO: Should this be here?
 				const currentPage = 0 // TODO: Must be a parameter
 
-				requestPosts({boardName: boardName, count: postsPerPage, page: currentPage})
+				requestPosts({boardName, count: postsPerPage, page: currentPage})
 			}
 		},
 		watch: {
 			$route(to) {
+				this.$store.commit('updateCurrentBoard', to.params.boardName)
 				this.getFeed(to.params.boardName)
 			}
 		},
 		created() {
+			this.$store.commit('updateCurrentBoard', this.$route.params.boardName)
 			this.getFeed(this.$route.params.boardName)
 		}
 	}
 </script>
 
 <style>
-	#board{
+	#feed{
 		display: flex;
 		justify-content: center;
 		width: 100vw;

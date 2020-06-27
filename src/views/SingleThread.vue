@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection :type="'board'">
-			<Thread :key="thread.id" :thread="thread" :pageSize="3" :tail="true" v-for="thread in $store.state.threads"/>
+			<Thread v-if="$store.getters.getCurrentThread" :thread="$store.getters.getCurrentThread" :pageSize="500" :tail="false" />
 		</MainSection>
 		<MenuBar />
 
@@ -16,10 +16,10 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Thread from '../components/misc/Thread.vue'
-	import { requestThreads } from '../api'
+	import { requestThread } from '../api'
 
 	export default {
-		name: 'Board',
+		name: 'SingleThread',
 		components: {
 			MainSection,
 			NavBar,
@@ -28,19 +28,22 @@
 			Thread
 		},
 		methods: {
-			requestThreads(boardName) {
-				requestThreads({boardName, count: 10, page: 0})
+			requestThread(id) {
+				requestThread({id})
 			}
 		},
 		watch: {
 			$route(to) {
 				this.$store.commit('updateCurrentBoard', to.params.boardName)
-				this.requestThreads(to.params.boardName)
+				this.$store.commit('updateCurrentThread', to.params.threadId)
+				this.requestThread(to.params.threadId)
+
 			}
 		},
 		created() {
 			this.$store.commit('updateCurrentBoard', this.$route.params.boardName)
-			this.requestThreads(this.$route.params.boardName)
+			this.$store.commit('updateCurrentThread', this.$route.params.threadId)
+			this.requestThread(this.$route.params.threadId)
 		}
 	}
 </script>

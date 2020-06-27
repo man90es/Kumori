@@ -1,5 +1,5 @@
 <template>
-	<div id='Home'>
+	<div id='home'>
 		<img src='logo.png'>
 		<div id='links'>
 			<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in $store.state.boards'>/{{boardName}}</router-link>
@@ -14,7 +14,7 @@
 </script>
 
 <style scoped>
-	#Home{
+	#home{
 		height: 100vh;
 		width: 100vw;
 		display: flex;

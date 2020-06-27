@@ -7,7 +7,9 @@ export default new Vuex.Store({
 	state: {
 		boards: {},
 		threads: [],
-		posts: []
+		posts: [],
+		currentBoardName: '',
+		currentThreadId: 0,
 	},
 	
 	mutations: {
@@ -21,12 +23,24 @@ export default new Vuex.Store({
 
 		updatePostList(state, payload) {
 			state.posts = payload
+		},
+
+		updateCurrentBoard(state, payload) {
+			state.currentBoardName = payload
+		},
+
+		updateCurrentThread(state, payload) {
+			state.currentThreadId = payload
 		}
 	},
 
 	getters: {
-		getThreadTail: (state) => (threadId, headId) => {
+		getThreadPosts: (state) => (threadId, headId) => {
 			return state.posts.filter((post) => post.threadId == threadId && post.id != headId)
-		} 
+		},
+
+		getCurrentThread: (state) => {
+			return state.threads.find((thread) => thread.id == state.currentThreadId)
+		}
 	}
 })

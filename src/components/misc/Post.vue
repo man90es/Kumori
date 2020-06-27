@@ -2,7 +2,9 @@
 	<article v-if='post'>
 		<div class='postDetails'>
 			<span v-if='post.modifiers && "sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
-			<a class='refLink' href='#'><span class='subject' v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}</a>
+			<router-link class='refLink' :to='{name: "thread", params: {boardName: $store.state.currentBoardName, threadId: post.threadId}}'>
+				<span class='subject' v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
+			</router-link>
 			<button><img class='icon' src='../../assets/icons/menu.svg'></button>
 			<button><img class='icon' src='../../assets/icons/reply.svg'></button>
 			<time>{{formatDate()}}</time>
