@@ -26,12 +26,16 @@
 			let computedStyle = getComputedStyle(this.$refs.img)
 
 			try {
-				this.style.width = computedStyle.getPropertyValue(width)
-			} catch { }
+				this.style.width = computedStyle.getPropertyValue('width')
+			} catch {
+				// Pass
+			}
 
 			try {
-				this.style.height = computedStyle.getPropertyValue(height)
-			} catch { }
+				this.style.height = computedStyle.getPropertyValue('height')
+			} catch {
+				// Pass
+			}
 		}
 	}
 </script>

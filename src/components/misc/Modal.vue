@@ -34,7 +34,7 @@
 				document.addEventListener('mouseup', this.mouseUpHandler.bind(this))
 			},
 
-			mouseUpHandler(event) {
+			mouseUpHandler() {
 				document.removeEventListener('mousemove', this.dragHandler)
 				document.removeEventListener('mouseup', this.mouseUpHandler)
 			},
@@ -57,7 +57,7 @@
 				]
 			},
 
-			close(event) {
+			close() {
 				this.$bus.emit('modal-close-button-click', {key: this.$vnode.key})
 			}
 		},

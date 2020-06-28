@@ -53,9 +53,9 @@
 				if (file.type.match('image.*')) {
 					let reader = new FileReader()
 
-					reader.onload = ((file) => (event) => {
+					reader.onload = (event) => {
 						this.thumbs.push(event.target.result)
-					})(file)
+					}
 
 					reader.readAsDataURL(file)
 				} else {
