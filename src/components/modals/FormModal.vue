@@ -6,12 +6,12 @@
 		<input type="text">
 		
 		<textarea></textarea>
-		
-		<button type="button" id="attachFile" @click="attachHandler">
-			<img class="icon" src="../../assets/icons/attach_file.svg">
-		</button>
 
 		<div>
+			<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
+				<img class="icon" src="../../assets/icons/attach_file.svg">
+			</button>
+
 			<div class="thumb" :key="i" v-for="(file, i) in files" :style="`background-image:url(${thumbs[i]})`"></div>
 		</div>
 
@@ -39,15 +39,15 @@
 		},
 		methods: {
 			attachHandler() {
-				if (this.files.length == this.fileLimit) return
+				let fileInput = document.createElement('input')
+				fileInput.type = 'file'
+				fileInput.style = 'display:none'
+				fileInput.addEventListener('change', (event) => {
+					this.files.push(fileInput)
+					this.attachmentChangeHandler(event)
+				})
 
-				let f = document.createElement('input')
-				f.type = 'file'
-				f.style = 'display:none'
-				f.addEventListener('change', this.attachmentChangeHandler.bind(this))
-
-				this.files.push(f)
-				f.click()
+				fileInput.click()
 			},
 
 			attachmentChangeHandler(event) {
@@ -112,12 +112,13 @@
 	}
 
 	div {
-		grid-column: 2/5;
+		grid-column: 1/5;
 		width: 100%;
 		height: 100%;
 		background-color: var(--background-color);
 		display: flex;
 	}
+
 
 	.icon {
 		height: 100%;
@@ -144,5 +145,9 @@
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
+	}
+	
+	#attachFile {
+		width: 3rem;
 	}
 </style>
