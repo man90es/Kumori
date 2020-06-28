@@ -9,7 +9,8 @@
 	export default {
 		name: 'MediaModal',
 		props: [
-			'data'
+			'data',
+			'parent'
 		],
 		data() {
 			return {
@@ -23,6 +24,8 @@
 			}
 		},
 		mounted() {
+			this.parent.setHeader('Media')
+			
 			let computedStyle = getComputedStyle(this.$refs.img)
 
 			try {

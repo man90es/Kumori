@@ -1,11 +1,17 @@
 <template>
 	<div>
-		Settings
+
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'SettingsModal'
+		name: 'SettingsModal',
+		props: [
+			'parent'
+		],
+		created() {
+			this.parent.setHeader('Settings')
+		}
 	}
 </script>

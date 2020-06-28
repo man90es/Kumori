@@ -1,11 +1,17 @@
 <template>
 	<div>
-		Search
+
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'SearchModal'
+		name: 'SearchModal',
+		props: [
+			'parent'
+		],
+		created() {
+			this.parent.setHeader('Search')
+		}
 	}
 </script>

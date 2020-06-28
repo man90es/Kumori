@@ -1,11 +1,17 @@
 <template>
 	<div>
-		Starred
+		
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'StarredModal'
+		name: 'StarredModal',
+		props: [
+			'parent'
+		],
+		created() {
+			this.parent.setHeader('Starred')
+		}
 	}
 </script>

@@ -24,6 +24,9 @@
 <script>
 	export default {
 		name: 'FormModal',
+		props: [
+			'parent'
+		],
 		data() {
 			return {
 				sage: false,
@@ -62,6 +65,10 @@
 					this.thumbs.push(null)
 				}
 			}
+		},
+
+		created() {
+			this.parent.setHeader('Form')
 		}
 	}
 </script>

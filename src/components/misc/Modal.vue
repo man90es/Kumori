@@ -1,7 +1,7 @@
 <template>
 	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
-		<div @mousedown="mouseDownHandler">Header<button @click="close"><img class='icon' src='../../assets/icons/close.svg'></button></div>
-		<component :is="modalBody" :data="data"></component>
+		<div @mousedown="mouseDownHandler">{{header}}<button @click="close"><img class='icon' src='../../assets/icons/close.svg'></button></div>
+		<component :is="modalBody" :data="data" :parent="{setHeader}"></component>
 	</div>
 </template>
 
@@ -11,7 +11,8 @@
 			return {
 				transform: [0, 0],
 				cursorPosition: [null, null],
-				position: [null, null]
+				position: [null, null],
+				header: "Header"
 			}
 		},
 		props: [
@@ -59,6 +60,10 @@
 
 			close() {
 				this.$bus.emit('modal-close-button-click', {key: this.$vnode.key})
+			},
+
+			setHeader(header) {
+				this.header = header
 			}
 		},
 		mounted() {
