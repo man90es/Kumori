@@ -5,7 +5,8 @@
 			<router-link class='refLink' :to='{name: "thread", params: {boardName: $store.state.currentBoardName, threadId: post.threadId}}'>
 				<span class='subject' v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
 			</router-link>
-			<button><img class='icon' src='../../assets/icons/menu.svg'></button>
+			<button><img class='icon' src='../../assets/icons/menu.svg' @click="showMenu = !showMenu"></button>
+			<PostMenu v-if="showMenu" :parent="{ hideMenu }" />
 			<button><img class='icon' src='../../assets/icons/reply.svg'></button>
 			<time>{{formatDate()}}</time>
 		</div>
@@ -21,19 +22,22 @@
 
 <script>
 	import PostAttachment from './PostAttachment'
+	import PostMenu from './PostMenu'
 	import { num2Word, truncateString, processMarkup } from '../../utils'
 
 	export default {
 		name: 'Post',
 		components: {
-			PostAttachment
+			PostAttachment,
+			PostMenu
 		},
 		props: [
 			'post'
 		],
 		data() {
 			return {
-				parsedText: this.post.text
+				parsedText: this.post.text,
+				showMenu: false
 			}
 		},
 		methods: {
@@ -74,6 +78,10 @@
 
 			async formatText() {
 				this.parsedText = await processMarkup(this.post.text)
+			},
+
+			hideMenu() {
+				this.showMenu = false
 			}
 		},
 		created() {
