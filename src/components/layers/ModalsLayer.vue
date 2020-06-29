@@ -52,6 +52,7 @@
 		},
 		created() {
 			this.$bus.on('menu-chat-button-click', (data) => this.toggle(FormModal, data))
+			this.$bus.on('post-reply-button-click', (data) => this.toggle(FormModal, data, true))
 			this.$bus.on('menu-search-button-click', (data) => this.toggle(SearchModal, data))
 			this.$bus.on('menu-star-button-click', (data) => this.toggle(StarredModal, data))
 			this.$bus.on('menu-settings-button-click', (data) => this.toggle(SettingsModal, data))

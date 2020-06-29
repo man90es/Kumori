@@ -5,7 +5,7 @@
 		<img class="icon" :class="{active: user}" src="../../assets/icons/person_pin.svg" @click="user = !user">
 		<input type="text">
 		
-		<textarea></textarea>
+		<textarea v-model="text"></textarea>
 
 		<div>
 			<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
@@ -25,6 +25,7 @@
 	export default {
 		name: 'FormModal',
 		props: [
+			'data',
 			'parent'
 		],
 		data() {
@@ -32,6 +33,7 @@
 				sage: false,
 				op: false,
 				user: false,
+				text: '',
 				files: [],
 				thumbs: [],
 				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
@@ -69,6 +71,10 @@
 
 		created() {
 			this.parent.setHeader('Form')
+
+			if (this.data) {
+				this.text += `>>${this.data.postId}`
+			}
 		}
 	}
 </script>

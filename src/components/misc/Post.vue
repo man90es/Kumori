@@ -7,7 +7,7 @@
 			</router-link>
 			<button><img class='icon' src='../../assets/icons/menu.svg' @click="showMenu = !showMenu"></button>
 			<PostMenu v-if="showMenu" :parent="{ hideMenu }" />
-			<button><img class='icon' src='../../assets/icons/reply.svg'></button>
+			<button><img class='icon' src='../../assets/icons/reply.svg' @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
 		</div>
 		<div>
@@ -82,6 +82,10 @@
 
 			hideMenu() {
 				this.showMenu = false
+			},
+
+			handleReplyClick() {
+				this.$bus.emit('post-reply-button-click', {postId: this.post.id})
 			}
 		},
 		created() {
