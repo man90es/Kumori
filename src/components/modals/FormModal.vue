@@ -119,7 +119,6 @@
 		display: flex;
 	}
 
-
 	.icon {
 		height: 100%;
 		cursor: pointer;
