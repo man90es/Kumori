@@ -7,12 +7,18 @@
 		
 		<textarea v-model="text"></textarea>
 
-		<div>
+		<div id="attachmentsForm">
 			<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
 				<img class="icon" src="../../assets/icons/attach_file.svg">
 			</button>
 
-			<div class="thumb" :key="i" v-for="(file, i) in files" :style="`background-image:url(${thumbs[i]})`"></div>
+			<div class="thumb" :key="i" v-for="(file, i) in files" :style="`background-image:url(${thumbs[i]})`">
+				<button class="nsfwToggle" type="button" @click="toggleAttachmentNSFW(i)">
+					<img class="icon" v-if="attachmentNSFW[i]" src="../../assets/icons/nsfw.svg">
+					<img class="icon" v-else src="../../assets/icons/sfw.svg">
+				</button>
+				<button class="deleteAttachment" type="button" @click="deleteAttachment(i)"><img class="icon" src="../../assets/icons/close.svg"></button>
+			</div>
 		</div>
 
 		<button type="button" id="submit">
@@ -35,6 +41,7 @@
 				user: false,
 				text: '',
 				files: [],
+				attachmentNSFW: [],
 				thumbs: [],
 				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
 			}
@@ -46,6 +53,7 @@
 				fileInput.style = 'display:none'
 				fileInput.addEventListener('change', (event) => {
 					this.files.push(fileInput)
+					this.attachmentNSFW.push(false)
 					this.attachmentChangeHandler(event)
 				})
 
@@ -66,6 +74,17 @@
 				} else {
 					this.thumbs.push(null)
 				}
+			},
+
+			toggleAttachmentNSFW(i) {
+				this.attachmentNSFW[i] = !this.attachmentNSFW[i]
+				this.$forceUpdate()
+			},
+
+			deleteAttachment(i) {
+				this.files.splice(i, 1)
+				this.thumbs.splice(i, 1)
+				this.attachmentNSFW.splice(i, 1)
 			}
 		},
 
@@ -139,7 +158,7 @@
 		width: 100%;
 	}
 
-	#submit .icon, #attachFile .icon {
+	#submit .icon, #attachFile .icon, #attachmentsForm .icon {
 		opacity: 1;
 		height: 50%;
 	}
@@ -151,8 +170,27 @@
 		background-position: center;
 		background-repeat: no-repeat;
 	}
-	
+
 	#attachFile {
 		width: 3rem;
+	}
+
+	.thumb button {
+		opacity: 0;
+		width: 50%;
+		height: 100%;
+	}
+
+	.thumb:hover button {
+		opacity: 1;
+		filter: blur(0);
+	}
+
+	.nsfwToggle {
+		background-color: #00c5;
+	}
+
+	.deleteAttachment {
+		background-color: #c005;
 	}
 </style>
