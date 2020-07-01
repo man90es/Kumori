@@ -1,7 +1,7 @@
 <template>
 	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
 		<div @mousedown="mouseDownHandler">{{header}}<button @click="close"><img class='icon' src='../../assets/icons/close.svg'></button></div>
-		<component :is="modalBody" :data="data" :parent="{setHeader}"></component>
+		<component :is="modalBody" :originalData="data" :parent="{key: $vnode.key, setHeader}"></component>
 	</div>
 </template>
 
@@ -59,13 +59,14 @@
 			},
 
 			close() {
-				this.$bus.emit('modal-close-button-click', {key: this.$vnode.key})
+				this.$bus.emit('modal-close-button-click', this.$vnode.key)
 			},
 
 			setHeader(header) {
 				this.header = header
 			}
 		},
+
 		mounted() {
 			this.position = [null, null]
 		}

@@ -10,7 +10,7 @@
 		props: ['icon'],
 		methods: {
 			dispatchEvent() {
-				this.$bus.emit(`menu-${this.icon}-button-click`)
+				this.$bus.emit(`menu-${this.icon}-button-click`, {})
 			}
 		},
 		computed: {

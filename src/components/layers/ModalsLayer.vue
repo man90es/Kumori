@@ -16,7 +16,7 @@
 		data() {
 			return {
 				modals: [],
-				datas: [],
+				datas: [], 
 				keys: []
 			}
 		},
@@ -24,41 +24,53 @@
 			Modal
 		},
 		methods: {
-			toggle(modalBody, data, reopen = false) {
-				let i = this.modals.indexOf(modalBody)
+			isOpen(modalBody) {
+				return this.modals.includes(modalBody)
+			},
 
-				if (i > -1) {
-					this.modals.splice(i, 1)
-					this.datas.splice(i, 1)
-					this.keys.splice(i, 1)
-
-					if (!reopen) return
-				} 
-
+			open(modalBody, data = {}) {
 				this.modals.push(modalBody)
 				this.datas.push(data)
 				this.keys.push(+new Date)
 			},
 
-			close(data) {
-				let i = this.keys.indexOf(data.key)
+			passData(modalBody, data = {}) {
+				let i = this.modals.indexOf(modalBody)
+
+				this.modals.splice(i, 1)
+				this.datas.splice(i, 1)
+				let key = this.keys.splice(i, 1)[0]
+				
+				this.modals.push(modalBody)
+				this.datas.push(data)
+				this.keys.push(key)
+
+				this.$bus.emit(`modal-${this.keys[this.modals.indexOf(modalBody)]}-data-update`, data)
+			},
+
+			closeByKey(key) {
+				let i = this.keys.indexOf(key)
 
 				if (i > -1) {
 					this.modals.splice(i, 1)
 					this.datas.splice(i, 1)
 					this.keys.splice(i, 1)
 				} 
+			},
+
+			close(modalBody) {
+				this.closeByKey(this.keys[this.modals.indexOf(modalBody)])
 			}
 		},
 		created() {
-			this.$bus.on('menu-chat-button-click', (data) => this.toggle(FormModal, data))
-			this.$bus.on('post-reply-button-click', (data) => this.toggle(FormModal, data, true))
-			this.$bus.on('menu-search-button-click', (data) => this.toggle(SearchModal, data))
-			this.$bus.on('menu-star-button-click', (data) => this.toggle(StarredModal, data))
-			this.$bus.on('menu-settings-button-click', (data) => this.toggle(SettingsModal, data))
-			this.$bus.on('post-attachment-preview-click', (data) => this.toggle(MediaModal, data, true))
+			this.$bus.on('menu-chat-button-click', (data) => this.isOpen(FormModal) ? this.close(FormModal) : this.open(FormModal, data))
+			this.$bus.on('post-reply-button-click', (data) => this.isOpen(FormModal) ? this.passData(FormModal, data) : this.open(FormModal, data))
+			this.$bus.on('menu-search-button-click', (data) => this.isOpen(SearchModal) ? this.close(SearchModal) : this.open(SearchModal, data))
+			this.$bus.on('menu-star-button-click', (data) => this.isOpen(StarredModal) ? this.close(StarredModal) : this.open(StarredModal, data))
+			this.$bus.on('menu-settings-button-click', (data) => this.isOpen(SettingsModal) ? this.close(SettingsModal) : this.open(SettingsModal, data))
+			this.$bus.on('post-attachment-preview-click', (data) => this.isOpen(MediaModal) ? this.passData(MediaModal, data) : this.open(MediaModal, data))
 
-			this.$bus.on('modal-close-button-click', (data) => this.close(data))
+			this.$bus.on('modal-close-button-click', this.closeByKey)
 		},
 	}
 </script>

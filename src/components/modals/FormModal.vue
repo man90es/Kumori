@@ -31,7 +31,7 @@
 	export default {
 		name: 'FormModal',
 		props: [
-			'data',
+			'originalData',
 			'parent'
 		],
 		data() {
@@ -85,15 +85,28 @@
 				this.files.splice(i, 1)
 				this.thumbs.splice(i, 1)
 				this.attachmentNSFW.splice(i, 1)
+			},
+
+			handleDataUpdate(data) {
+				this.updatedData = data
+
+				this.parent.setHeader(data.threadId ? `Reply to thread ${data.threadId}` : `New thread on ${data.boardName} board`)
+
+				if (data.postId) {
+					this.text += `>>${data.postId}\r`
+				}
+			}
+		},
+
+		computed: {
+			data() {
+				return updatedData || originalData
 			}
 		},
 
 		created() {
-			this.parent.setHeader('Form')
-
-			if (this.data) {
-				this.text += `>>${this.data.postId}`
-			}
+			this.handleDataUpdate(this.originalData)
+			this.$bus.on(`modal-${this.parent.key}-data-update`, this.handleDataUpdate)
 		}
 	}
 </script>

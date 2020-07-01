@@ -85,7 +85,7 @@
 			},
 
 			handleReplyClick() {
-				this.$bus.emit('post-reply-button-click', {postId: this.post.id})
+				this.$bus.emit('post-reply-button-click', {threadId: this.post.threadId, postId: this.post.id})
 			}
 		},
 		created() {
