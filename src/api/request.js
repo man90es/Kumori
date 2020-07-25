@@ -43,5 +43,23 @@ export const request = {
 				})
 			}
 		}, 1e2)
+	},
+
+	http: function(method, path, body) {
+		let xhr = new XMLHttpRequest()
+		
+		xhr.open("POST", `${APIServer}/api/${path}`)
+		
+		xhr.onload = () => {
+			if (xhr.status == 200) {
+				return xhr.response
+			} else{
+				return xhr.error
+			}
+		}
+
+		xhr.responseType = 'json'
+		xhr.withCredentials = true
+		xhr.send(body)
 	}
 }

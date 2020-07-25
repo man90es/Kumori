@@ -33,3 +33,7 @@ export function requestThread(params) {
 export function requestPosts(params) {
 	request.ws({request: 'posts', boardName: params.boardName, threadId: params.threadId, count: params.count, page: params.page})
 }
+
+export function submitPost(formData) {
+	request.http('POST', 'createPost', formData)
+}

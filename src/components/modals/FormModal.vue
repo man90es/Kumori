@@ -1,11 +1,17 @@
 <template>
 	<form>
-		<img class="icon" :class="{active: sage}" src="../../assets/icons/down.svg" @click="sage = !sage">
-		<img class="icon" :class="{active: op}" src="../../assets/icons/trip_origin.svg" @click="op = !op">
-		<img class="icon" :class="{active: user}" src="../../assets/icons/person_pin.svg" @click="user = !user">
-		<input type="text">
+		<input hidden name="boardName" v-model="boardName">
+		<input hidden name="threadNumber" v-model="threadNumber">
+
+		<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
+		<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
+		<input hidden type="checkbox" name="modifiers:signed" id="modifiers:signed">
+		<label for="modifiers:signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
+		<input hidden type="checkbox" name="modifiers:OP" id="modifiers:OP">
+		<label for="modifiers:OP"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
+		<input type="text" name="subject">
 		
-		<textarea v-model="text"></textarea>
+		<textarea v-model="text" name="text"></textarea>
 
 		<div id="attachmentsForm">
 			<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
@@ -21,13 +27,15 @@
 			</div>
 		</div>
 
-		<button type="button" id="submit">
+		<button type="button" id="submit" @click="handleSubmitButtonClick()">
 			<img class="icon" src="../../assets/icons/send.svg">
 		</button>
 	</form>
 </template>
 
 <script>
+	import { submitPost } from '../../api'
+
 	export default {
 		name: 'FormModal',
 		props: [
@@ -36,9 +44,6 @@
 		],
 		data() {
 			return {
-				sage: false,
-				op: false,
-				user: false,
 				text: '',
 				files: [],
 				attachmentNSFW: [],
@@ -100,6 +105,10 @@
 				if (data.postId) {
 					this.text += `>>${data.postId}\r`
 				}
+			},
+
+			handleSubmitButtonClick() {
+				submitPost(new FormData(document.querySelector('form')))
 			}
 		},
 
@@ -165,10 +174,11 @@
 	.icon {
 		height: 100%;
 		cursor: pointer;
+		opacity: 0.5;
 	}
 
-	.icon:not(.active) {
-		opacity: 0.5;
+	input[type="checkbox"]:checked + label .icon {
+		opacity: 1;
 	}
 
 	#submit, #attachFile {
