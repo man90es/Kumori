@@ -10,7 +10,11 @@
 		props: ['icon'],
 		methods: {
 			dispatchEvent() {
-				this.$bus.emit(`menu-${this.icon}-button-click`, {})
+				if (this.icon == 'chat') {
+					this.$bus.emit(`menu-${this.icon}-button-click`, {boardName: this.$store.state.currentBoardName})
+				} else {
+					this.$bus.emit(`menu-${this.icon}-button-click`, {})
+				}
 			}
 		},
 		computed: {

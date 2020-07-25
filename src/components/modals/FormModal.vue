@@ -43,6 +43,8 @@
 				files: [],
 				attachmentNSFW: [],
 				thumbs: [],
+				boardName: null,
+				threadNumber: null,
 				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
 			}
 		},
@@ -90,7 +92,10 @@
 			handleDataUpdate(data) {
 				this.updatedData = data
 
-				this.parent.setHeader(data.threadId ? `Reply to thread ${data.threadId}` : `New thread on ${data.boardName} board`)
+				this.boardName = data.boardName
+				this.threadNumber = data.threadNumber
+
+				this.parent.setHeader(data.threadNumber ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`)
 
 				if (data.postId) {
 					this.text += `>>${data.postId}\r`

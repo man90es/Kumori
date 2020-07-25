@@ -41,6 +41,10 @@ export default new Vuex.Store({
 
 		getCurrentThread: (state) => {
 			return state.threads.find((thread) => thread.id == state.currentThreadId)
+		},
+
+		getThread: (state) => (threadId) => {
+			return state.threads.find((thread) => thread.id == threadId)
 		}
 	}
 })

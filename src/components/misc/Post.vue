@@ -85,7 +85,8 @@
 			},
 
 			handleReplyClick() {
-				this.$bus.emit('post-reply-button-click', {threadId: this.post.threadId, postId: this.post.id})
+				let thread = this.$store.getters.getThread(this.post.threadId)
+				this.$bus.emit('post-reply-button-click', {boardName: thread.boardName, threadNumber: thread.head.number, postId: this.post.id})
 			}
 		},
 		created() {
