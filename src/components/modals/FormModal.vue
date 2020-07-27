@@ -1,5 +1,5 @@
 <template>
-	<form>
+	<form @submit.prevent="submit()">
 		<input hidden name="boardName" v-model="boardName">
 		<input hidden name="threadNumber" v-model="threadNumber">
 
@@ -9,7 +9,7 @@
 		<label for="modifiers:signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
 		<input hidden type="checkbox" name="modifiers:OP" id="modifiers:OP">
 		<label for="modifiers:OP"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
-		<input type="text" name="subject">
+		<input type="text" name="subject" v-model="subject">
 		
 		<textarea v-model="text" name="text"></textarea>
 
@@ -27,14 +27,14 @@
 			</div>
 		</div>
 
-		<button type="button" id="submit" @click="handleSubmitButtonClick()">
+		<button id="submit">
 			<img class="icon" src="../../assets/icons/send.svg">
 		</button>
 	</form>
 </template>
 
 <script>
-	import { submitPost } from '../../api'
+	import { submitPost, submitCaptcha } from '../../api'
 
 	export default {
 		name: 'FormModal',
@@ -45,6 +45,7 @@
 		data() {
 			return {
 				text: '',
+				subject: '',
 				files: [],
 				attachmentNSFW: [],
 				thumbs: [],
@@ -100,15 +101,29 @@
 				this.boardName = data.boardName
 				this.threadNumber = data.threadNumber
 
-				this.parent.setHeader(data.threadNumber ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`)
+				this.parent.setParams({
+					header: data.threadNumber ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`
+				})
 
-				if (data.postId) {
-					this.text += `>>${data.postId}\r`
+				if (data.postNumber) {
+					this.text += `>>${data.postNumber}\r`
 				}
 			},
 
-			handleSubmitButtonClick() {
-				submitPost(new FormData(document.querySelector('form')))
+			submit() {
+				submitCaptcha(new FormData(this.$el)).then((response) => {
+					if (response.trustedPostCount > 0) {
+						submitPost(new FormData(this.$el))
+						this.reset()
+					} else {
+						this.$bus.emit('need-captcha', {})
+					}
+				})
+			},
+
+			reset() {
+				this.text = ''
+				this.subject = ''
 			}
 		},
 

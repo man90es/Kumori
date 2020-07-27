@@ -25,7 +25,9 @@
 			}
 		},
 		created() {
-			this.parent.setHeader('Search')
+			this.parent.setParams({
+				header: 'Search'
+			})
 		}
 	}
 </script>

@@ -11,7 +11,9 @@
 			'parent'
 		],
 		created() {
-			this.parent.setHeader('Starred')
+			this.parent.setParams({
+				header: 'Starred'
+			})
 		}
 	}
 </script>

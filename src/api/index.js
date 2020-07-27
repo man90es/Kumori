@@ -1,5 +1,6 @@
 import { request } from './request'
 import store from '../store'
+import { APIServer } from '../../config'
 
 request.init((message) => {
 	switch (message.what.request) {
@@ -35,5 +36,13 @@ export function requestPosts(params) {
 }
 
 export function submitPost(formData) {
-	request.http('POST', 'createPost', formData)
+	return request.http('POST', 'createPost', formData)
+}
+
+export function getCaptchaImageURI() {
+	return `${APIServer}/api/captcha?image#${+new Date()}`
+}
+
+export function submitCaptcha(formData) {
+	return request.http('POST', 'checkCaptcha', formData)
 }

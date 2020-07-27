@@ -11,6 +11,7 @@
 	import StarredModal from '../modals/StarredModal'
 	import SettingsModal from '../modals/SettingsModal'
 	import MediaModal from '../modals/MediaModal'
+	import CaptchaModal from '../modals/CaptchaModal'
 
 	export default {
 		data() {
@@ -69,6 +70,8 @@
 			this.$bus.on('menu-star-button-click', (data) => this.isOpen(StarredModal) ? this.close(StarredModal) : this.open(StarredModal, data))
 			this.$bus.on('menu-settings-button-click', (data) => this.isOpen(SettingsModal) ? this.close(SettingsModal) : this.open(SettingsModal, data))
 			this.$bus.on('post-attachment-preview-click', (data) => this.isOpen(MediaModal) ? this.passData(MediaModal, data) : this.open(MediaModal, data))
+
+			this.$bus.on('need-captcha', (data) => this.open(CaptchaModal, data))
 
 			this.$bus.on('modal-close-button-click', this.closeByKey)
 		},

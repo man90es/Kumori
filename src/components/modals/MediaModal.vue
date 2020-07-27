@@ -24,7 +24,9 @@
 			}
 		},
 		mounted() {
-			this.parent.setHeader('Media')
+			this.parent.setParams({
+				header: 'Media'
+			})
 			
 			let computedStyle = getComputedStyle(this.$refs.img)
 
