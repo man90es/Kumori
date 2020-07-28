@@ -7,7 +7,7 @@ export default new Vuex.Store({
 	state: {
 		boards: {},
 		threads: [],
-		posts: [],
+		posts: {},
 		currentBoardName: '',
 		currentThreadId: 0,
 	},
@@ -22,7 +22,7 @@ export default new Vuex.Store({
 		},
 
 		updatePostList(state, payload) {
-			state.posts = payload
+			Vue.set(state.posts, payload.what.threadId, payload.data)
 		},
 
 		updateCurrentBoard(state, payload) {
@@ -35,10 +35,6 @@ export default new Vuex.Store({
 	},
 
 	getters: {
-		getThreadPosts: (state) => (threadId, headId) => {
-			return state.posts.filter((post) => post.threadId == threadId && post.id != headId)
-		},
-
 		getCurrentThread: (state) => {
 			return state.threads.find((thread) => thread.id == state.currentThreadId)
 		},

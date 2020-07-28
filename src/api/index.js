@@ -14,7 +14,7 @@ request.init((message) => {
 			store.commit("updateThreadList", [message.data])
 			break
 		case 'posts':
-			store.commit("updatePostList", message.data)
+			store.commit("updatePostList", {data: message.data, what: message.what})
 			break
 	}
 })

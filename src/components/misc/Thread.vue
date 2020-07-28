@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Post :post='thread.head'/>
-		<Post :key="post.id" :post="post" v-for="post in $store.getters.getThreadPosts(thread.id, thread.head.id)"/>
+		<Post :key="post.id" :post="post" v-for="post in ($store.state.posts[thread.id] || []).filter(post => post.id != thread.head.id)"/>
 	</div>
 </template>
 
