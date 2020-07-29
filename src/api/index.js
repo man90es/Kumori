@@ -14,7 +14,11 @@ request.init((message) => {
 			store.commit("updateThreadList", [message.data])
 			break
 		case 'posts':
-			store.commit("updatePostList", {data: message.data, what: message.what})
+			if (message.what.threadId != undefined) {
+				store.commit("updatePostList", {data: message.data, what: message.what})
+			} else {
+				store.commit("updateFeed", {data: message.data, what: message.what})
+			}
 			break
 	}
 })

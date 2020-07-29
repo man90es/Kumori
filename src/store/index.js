@@ -8,6 +8,7 @@ export default new Vuex.Store({
 		boards: {},
 		threads: [],
 		posts: {},
+		feed: [],
 		currentBoardName: '',
 		currentThreadId: 0,
 	},
@@ -23,6 +24,10 @@ export default new Vuex.Store({
 
 		updatePostList(state, payload) {
 			Vue.set(state.posts, payload.what.threadId, payload.data)
+		},
+
+		updateFeed(state, payload) {
+			state.feed = payload.data
 		},
 
 		updateCurrentBoard(state, payload) {

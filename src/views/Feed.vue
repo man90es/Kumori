@@ -2,7 +2,7 @@
 	<div id="feed">
 		<NavBar />
 		<MainSection :type="'feed'">
-			<Post :key="id" :post="post" v-for="(post, id) in $store.state.posts"/>
+			<Post :key="id" :post="post" v-for="(post, id) in $store.state.feed"/>
 		</MainSection>
 		<MenuBar />
 
