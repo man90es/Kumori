@@ -111,9 +111,22 @@
 			},
 
 			submit() {
-				submitCaptcha(new FormData(this.$el)).then((response) => {
+				submitCaptcha(null).then((response) => {
 					if (response.trustedPostCount > 0) {
-						submitPost(new FormData(this.$el))
+						let data = new FormData(this.$el)
+
+						for (let i in this.files) {
+							// File input
+							data.append(`file:${i}`, this.files[i].files[0])
+
+							// NSFW checkbox
+							let checkbox = document.createElement('input')
+							checkbox.type = checkbox
+							checkbox.checked = this.attachmentNSFW[i]
+							data.append(`fileMark:${i}:NSFW`, checkbox)
+						}
+
+						submitPost(data)
 						this.reset()
 					} else {
 						this.$bus.emit('need-captcha', {})
@@ -124,6 +137,9 @@
 			reset() {
 				this.text = ''
 				this.subject = ''
+				this.files = []
+				this.attachmentNSFW = []
+				this.thumbs = []
 			}
 		},
 
