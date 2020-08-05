@@ -126,8 +126,10 @@
 							data.append(`fileMark:${i}:NSFW`, checkbox)
 						}
 
-						submitPost(data)
-						this.reset()
+						submitPost(data).then((response) => {
+							this.reset()
+							this.$router.push(`/${response.boardName}/${response.threadId}`)
+						})
 					} else {
 						this.$bus.emit('need-captcha', {})
 					}
