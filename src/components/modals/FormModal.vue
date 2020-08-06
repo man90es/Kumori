@@ -1,5 +1,5 @@
 <template>
-	<form @submit.prevent="submit()">
+	<form @submit.prevent="submitHandler()">
 		<input hidden name="boardName" v-model="boardName">
 		<input hidden name="threadNumber" v-model="threadNumber">
 
@@ -51,6 +51,7 @@
 				thumbs: [],
 				boardName: null,
 				threadNumber: null,
+				waitingToSubmit: false,
 				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
 			}
 		},
@@ -110,29 +111,35 @@
 				}
 			},
 
-			submit() {
+			submitHandler() {
 				submitCaptcha(null).then((response) => {
 					if (response.trustedPostCount > 0) {
-						let data = new FormData(this.$el)
-
-						for (let i in this.files) {
-							// File input
-							data.append(`file:${i}`, this.files[i].files[0])
-
-							// NSFW checkbox
-							let checkbox = document.createElement('input')
-							checkbox.type = checkbox
-							checkbox.checked = this.attachmentNSFW[i]
-							data.append(`fileMark:${i}:NSFW`, checkbox)
-						}
-
-						submitPost(data).then((response) => {
-							this.reset()
-							this.$router.push(`/${response.boardName}/${response.threadId}`)
-						})
+						this.submit()
 					} else {
+						this.waitingToSubmit = true
 						this.$bus.emit('need-captcha', {})
 					}
+				})
+			},
+
+			submit() {
+				this.waitingToSubmit = false
+				let data = new FormData(this.$el)
+
+				for (let i in this.files) {
+					// File input
+					data.append(`file:${i}`, this.files[i].files[0])
+
+					// NSFW checkbox
+					let checkbox = document.createElement('input')
+					checkbox.type = checkbox
+					checkbox.checked = this.attachmentNSFW[i]
+					data.append(`fileMark:${i}:NSFW`, checkbox)
+				}
+
+				submitPost(data).then((response) => {
+					this.reset()
+					this.$router.push(`/${response.boardName}/${response.threadId}`)
 				})
 			},
 
@@ -154,6 +161,7 @@
 		created() {
 			this.handleDataUpdate(this.originalData)
 			this.$bus.on(`modal-${this.parent.key}-data-update`, this.handleDataUpdate)
+			this.$bus.on('captcha-solved', this.submit)
 		}
 	}
 </script>
