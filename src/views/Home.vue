@@ -1,38 +1,77 @@
 <template>
-	<div id='home'>
-		<img src='logo.png'>
-		<div id='links'>
-			<router-link :key='boardName' :to='{name: "board", params: {boardName}}' v-for='(board, boardName) in $store.state.boards'>/{{boardName}}</router-link>
-		</div>
+	<div id="home">
+		<div :style="backgroundStyle"></div>
+		<img src="logo.png">
+		<ul>
+			<li v-for="(board, boardName) in $store.state.boards" :key="boardName">
+				<router-link :to="{name: 'board', params: {boardName}}">/{{boardName}}</router-link>
+			</li>
+		</ul>
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'home'
+		name: 'home',
+
+		computed: {
+			backgroundStyle() {
+				return `background-image:url(https://picsum.photos/${Math.round(window.screen.width / 2)}/${Math.round(window.screen.height / 2)})`
+			}
+		}
 	}
 </script>
 
 <style scoped>
-	#home{
+	#home {
 		height: 100vh;
 		width: 100vw;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-color: #000;
 	}
 
-	#links {
+	#home > :first-child {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-position: center;
+		background-size: cover;
+		filter: url("#sharpBlur");
+		opacity: .4;
+	}
+
+	img {
+		z-index: 1;
+	}
+
+	ul {
 		width: 100%;
 		display: flex;
 		justify-content: space-around;
 		font-size: 2rem;
 		position: fixed;
 		bottom: 1rem;
+		font-weight: bold;
+		list-style: none;
 	}
 
-	#links a {
-		font-weight: bold;
+	li {
+		width: 100%;
+		text-align: center;
+	}
+
+	a {
+		padding: .25em 0;
 		color: #a8afbc;
+		display: block;
+		transition: background-color .2s;
+	}
+
+	a:hover {
+		background-color: #fff1
 	}
 </style>
