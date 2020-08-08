@@ -1,7 +1,7 @@
 <template>
 	<div id="home">
 		<div :style="backgroundStyle"></div>
-		<img src="logo.png">
+		<img src="logo.svg">
 		<ul>
 			<li v-for="(board, boardName) in $store.state.boards" :key="boardName">
 				<router-link :to="{name: 'board', params: {boardName}}">/{{boardName}}</router-link>
@@ -46,10 +46,21 @@
 
 	img {
 		z-index: 1;
+		height: 15rem;
+		border-radius: 50%;
+		padding: 1.5rem 1rem;
+		background-color: #fff1;
+		transition: padding .2s, background-color .2s;
+	}
+
+	img:hover {
+		padding: 2.5rem 2rem;
+		background-color: #fff2;
 	}
 
 	ul {
-		width: 100%;
+		padding: 0;
+		width: 90%;
 		display: flex;
 		justify-content: space-around;
 		font-size: 2rem;
@@ -72,6 +83,6 @@
 	}
 
 	a:hover {
-		background-color: #fff1
+		background-color: #fff1;
 	}
 </style>
