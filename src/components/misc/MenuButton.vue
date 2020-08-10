@@ -12,7 +12,10 @@
 			dispatchEvent() {
 				if (this.icon == 'chat') {
 					let thread = this.$store.getters.getThread(this.$store.state.currentThreadId)
-					this.$bus.emit(`menu-${this.icon}-button-click`, {boardName: this.$store.state.currentBoardName, threadNumber: thread.head.number})
+					this.$bus.emit(`menu-${this.icon}-button-click`, {
+						boardName: this.$store.state.currentBoardName, 
+						threadNumber: thread ? thread.head.number : null
+					})
 				} else {
 					this.$bus.emit(`menu-${this.icon}-button-click`, {})
 				}
