@@ -1,4 +1,5 @@
-let markup = {}
+/* eslint-disable no-cond-assign */
+
 const reduceNewLines = 4 // 4 = 1 + 3: 1 line break and 3 empty lines
 
 let escapeMap = {
@@ -7,7 +8,6 @@ let escapeMap = {
 	'>': '&gt;',
 	'"': '&quot;',
 	"'": '&apos;',
-
 	'*': '&#42;',
 	'_': '&#95;',
 	'[': '&#91;',
@@ -26,7 +26,7 @@ function escapeHTML(text) {
 }
 
 function escapeRX(exp) {
-	return exp.replace(/[\-\[\]\/{}()*+?.\\^$|]/g, "\\$&")
+	return exp.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&")
 }
 
 let tagMap = {
@@ -34,7 +34,7 @@ let tagMap = {
 		/\[code](?:\s*)([\s\S]+?)(?:\s*)\[\/code]/gi,
 		/```(?:\s*)([\s\S]+?)(?:\s*)```/gi,
 	],
-	inlineCode: [
+	monospace: [
 		/`(.+?)`/gim,
 	],
 	postLink: [
@@ -46,18 +46,12 @@ let tagMap = {
 	bold: [
 		['[b]', '[/b]'],
 		['**', '**'],
-		['__', '__'],
 	],
 	italic: [
 		['[i]', '[/i]'],
-		['*', '*'],
 		['_', '_'],
 	],
-	underline: [
-		['[u]', '[/u]'],
-		['~', '~'],
-	],
-	strike: [
+	strikethrough: [
 		['[s]', '[/s]'],
 		['~~', '~~'],
 	],
@@ -76,24 +70,23 @@ let tagMap = {
 		/\r?\n/g,
 	],
 	reduceNewLines: [
-		new RegExp(`(<br \/>){${reduceNewLines},}`, 'gi'),
+		new RegExp(`(<br>){${reduceNewLines},}`, 'gi'),
 	],
 }
 
 let typeMap = {
-	code: processCode('<pre><code>$1</code></pre>'),
-	inlineCode: processCode('<code>$1</code>'),
+	code: processCode('<pre><code>${text}</code></pre>'),
+	monospace: processCode('<code>${text}</code>'),
 	postLink: processPostLink,
-	quotation: '<q>$1</q>',
-	bold: '<b>$1</b>',
-	italic: '<i>$1</i>',
-	underline: '<u>$1</u>',
-	strike: '<s>$1</s>',
-	titledLink: processURL('<a data-link="$1" title="$1">$2</a>'),
-	link: processURL('<a data-link="$1" title="$1">$1</a>'),
-	spoiler: '<span class="spoiler">$1</span>',
-	newLine: '<br />',
-	reduceNewLines: new Array(reduceNewLines + 1).join('$1'),
+	quotation: processText('<q>${text}</q>'),
+	bold: processText('<b>${text}</b>'),
+	italic: processText('<i>${text}</i>'),
+	strikethrough: processText('<s>${text}</s>'),
+	titledLink: processURL('<a href="${link}" target="_blank" title="${link}">${title}</a>'),
+	link: processURL('<a href="${link}" target="_blank" title="${link}">${title}</a>'),
+	spoiler: processText('<span class="spoiler">${text}</span>'),
+	newLine: processText('<br>'),
+	reduceNewLines: new Array(reduceNewLines + 1).join('${text}'),
 }
 
 function getMatches(string, regex) {
@@ -111,8 +104,14 @@ function getMatches(string, regex) {
 
 function processCode(tagString) { // escape a few chars to avoid further replacements
 	return (_, matches) => {
-		let code = matches[0].replace(/[*_\[\]%~/:.#]/g, m => escapeMap[m])
-		return tagString.replace('$1', code)
+		let code = matches[0].replace(/[*_[\]%~/:.#]/g, m => escapeMap[m])
+		return tagString.replace(/\${text}/g, code)
+	}
+}
+
+function processText(tagString) {
+	return (_, matches) => {
+		return tagString.replace(/\${text}/g, matches[0])
 	}
 }
 
@@ -125,28 +124,17 @@ async function processPostLink(capture, matches) {
 }
 
 function processURL(tagString) {
-	return (capture, matches) => {
-		let title, href
+	return (_, matches) => {
+		let uri = matches[0],
+			title = matches[1] || uri
 
-		if (capture.startsWith('[url]')) { // [url]href[/url]
-			matches = getMatches(capture, /((?:https?|s?ftp):\/\/[a-z0-9\-.]+\/?(?:(?!%%|\[\/|\s|<\/|" ).)*)/gi).matches[0]
+		if (!/^(https?|s?ftp):\/\//.test(uri)) {
+			uri = `https://${uri}`
 		}
 
-		if (matches.length == 2){ // [title](url)
-			[title, href] = matches
-		} else {
-			[href] = matches
-		}
+		uri = uri.replace(/[*_[\]%~/:.#]/g, (m) => escapeMap[m])
 
-		href = href.replace(/[*_\[\]%~/:.#]/g, (m) => escapeMap[m])
-
-		try {
-			href = decodeURIComponent(href)
-		} catch (e) {
-			console.log(e, href)
-		}
-
-		return tagString.replace(/\$1/g, href).replace('$2', title)
+		return tagString.replace(/\${link}/g, uri).replace(/\${title}/g, title)
 	}
 }
 
