@@ -82,8 +82,8 @@ let typeMap = {
 	bold: processText('<b>${text}</b>'),
 	italic: processText('<i>${text}</i>'),
 	strikethrough: processText('<s>${text}</s>'),
-	titledLink: processURL('<a href="${link}" target="_blank" title="${link}">${title}</a>'),
-	link: processURL('<a href="${link}" target="_blank" title="${link}">${title}</a>'),
+	titledLink: processLink,
+	link: processLink,
 	spoiler: processText('<span class="spoiler">${text}</span>'),
 	newLine: processText('<br>'),
 	reduceNewLines: new Array(reduceNewLines + 1).join('${text}'),
@@ -123,19 +123,17 @@ async function processPostLink(capture, matches) {
 	return `<a class="postLink" data-board="${boardName}" data-number="${postFromMatch}">${capture}</a>`
 }
 
-function processURL(tagString) {
-	return (_, matches) => {
-		let uri = matches[0],
-			title = matches[1] || uri
+function processLink(capture, matches) {
+	let uri = matches[0],
+		title = matches[1] || uri
 
-		if (!/^(https?|s?ftp):\/\//.test(uri)) {
-			uri = `https://${uri}`
-		}
-
-		uri = uri.replace(/[*_[\]%~/:.#]/g, (m) => escapeMap[m])
-
-		return tagString.replace(/\${link}/g, uri).replace(/\${title}/g, title)
+	if (!/^(https?|s?ftp):\/\//.test(uri)) {
+		uri = `https://${uri}`
 	}
+
+	uri = uri.replace(/[*_[\]%~/:.#]/g, (m) => escapeMap[m])
+
+	return `<a onclick="window.vm.$bus.emit('unsafe-link-click', '${uri}')" title="${uri}">${title}</a>`
 }
 
 export default async function processMarkup(text) {
