@@ -1,7 +1,7 @@
 <template>
 	<div id="board">
 		<NavBar />
-		<MainSection :type="'board'">
+		<MainSection>
 			<Thread v-if="$store.getters.getCurrentThread" :thread="$store.getters.getCurrentThread" :pageSize="500" :tail="false" />
 		</MainSection>
 		<MenuBar />
@@ -34,15 +34,11 @@
 		},
 		watch: {
 			$route(to) {
-				this.$store.commit('updateCurrentBoard', to.params.boardName)
-				this.$store.commit('updateCurrentThread', to.params.threadId)
 				this.requestThread(to.params.threadId)
 
 			}
 		},
 		created() {
-			this.$store.commit('updateCurrentBoard', this.$route.params.boardName)
-			this.$store.commit('updateCurrentThread', this.$route.params.threadId)
 			this.requestThread(this.$route.params.threadId)
 		}
 	}

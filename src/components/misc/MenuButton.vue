@@ -11,9 +11,9 @@
 		methods: {
 			dispatchEvent() {
 				if (this.icon == 'chat') {
-					let thread = this.$store.getters.getThread(this.$store.state.currentThreadId)
+					let thread = this.$store.getters.getThread(this.$route.params.threadId)
 					this.$bus.emit(`menu-${this.icon}-button-click`, {
-						boardName: this.$store.state.currentBoardName, 
+						boardName: this.$route.params.boardName, 
 						threadNumber: thread ? thread.head.number : null
 					})
 				} else {

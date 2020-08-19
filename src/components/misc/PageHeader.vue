@@ -1,15 +1,15 @@
 <template>
 	<header v-if="board">
 		<div>
-			<router-link :to="{name: 'board', params: {boardName: board.name}}">
-				<div class="title" v-if="type === 'board'">/{{board.name}}/ — {{board.title}}</div>
-				<div class="title" v-if="type === 'feed'">/{{board.name}}/'s feed — {{board.title}}</div>
+			<router-link :to="{name: 'board'}">
+				<div class="title" v-if="['board', 'thread'].includes($route.name)">/{{board.name}}/ — {{board.title}}</div>
+				<div class="title" v-if="$route.name == 'feed'">/{{board.name}}/'s feed — {{board.title}}</div>
 				<div>{{board.subtitle}}</div>
 			</router-link>	
 		</div>
 
 		<div>
-			<router-link class="feedLink" v-if="type === 'board'" :to="{name: 'feed', params: {boardName: board.name}}">
+			<router-link class="feedLink" v-if="$route.name == 'board'" :to="{name: 'feed'}">
 				<img class="icon" src="../../assets/icons/view_list.svg">
 			</router-link>
 		</div>
@@ -23,10 +23,7 @@
 			board: function() {
 				return this.$store.state.boards[this.$route.params.boardName]
 			}
-		},
-		props: [
-			'type'
-		]
+		}
 	}
 </script>
 

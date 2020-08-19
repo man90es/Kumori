@@ -8,9 +8,7 @@ export default new Vuex.Store({
 		boards: {},
 		threads: [],
 		posts: {},
-		feed: [],
-		currentBoardName: '',
-		currentThreadId: 0,
+		feed: []
 	},
 	
 	mutations: {
@@ -28,20 +26,12 @@ export default new Vuex.Store({
 
 		updateFeed(state, payload) {
 			state.feed = payload.data
-		},
-
-		updateCurrentBoard(state, payload) {
-			state.currentBoardName = payload
-		},
-
-		updateCurrentThread(state, payload) {
-			state.currentThreadId = payload
 		}
 	},
 
 	getters: {
 		getCurrentThread: (state) => {
-			return state.threads.find((thread) => thread.id == state.currentThreadId)
+			return state.threads.find((thread) => thread.id == window.vm.$route.params.threadId)
 		},
 
 		getThread: (state) => (threadId) => {

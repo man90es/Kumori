@@ -1,7 +1,7 @@
 <template>
 	<div id="feed">
 		<NavBar />
-		<MainSection :type="'feed'">
+		<MainSection>
 			<Post :key="id" :post="post" v-for="(post, id) in $store.state.feed"/>
 		</MainSection>
 		<MenuBar />
@@ -37,12 +37,10 @@
 		},
 		watch: {
 			$route(to) {
-				this.$store.commit('updateCurrentBoard', to.params.boardName)
 				this.getFeed(to.params.boardName)
 			}
 		},
 		created() {
-			this.$store.commit('updateCurrentBoard', this.$route.params.boardName)
 			this.getFeed(this.$route.params.boardName)
 		}
 	}

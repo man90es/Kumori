@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<PageHeader :board="board" :type="type" />
+		<PageHeader :board="board" />
 		<slot />
 	</main>
 </template>
@@ -14,8 +14,7 @@
 			PageHeader
 		},
 		props: [
-			'board',
-			'type'
+			'board'
 		]
 	}
 </script>
