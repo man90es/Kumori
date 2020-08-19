@@ -39,13 +39,13 @@
 <style scoped>
 	div {
 		display: flex;
-		flex-direction: column !important;
-		height: 100% !important;
+		text-align: center;
+		flex-direction: column;
 	}
 
 	.row {
 		margin-top: 0.25rem;
-		flex-direction: row !important;
+		flex-direction: row;
 	}
 
 	button {

@@ -112,7 +112,7 @@
 		position: fixed;
 	}
 
-	.modal > div {
+	.modal > div:first-child {
 		height: 2rem;
 		text-align: center;
 		user-select: none;
