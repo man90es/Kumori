@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
-		<div @mousedown="mouseDownHandler">{{header}}<button @click="close" v-if="closeable"><img class='icon' src='../../assets/icons/close.svg'></button></div>
+		<div :class="{draggable: draggable}" @mousedown="mouseDownHandler">{{header}}<button @click="close" v-if="closeable"><img class='icon' src='../../assets/icons/close.svg'></button></div>
 		<component :is="modalBody" :originalData="data" :parent="{key: $vnode.key, setParams, close}"></component>
 	</div>
 </template>
@@ -110,6 +110,9 @@
 		height: 2rem;
 		text-align: center;
 		user-select: none;
+	}
+
+	.draggable {
 		cursor: move;
 	}
 
