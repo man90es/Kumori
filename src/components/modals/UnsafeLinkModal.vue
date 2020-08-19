@@ -30,7 +30,7 @@
 				header: 'Are you sure you want to open this link?',
 				closeable: false,
 				draggable: false,
-				blocking: true
+				backdrop: true
 			})
 		}
 	}

@@ -1,6 +1,6 @@
 <template>
-	<div id="ModalsLayer" v-if="modals.length > 0">
-		<Modal v-for="(modalBody, i) in modals" :modalBody="modalBody" :data="datas[i]" :key="keys[i]" />
+	<div :class="{backdrop: backdrop}" id="ModalsLayer" v-if="modals.length > 0">
+		<Modal v-for="(modalBody, i) in modals" :modalBody="modalBody" :data="datas[i]" :key="keys[i]" :parent="{setBackdrop}" />
 	</div>
 </template>
 
@@ -19,7 +19,8 @@
 			return {
 				modals: [],
 				datas: [], 
-				keys: []
+				keys: [],
+				backdrop: false
 			}
 		},
 		components: {
@@ -62,6 +63,10 @@
 
 			close(modalBody) {
 				this.closeByKey(this.keys[this.modals.indexOf(modalBody)])
+			},
+
+			setBackdrop(state) {
+				this.backdrop = state
 			}
 		},
 		created() {
@@ -90,6 +95,13 @@
 		justify-content: center;
 		align-items: center;
 		display: flex;
+	}
+
+	#ModalsLayer:not(.backdrop) {
 		pointer-events: none;
+	}
+
+	.backdrop {
+		background-color: #0005;
 	}
 </style>

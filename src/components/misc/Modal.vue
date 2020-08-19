@@ -15,12 +15,13 @@
 				header: "Header",
 				closeable: true,
 				draggable: true,
-				blocking: false
+				backdrop: false
 			}
 		},
 		props: [
 			'modalBody',
-			'data'
+			'data',
+			'parent'
 		],
 		methods: {
 			mouseDownHandler(event) {
@@ -67,6 +68,10 @@
 			},
 
 			close() {
+				if (this.backdrop) {
+					this.parent.setBackdrop(false)
+				}
+
 				this.$bus.emit('modal-close-button-click', this.$vnode.key)
 			},
 
@@ -83,8 +88,9 @@
 					this.draggable = params.draggable
 				}
 
-				if ('blocking' in params) {
-					this.blocking = params.blocking
+				if ('backdrop' in params) {
+					this.backdrop = params.backdrop
+					this.parent.setBackdrop(params.backdrop)
 				}
 			}
 		},

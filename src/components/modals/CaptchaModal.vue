@@ -41,7 +41,7 @@
 				header: 'Prove you\'re not gay',
 				closeable: false,
 				draggable: false,
-				blocking: true
+				backdrop: true
 			})
 
 			this.submit()
