@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { VuexLS } from './VuexLS'
 
 Vue.use(Vuex)
 
@@ -8,8 +9,11 @@ export default new Vuex.Store({
 		boards: {},
 		threads: [],
 		posts: {},
-		feed: []
+		feed: [],
+		trustedPostCount: 0
 	},
+
+	plugins: [ VuexLS ],
 	
 	mutations: {
 		updateBoardList(state, payload) {
@@ -26,6 +30,10 @@ export default new Vuex.Store({
 
 		updateFeed(state, payload) {
 			state.feed = payload.data
+		},
+
+		setTrustedPostCount(state, payload) {
+			state.trustedPostCount = payload
 		}
 	},
 
@@ -37,5 +45,9 @@ export default new Vuex.Store({
 		getThread: (state) => (threadId) => {
 			return state.threads.find((thread) => thread.id == threadId)
 		}
+	},
+
+	created() {
+		// pass
 	}
 })

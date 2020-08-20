@@ -40,6 +40,7 @@ export function requestPosts(params) {
 }
 
 export function submitPost(formData) {
+	store.commit('setTrustedPostCount', store.state.trustedPostCount - 1)
 	return request.http('POST', 'createPost', formData)
 }
 
@@ -47,6 +48,8 @@ export function getCaptchaImageURI() {
 	return `${APIServer}/api/captcha?image#${+new Date()}`
 }
 
-export function submitCaptcha(formData) {
-	return request.http('POST', 'checkCaptcha', formData)
+export async function submitCaptcha(formData) {
+	let response = await request.http('POST', 'checkCaptcha', formData)
+	store.commit('setTrustedPostCount', response.trustedPostCount)
+	return response
 }
