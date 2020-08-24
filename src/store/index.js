@@ -10,7 +10,8 @@ export default new Vuex.Store({
 		threads: [],
 		posts: {},
 		feed: [],
-		trustedPostCount: 0
+		trustedPostCount: 0,
+		hiddenPosts: []
 	},
 
 	plugins: [ VuexLS ],
@@ -34,6 +35,16 @@ export default new Vuex.Store({
 
 		setTrustedPostCount(state, payload) {
 			state.trustedPostCount = payload
+		},
+
+		toggleHidePost(state, payload) {
+			let i = state.hiddenPosts.indexOf(payload)
+
+			if (i >= 0) {
+				state.hiddenPosts.splice(i, 1)
+			} else {
+				state.hiddenPosts.push(payload)
+			}
 		},
 
 		import(state, payload) {

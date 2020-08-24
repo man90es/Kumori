@@ -1,6 +1,6 @@
 <template>
 	<div class="postMenu" @click="parent.hideMenu">
-		<div>Hide</div>
+		<div @click="hideHandler">{{$store.state.hiddenPosts.includes(parent.post.id) ? 'Show': 'Hide'}}</div>
 		<div>Add to Starred</div>
 		<div>Delete</div>
 		<div>Edit</div>
@@ -12,7 +12,12 @@
 		name: 'PostMenu',
 		props: [
 			'parent'
-		]
+		],
+		methods: {
+			hideHandler() {
+				this.$store.commit('toggleHidePost', this.parent.post.id)
+			}
+		}
 	}
 </script>
 

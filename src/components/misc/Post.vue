@@ -1,16 +1,16 @@
 <template>
-	<article v-if='post'>
+	<article>
 		<div class='postDetails'>
 			<span v-if='post.modifiers && "sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
 			<router-link class='refLink' :to='{name: "thread", params: {threadId: post.threadId}}'>
 				<span class='subject' v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
 			</router-link>
 			<button><img class='icon' src='../../assets/icons/menu.svg' @click="showMenu = !showMenu"></button>
-			<PostMenu v-if="showMenu" :parent="{ hideMenu }" />
+			<PostMenu v-if="showMenu" :parent="{ hideMenu, post }" />
 			<button><img class='icon' src='../../assets/icons/reply.svg' @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
 		</div>
-		<div>
+		<div v-if='!$store.state.hiddenPosts.includes(post.id)'>
 			<div v-if="post.attachments" class="attachments">
 				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
@@ -102,7 +102,6 @@
 
 <style scoped>
 	article{
-		min-height: 2em;
 		margin: calc(var(--gap-size) / 2) 0;
 		padding: calc(var(--gap-size) / 2);
 	}

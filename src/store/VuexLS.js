@@ -1,5 +1,6 @@
 const persistentMutations = {
-	setTrustedPostCount: 'trustedPostCount'
+	setTrustedPostCount: 'trustedPostCount',
+	toggleHidePost: 'hiddenPosts'
 }
 
 let data = {}
