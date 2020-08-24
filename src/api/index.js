@@ -39,9 +39,10 @@ export function requestPosts(params) {
 	request.ws({request: 'posts', boardName: params.boardName, threadId: params.threadId, count: params.count, page: params.page})
 }
 
-export function submitPost(formData) {
-	store.commit('setTrustedPostCount', store.state.trustedPostCount - 1)
-	return request.http('POST', 'createPost', formData)
+export async function submitPost(formData) {
+	let response = await request.http('POST', 'createPost', formData)
+	store.commit('setTrustedPostCount', response.trustedPostCount)
+	return response
 }
 
 export function getCaptchaImageURI() {

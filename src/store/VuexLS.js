@@ -1,6 +1,6 @@
-const persistentMutations = [
-	'setTrustedPostCount'
-]
+const persistentMutations = {
+	setTrustedPostCount: 'trustedPostCount'
+}
 
 let data = {}
 
@@ -10,17 +10,13 @@ export const VuexLS = (store) => {
 		data = JSON.parse(localStorage.vuex)
 	}
 
-	// Commit every saved mutation
-	for (let mutation of persistentMutations) {
-		if (data[mutation] !== undefined) {
-			store.commit(mutation, data[mutation])
-		}	
-	}
+	// Commit saved data
+	store.commit('import', data)
 
 	// Watch and save mutations
 	store.subscribe((mutation, state) => {
-		if (persistentMutations.includes(mutation.type)) {
-			data[mutation.type] = mutation.payload
+		if (mutation.type in persistentMutations) {
+			data[persistentMutations[mutation.type]] = state[persistentMutations[mutation.type]]
 			localStorage.vuex = JSON.stringify(data)
 		}
 	})

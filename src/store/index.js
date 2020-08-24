@@ -34,6 +34,12 @@ export default new Vuex.Store({
 
 		setTrustedPostCount(state, payload) {
 			state.trustedPostCount = payload
+		},
+
+		import(state, payload) {
+			for (const [key, value] of Object.entries(payload)) {
+				state[key] = value
+			}
 		}
 	},
 
