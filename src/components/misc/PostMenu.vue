@@ -2,7 +2,7 @@
 	<div class="postMenu" @click="parent.hideMenu">
 		<div @click="hideHandler">{{$store.state.hiddenPosts.includes(parent.post.id) ? 'Show': 'Hide'}}</div>
 		<div>Add to Starred</div>
-		<div>Delete</div>
+		<div @click="deleteHandler">Delete</div>
 		<div>Edit</div>
 	</div>
 </template>
@@ -16,6 +16,10 @@
 		methods: {
 			hideHandler() {
 				this.$store.commit('toggleHidePost', this.parent.post.id)
+			},
+
+			deleteHandler() {
+				this.$bus.emit('post-delete-button-click', [this.parent.post.id])
 			}
 		}
 	}
