@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<span>This action may fail if you don't have right do delete those posts.</span>
+		<span>This action may fail if you don't have right do delete {{selectedPostCount > 1 ? 'those posts' : 'that post'}}.</span>
+		<span>Deletion of OP deletes thread too.</span>
 		<span class="row">
 			<button type="button" @click="okHandler">Ok</button><button type="button" @click="cancelHandler">Cancel</button>
 		</span>
@@ -16,7 +17,7 @@
 		],
 		data() {
 			return {
-				updatedData: null
+				selectedPostCount: 0
 			}
 		},
 		methods: {
@@ -26,24 +27,24 @@
 
 			cancelHandler() {
 				this.parent.close()
-			}
-		},
-		computed: {
-			postsToDelete() {
-				return this.updatedData || this.originalData
+			},
+
+			handleDataUpdate() {
+				this.selectedPostCount = this.$store.state.selectedForDeletionPosts.length
+
+				if (this.selectedPostCount < 1) {
+					this.parent.close()
+				} else {
+					this.parent.setParams({
+						header: `Delete ${this.selectedPostCount} selected post${this.selectedPostCount > 1 ? 's' : ''}?`
+					})
+				}
+
 			}
 		},
 		created() {
-			this.parent.setParams({
-				header: 'Delete selected posts?'
-			})
-
-			this.updatedData = this.originalData
-			this.$bus.on(`modal-${this.parent.key}-data-update`, (data) => {
-				this.updatedData = this.updatedData.concat(data).filter((value, index, self) => {
-					return self.indexOf(value) === index
-				})
-			})
+			this.handleDataUpdate()
+			this.$bus.on(`modal-${this.parent.key}-data-update`, this.handleDataUpdate)
 		}
 	}
 </script>

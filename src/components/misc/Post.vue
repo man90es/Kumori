@@ -1,5 +1,5 @@
 <template>
-	<article>
+	<article :class="{selected: $store.state.selectedForDeletionPosts.includes(post.id)}">
 		<div class='postDetails'>
 			<span v-if='post.modifiers && "sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
 			<router-link class='refLink' :to='{name: "thread", params: {threadId: post.threadId}}'>
@@ -102,8 +102,13 @@
 
 <style scoped>
 	article{
-		margin: calc(var(--gap-size) / 2) 0;
+		margin: calc(var(--gap-size) / 2 - 1px) 0;
 		padding: calc(var(--gap-size) / 2);
+		border: 1px solid transparent;
+	}
+
+	article.selected {
+		border-color: var(--link-hover-color);
 	}
 
 	article:first-child{

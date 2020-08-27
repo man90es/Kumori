@@ -11,7 +11,8 @@ export default new Vuex.Store({
 		posts: {},
 		feed: [],
 		trustedPostCount: 0,
-		hiddenPosts: []
+		hiddenPosts: [],
+		selectedForDeletionPosts: []
 	},
 
 	plugins: [ VuexLS ],
@@ -44,6 +45,16 @@ export default new Vuex.Store({
 				state.hiddenPosts.splice(i, 1)
 			} else {
 				state.hiddenPosts.push(payload)
+			}
+		},
+
+		toggleSelectedForDeletionPost(state, payload) {
+			let i = state.selectedForDeletionPosts.indexOf(payload)
+
+			if (i >= 0) {
+				state.selectedForDeletionPosts.splice(i, 1)
+			} else {
+				state.selectedForDeletionPosts.push(payload)
 			}
 		},
 
