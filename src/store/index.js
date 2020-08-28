@@ -58,6 +58,10 @@ export default new Vuex.Store({
 			}
 		},
 
+		clearSelectedForDeletionPosts(state, payload) {
+			state.selectedForDeletionPosts = []
+		},
+
 		import(state, payload) {
 			for (const [key, value] of Object.entries(payload)) {
 				state[key] = value

@@ -9,6 +9,8 @@
 </template>
 
 <script>
+	import { deletePosts } from '../../api'
+
 	export default {
 		name: 'DeletePostModal',
 		props: [
@@ -22,6 +24,18 @@
 		},
 		methods: {
 			okHandler() {
+				let data = new FormData()
+
+				this.$store.state.selectedForDeletionPosts.forEach((postId) => {
+					let checkbox = document.createElement('input')
+					checkbox.type = 'checkbox'
+					checkbox.checked = true
+					data.append(`selectedPost:${postId}`, checkbox)
+				})
+
+				deletePosts(data)
+				this.$store.commit('clearSelectedForDeletionPosts')
+
 				this.parent.close()
 			},
 

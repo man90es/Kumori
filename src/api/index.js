@@ -54,3 +54,7 @@ export async function submitCaptcha(formData) {
 	store.commit('setTrustedPostCount', response.trustedPostCount)
 	return response
 }
+
+export function deletePosts(formData) {
+	return request.http('POST', 'deletePosts', formData)
+}
