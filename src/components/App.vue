@@ -29,7 +29,8 @@
 						'--background-color': '#21252b',
 						'--link-over-color': '#40c0f3',
 						'--link-hover-color': '#108fbf',
-						'--gap-size': '1rem'
+						'--gap-size': '1rem',
+						'--alternative-theme-representative-color': '#e6e6e6'
 					},
 					{
 						'--text-color': '#37474f',
@@ -40,7 +41,8 @@
 						'--background-color': '#e6e6e6',
 						'--link-over-color': '#d7535c',
 						'--link-hover-color': '#096be8',
-						'--gap-size': '1rem'
+						'--gap-size': '1rem',
+						'--alternative-theme-representative-color': '#292d35'
 					}
 				]
 			}
