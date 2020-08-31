@@ -12,7 +12,8 @@ export default new Vuex.Store({
 		feed: [],
 		trustedPostCount: 0,
 		hiddenPosts: [],
-		selectedForDeletionPosts: []
+		selectedForDeletionPosts: [],
+		theme: 0
 	},
 
 	plugins: [ VuexLS ],
@@ -60,6 +61,10 @@ export default new Vuex.Store({
 
 		clearSelectedForDeletionPosts(state, payload) {
 			state.selectedForDeletionPosts = []
+		},
+
+		toggleTheme(state, payload) {
+			state.theme = (state.theme + 1) % 2
 		},
 
 		import(state, payload) {

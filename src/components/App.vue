@@ -19,22 +19,40 @@
 		name: 'App',
 		data() {
 			return {
-				theme: {
-					'--text-color': '#bbc',
-					'--text-secondary-color': '#99a',
-					'--text-green-color': '#98c379',
-					'--card-color': '#292d35',
-					'--card-secondary-color': '#252931',
-					'--background-color': '#21252b',
-					'--link-over-color': '#40c0f3',
-					'--link-hover-color': '#108fbf',
-					'--gap-size': '1rem'
-				}
+				themes: [
+					{
+						'--text-color': '#bbc',
+						'--text-secondary-color': '#99a',
+						'--text-green-color': '#98c379',
+						'--card-color': '#292d35',
+						'--card-secondary-color': '#252931',
+						'--background-color': '#21252b',
+						'--link-over-color': '#40c0f3',
+						'--link-hover-color': '#108fbf',
+						'--gap-size': '1rem'
+					},
+					{
+						'--text-color': '#37474f',
+						'--text-secondary-color': '#666',
+						'--text-green-color': '#789922',
+						'--card-color': '#ededed',
+						'--card-secondary-color': '#ededed',
+						'--background-color': '#e6e6e6',
+						'--link-over-color': '#d7535c',
+						'--link-hover-color': '#096be8',
+						'--gap-size': '1rem'
+					}
+				]
 			}
 		},
 		methods: {
 			swipeHandler(direction) {
 				this.$bus.emit(`swipe-${direction}`)
+			}
+		},
+		computed: {
+			theme() {
+				return this.themes[this.$store.state.theme]
 			}
 		},
 		created() {
