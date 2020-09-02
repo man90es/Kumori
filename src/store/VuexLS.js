@@ -1,7 +1,8 @@
 const persistentMutations = {
 	setTrustedPostCount: 'trustedPostCount',
 	toggleHidePost: 'hiddenPosts',
-	toggleTheme: 'theme'
+	toggleTheme: 'theme',
+	setRepliesOnBoardPage: 'repliesOnBoardPage'
 }
 
 let data = {}

@@ -13,7 +13,8 @@ export default new Vuex.Store({
 		trustedPostCount: 0,
 		hiddenPosts: [],
 		selectedForDeletionPosts: [],
-		theme: 0
+		theme: 0,
+		repliesOnBoardPage: 3
 	},
 
 	plugins: [ VuexLS ],
@@ -71,6 +72,10 @@ export default new Vuex.Store({
 			for (const [key, value] of Object.entries(payload)) {
 				state[key] = value
 			}
+		},
+
+		setRepliesOnBoardPage(state, payload) {
+			state.repliesOnBoardPage = payload
 		}
 	},
 

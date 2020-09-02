@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection>
-			<Thread :key="thread.id" :thread="thread" :pageSize="3" :tail="true" v-for="thread in $store.state.threads"/>
+			<Thread :key="thread.id" :thread="thread" :pageSize="$store.state.repliesOnBoardPage" :tail="true" v-for="thread in $store.state.threads"/>
 		</MainSection>
 		<MenuBar />
 
