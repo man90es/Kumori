@@ -1,5 +1,5 @@
 <template>
-	<img :class="{nsfw: file.nsfw}" :width='width' :height='height' v-lazy='`http://localhost:6749/res/thumb/${file.thumb.path}`' @click="clickHandler">
+	<img :class="{nsfw: file.nsfw}" :width="width" :height="height" v-lazy="`http://localhost:6749/res/thumb/${file.thumb.path}`" @click="clickHandler">
 </template>
 
 <script>

@@ -37,7 +37,7 @@
 		display: grid;
 		grid-template-rows: 1.75rem 1.75rem 1.75rem;
 		grid-template-columns: 1fr 1.75rem 1fr 1.75rem;
-		grid-gap: calc(var(--gap-size) / 2);
+		grid-gap: var(--gap-size);
 	}
 
 	.icon {

@@ -1,21 +1,21 @@
 <template>
 	<article :class="{selected: $store.state.selectedForDeletionPosts.includes(post.id)}">
-		<div class='postDetails'>
-			<span v-if='post.modifiers && "sage" in post.modifiers'><img class='icon' src='../../assets/icons/down.svg'></span>
-			<router-link class='refLink' :to='{name: "thread", params: {threadId: post.threadId}}'>
-				<span class='subject' v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
+		<div class="postDetails">
+			<span v-if="post.modifiers && 'sage' in post.modifiers"><img class="icon" src="../../assets/icons/down.svg"></span>
+			<router-link class="refLink" :to="{name: 'thread', params: {threadId: post.threadId}}">
+				<span class="subject" v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
 			</router-link>
-			<button><img class='icon' src='../../assets/icons/menu.svg' @click="showMenu = !showMenu"></button>
-			<PostMenu v-if="showMenu" :parent="{ hideMenu, post }" />
-			<button><img class='icon' src='../../assets/icons/reply.svg' @click="handleReplyClick"></button>
+			<button><img class="icon" src="../../assets/icons/menu.svg" @click="showMenu = !showMenu"></button>
+			<PostMenu v-if="showMenu" :parent="{hideMenu, post}" />
+			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
 		</div>
-		<div v-if='!$store.state.hiddenPosts.includes(post.id)'>
+		<div v-if="!$store.state.hiddenPosts.includes(post.id)">
 			<div v-if="post.attachments" class="attachments">
 				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
 
-			<div v-if='post.text' v-html='parsedText'></div>
+			<p v-if="post.text" v-html="parsedText"></p>
 		</div>
 	</article>
 </template>
@@ -102,8 +102,8 @@
 
 <style scoped>
 	article{
-		margin: calc(var(--gap-size) / 2 - 1px) 0;
-		padding: calc(var(--gap-size) / 2);
+		margin: calc(var(--gap-size) - 1px) 0;
+		padding: var(--gap-size);
 		border: 1px solid transparent;
 	}
 
@@ -117,7 +117,7 @@
 
 	article:not(:first-child){
 		background-color: var(--card-secondary-color);
-		margin-left: calc(var(--gap-size) * 2);
+		margin-left: calc(var(--gap-size) * 4);
 	}
 
 	.postDetails{
@@ -135,6 +135,10 @@
 	}
 
 	.attachments *{
-		margin-right: calc(var(--gap-size) / 2);
+		margin-right: var(--gap-size);
+	}
+
+	p {
+		margin: 0;
 	}
 </style>

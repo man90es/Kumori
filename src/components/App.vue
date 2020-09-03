@@ -1,10 +1,10 @@
 <template>
-	<div id='app' :style="theme" v-touch:swipe="swipeHandler">
+	<div id="app" :style="theme" v-touch:swipe="swipeHandler">
 		<svg class="zero"> <!-- Used for blurring NSFW images -->
-			<filter id='sharpBlur'>
-				<feGaussianBlur stdDeviation='5'></feGaussianBlur>
-				<feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0'></feColorMatrix>
-				<feComposite in2='SourceGraphic' operator='in'></feComposite>
+			<filter id="sharpBlur">
+				<feGaussianBlur stdDeviation="5"></feGaussianBlur>
+				<feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0"></feColorMatrix>
+				<feComposite in2="SourceGraphic" operator="in"></feComposite>
 			</filter>
 		</svg>
 
@@ -12,7 +12,7 @@
 	</div>
 </template>
 
-<script type='text/javascript'>
+<script>
 	import { requestBoards } from '../api'
 
 	export default {
@@ -29,7 +29,7 @@
 						'--background-color': '#21252b',
 						'--link-over-color': '#40c0f3',
 						'--link-hover-color': '#108fbf',
-						'--gap-size': '1rem',
+						'--gap-size': '0.5rem',
 						'--alternative-theme-representative-color': '#e6e6e6'
 					},
 					{
@@ -41,7 +41,7 @@
 						'--background-color': '#e6e6e6',
 						'--link-over-color': '#d7535c',
 						'--link-hover-color': '#096be8',
-						'--gap-size': '1rem',
+						'--gap-size': '0.5rem',
 						'--alternative-theme-representative-color': '#292d35'
 					}
 				]
@@ -124,8 +124,8 @@
 
 		& > code {
 			display: block;
-			padding: calc(var(--gap-size) / 2);
-			margin: calc(var(--gap-size) / 2) 0;
+			padding: var(--gap-size);
+			margin: var(--gap-size) 0;
 		}
 	}
 

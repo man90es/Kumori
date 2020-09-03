@@ -22,6 +22,6 @@
 <style>
 	main{
 		width: 50em;
-		margin: 0 calc(var(--gap-size) / 2);
+		margin: 0 var(--gap-size);
 	}
 </style>

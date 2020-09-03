@@ -200,7 +200,7 @@
 		color: var(--text-color);
 		font-size: 1rem;
 		box-sizing: border-box;
-		margin-top: calc(var(--gap-size) / 2);
+		margin-top: var(--gap-size);
 		margin-bottom: 0;
 	}
 

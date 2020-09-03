@@ -30,8 +30,8 @@
 <style scoped>
 	header{
 		background-color: var(--card-color);
-		margin-bottom: calc(var(--gap-size) / 4);
-		padding: calc(var(--gap-size) / 2);
+		margin-bottom: calc(var(--gap-size) / 2);
+		padding: var(--gap-size);
 		display: flex;
 		justify-content: space-between;
 	}

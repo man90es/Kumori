@@ -35,7 +35,7 @@
 
 	.postMenu div {
 		cursor: pointer;
-		padding: calc(var(--gap-size) / 2);
+		padding: var(--gap-size);
 	}
 
 	.postMenu div:hover {

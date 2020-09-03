@@ -1,6 +1,6 @@
 <template>
 	<button @click="dispatchEvent">
-		<img class='icon' :src='src'>
+		<img class="icon" :src="src">
 	</button>
 </template>
 

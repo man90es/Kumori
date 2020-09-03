@@ -46,6 +46,5 @@
 
 	input[type="number"] {
 		width: 3rem;
-		vertical-align: middle;
 	}
 </style>

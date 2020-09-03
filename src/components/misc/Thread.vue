@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<Post :post='thread.head'/>
-		<Post :key="post.id" :post="post" v-for="post in ($store.state.hiddenPosts.includes(thread.head.id) ? [] : $store.state.posts[thread.id] || []).filter(post => post.id != thread.head.id)"/>
+		<Post :post="thread.head" />
+		<Post :key="post.id" :post="post" v-for="post in replies" />
 	</div>
 </template>
 
@@ -19,6 +19,12 @@
 			'pageSize',
 			'tail'
 		],
+		computed: {
+			replies() {
+				let headId = this.thread.head.id
+				return (this.$store.state.hiddenPosts.includes(headId) ? [] : this.$store.state.posts[this.thread.id] || []).filter(post => post.id != headId)
+			}
+		},
 		created() {
 			requestPosts({threadId: this.thread.id, count: this.pageSize, page: this.tail ? 'tail' : 0})
 		}

@@ -1,6 +1,9 @@
 <template>
-	<div class="modal" :style="{transform: `translate(${transform[0]}px, ${transform[1]}px)`}" ref="modal">
-		<div :class="{draggable: draggable}" @mousedown="mouseDownHandler">{{header}}<button @click="close" v-if="closeable"><img class='icon' src='../../assets/icons/close.svg'></button></div>
+	<div class="modal" :style="style">
+		<div :class="{draggable: draggable}" @mousedown="mouseDownHandler">
+			{{header}}
+			<button @click="close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
+		</div>
 		<component :is="modalBody" :originalData="data" :parent="{key: $vnode.key, setParams, close}"></component>
 	</div>
 </template>
@@ -9,13 +12,13 @@
 	export default {
 		data() {
 			return {
-				transform: [0, 0],
 				cursorPosition: [null, null],
 				position: [null, null],
 				header: "Header",
 				closeable: true,
 				draggable: true,
-				backdrop: false
+				backdrop: false,
+				style: ''
 			}
 		},
 		props: [
@@ -28,7 +31,7 @@
 				if (!this.draggable) return
 
 				if (this.position.includes(null)) {
-					let computedStyle = getComputedStyle(this.$refs.modal)
+					let computedStyle = getComputedStyle(this.$el)
 
 					this.position = [
 						parseInt(computedStyle.getPropertyValue('left')) || 0, 
@@ -55,11 +58,12 @@
 					this.position[1] + event.clientY - this.cursorPosition[1]
 				]
 
-				let computedStyle = getComputedStyle(this.$refs.modal)
-				this.transform = [
+				let computedStyle = getComputedStyle(this.$el)
+				let transform = [
 					this.position[0] - parseInt(computedStyle.getPropertyValue('left')),
 					this.position[1] - parseInt(computedStyle.getPropertyValue('top'))
 				]
+				this.style = `transform: translate(${transform[0]}px, ${transform[1]}px)`
 
 				this.cursorPosition = [
 					event.clientX, 
@@ -107,8 +111,8 @@
 		min-height: 5em;
 		min-width: 5em;
 		background-color: var(--card-color);
-		box-shadow: 0 0 calc(var(--gap-size) / 2) #0005;
-		padding: calc(var(--gap-size) / 2);
+		box-shadow: 0 0 var(--gap-size) #0005;
+		padding: var(--gap-size);
 		position: fixed;
 	}
 

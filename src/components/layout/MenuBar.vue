@@ -1,17 +1,17 @@
 <template>
 	<div id="MenuBar" :class="{mobile, visible}">
 		<div>
-			<MenuButton :icon='"up"' />
-			<MenuButton :icon='"search"' />
-			<MenuButton :icon='"settings"' />
+			<MenuButton :icon="'up'" />
+			<MenuButton :icon="'search'" />
+			<MenuButton :icon="'settings'" />
 		</div>
 		<div>
 			<router-link to="/" v-if="mobile">
-				<MenuButton :icon='"home"' />
+				<MenuButton :icon="'home'" />
 			</router-link>
-			<MenuButton :icon='"chat"' />
-			<MenuButton :icon='"star"' />
-			<MenuButton :icon='"down"' />
+			<MenuButton :icon="'chat'" />
+			<MenuButton :icon="'star'" />
+			<MenuButton :icon="'down'" />
 		</div>
 	</div>
 </template>
@@ -60,10 +60,10 @@
 	}
 
 	#MenuBar.mobile.visible {
-		right: calc(var(--gap-size) / 2);
+		right: var(--gap-size);
 	}
 
 	button{
-		margin: calc(var(--gap-size) / 2) 0;
+		margin: var(--gap-size) 0;
 	}
 </style>
