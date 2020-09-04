@@ -67,6 +67,4 @@
 	#threadNumber, [type="date"]:last-of-type {
 		grid-column: 3/5;
 	}
-
-
 </style>

@@ -21,8 +21,7 @@
 		],
 		computed: {
 			replies() {
-				let headId = this.thread.head.id
-				return (this.$store.state.hiddenPosts.includes(headId) ? [] : this.$store.state.posts[this.thread.id] || []).filter(post => post.id != headId)
+				return (this.$store.getters.isHidden(this.thread.head.id) ? [] : this.$store.getters.getThreadReplies(this.thread.id))
 			}
 		},
 		created() {

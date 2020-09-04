@@ -1,8 +1,8 @@
 <template>
 	<div class="postMenu" @click="parent.hideMenu">
-		<div @click="hideHandler">{{$store.state.hiddenPosts.includes(parent.post.id) ? 'Show': 'Hide'}}</div>
+		<div @click="hideHandler">{{$store.getters.isHidden(post.id) ? 'Show': 'Hide'}}</div>
 		<div>Add to Starred</div>
-		<div @click="deleteHandler">{{$store.state.selectedForDeletionPosts.includes(parent.post.id) ? 'Do not delete': 'Delete'}}</div>
+		<div @click="deleteHandler">{{$store.getters.isSelectedForDeletion(post.id) ? 'Do not delete': 'Delete'}}</div>
 		<div>Edit</div>
 	</div>
 </template>

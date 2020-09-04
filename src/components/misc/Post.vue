@@ -1,5 +1,5 @@
 <template>
-	<article :class="{selected: $store.state.selectedForDeletionPosts.includes(post.id)}">
+	<article :class="{selected: $store.getters.isSelectedForDeletion(post.id)}">
 		<div class="postDetails">
 			<span v-if="post.modifiers && 'sage' in post.modifiers"><img class="icon" src="../../assets/icons/down.svg"></span>
 			<router-link class="refLink" :to="{name: 'thread', params: {threadId: post.threadId}}">
@@ -10,7 +10,7 @@
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
 		</div>
-		<div v-if="!$store.state.hiddenPosts.includes(post.id)">
+		<div v-if="!$store.getters.isHidden(post.id)">
 			<div v-if="post.attachments" class="attachments">
 				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>

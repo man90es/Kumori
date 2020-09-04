@@ -86,6 +86,23 @@ export default new Vuex.Store({
 
 		getThread: (state) => (threadId) => {
 			return state.threads.find((thread) => thread.id == threadId)
+		},
+
+		getThreadReplies: (state) => (threadId) => {
+			if (state.posts[threadId]) {
+				let headId = state.threads.find((thread) => thread.id == threadId).head.id
+				return state.posts[threadId].filter((post) => post.id != headId)
+			} else {
+				return []
+			}
+		},
+
+		isSelectedForDeletion: (state) => (postId) => {
+			return state.selectedForDeletionPosts.includes(postId)
+		},
+
+		isHidden: (state) => (postId) => {
+			return state.hiddenPosts.includes(postId)
 		}
 	},
 
