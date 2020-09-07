@@ -1,15 +1,23 @@
 <template>
-	<div id="searchWidget">
-		<input type="text" id="searchQuery" v-model="query" placeholder="Query">
-		<img class="icon" src="../../assets/icons/search.svg">
-		<input type="text" id="boardName" v-model="boardName" placeholder="Board name">
-		<input type="text" id="threadNumber" v-model="threadNumber" placeholder="Thread number">
-		<input type="date" v-model="dateFrom">
-		<input type="date" v-model="dateTo">
-	</div>
+	<form @submit.prevent="submit()">
+		<div class="row">
+			<input type="text" id="searchQuery" v-model="query" placeholder="Query" title="Query">
+			<button><img class="icon" src="../../assets/icons/search.svg" title="Search"></button>
+		</div>
+		<div class="row">
+			<input type="text" v-model="boardName" placeholder="Board name" title="Board name">
+			<input type="number" min="1" v-model="threadNumber" placeholder="Thread number" title="Thread number">
+		</div>
+		<div class="row">
+			<input type="date" v-model="dateFrom" title="After">
+			<input type="date" v-model="dateTo" title="Before">
+		</div>
+	</form>
 </template>
 
 <script>
+	import { submitSearchQuery } from '../../api'
+
 	export default {
 		name: 'SearchModal',
 		props: [
@@ -24,6 +32,20 @@
 				dateTo: null
 			}
 		},
+		methods: {
+			submit() {
+				submitSearchQuery({
+					query: this.query, 
+					parameters: {
+						after: this.dateFrom,
+						before: this.dateTo,
+						boardName: this.boardName,
+						threadNumber: this.threadNumber,
+						searchOnlyInSubjects: false 
+					}
+				})
+			}
+		},
 		created() {
 			this.parent.setParams({
 				header: 'Search'
@@ -33,13 +55,6 @@
 </script>
 
 <style scoped>
-	#searchWidget {
-		display: grid;
-		grid-template-rows: 1.75rem 1.75rem 1.75rem;
-		grid-template-columns: 1fr 1.75rem 1fr 1.75rem;
-		grid-gap: var(--gap-size);
-	}
-
 	.icon {
 		cursor: pointer;
 	}
@@ -53,18 +68,26 @@
 		color: var(--text-color);
 		text-align: center;
 		font-size: 1rem;
-		width: 100%;
 	}
 
 	#searchQuery {
-		grid-column: 1/4;
+		width: 100%;
 	}
 
-	#boardName, [type="date"]:nth-last-of-type(2) {
-		grid-column: 1/3;
+	input:not(#searchQuery) {
+		width: calc(50% - var(--gap-size) / 2);
 	}
 
-	#threadNumber, [type="date"]:last-of-type {
-		grid-column: 3/5;
+	.row {
+		display: flex;
+		width: 100%;
+	}
+
+	.row *:not(:last-child) {
+		margin-right: var(--gap-size);
+	}
+
+	.row:not(:last-child) {
+		margin-bottom: var(--gap-size);
 	}
 </style>

@@ -58,3 +58,8 @@ export async function submitCaptcha(formData) {
 export function deletePosts(formData) {
 	return request.http('POST', 'deletePosts', formData)
 }
+
+export function submitSearchQuery(params) {
+	console.log(params)
+	request.ws({request: 'search', query: params.query, parameters: params.parameters})
+}
