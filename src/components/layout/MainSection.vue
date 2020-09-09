@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<PageHeader :board="board" />
+		<PageHeader />
 		<slot />
 	</main>
 </template>
@@ -12,10 +12,7 @@
 		name: 'MainSection',
 		components: {
 			PageHeader
-		},
-		props: [
-			'board'
-		]
+		}
 	}
 </script>
 

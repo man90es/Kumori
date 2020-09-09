@@ -14,7 +14,9 @@ export default new Vuex.Store({
 		hiddenPosts: [],
 		selectedForDeletionPosts: [],
 		theme: 0,
-		repliesOnBoardPage: 3
+		repliesOnBoardPage: 3,
+		bookmarkedPostIds: [],
+		individualPosts: []
 	},
 
 	plugins: [ VuexLS ],
@@ -50,6 +52,16 @@ export default new Vuex.Store({
 			}
 		},
 
+		toggleBookmarkPost(state, payload) {
+			let i = state.bookmarkedPostIds.indexOf(payload)
+
+			if (i >= 0) {
+				state.bookmarkedPostIds.splice(i, 1)
+			} else {
+				state.bookmarkedPostIds.push(payload)
+			}
+		},
+
 		toggleSelectedForDeletionPost(state, payload) {
 			let i = state.selectedForDeletionPosts.indexOf(payload)
 
@@ -76,6 +88,16 @@ export default new Vuex.Store({
 
 		setRepliesOnBoardPage(state, payload) {
 			state.repliesOnBoardPage = payload
+		},
+
+		updateIndividualPostList(state, payload) {
+			let i = state.individualPosts.map(post => post.id).indexOf(payload.data.id)
+
+			if (i >= 0) {
+				state.individualPosts.splice(i, 1)
+			}
+
+			state.individualPosts.push(payload.data)
 		}
 	},
 
@@ -97,12 +119,20 @@ export default new Vuex.Store({
 			}
 		},
 
+		isHidden: (state) => (postId) => {
+			return state.hiddenPosts.includes(postId)
+		},
+
+		isBookmarked: (state) => (postId) => {
+			return state.bookmarkedPostIds.includes(postId)
+		},
+
 		isSelectedForDeletion: (state) => (postId) => {
 			return state.selectedForDeletionPosts.includes(postId)
 		},
 
-		isHidden: (state) => (postId) => {
-			return state.hiddenPosts.includes(postId)
+		getBookmarkedPosts: (state) => {
+			return (state.individualPosts || []).filter((post) => state.bookmarkedPostIds.includes(post.id))
 		}
 	},
 

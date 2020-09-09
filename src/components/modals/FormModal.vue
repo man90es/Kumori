@@ -139,7 +139,7 @@
 
 				submitPost(data).then((response) => {
 					this.reset()
-					this.$router.push(`/${response.boardName}/${response.threadId}`)
+					this.$router.push({name: 'thread', threadId: response.threadId})
 				})
 			},
 

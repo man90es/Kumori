@@ -13,6 +13,8 @@ request.init((message) => {
 		case 'thread':
 			store.commit("updateThreadList", [message.data])
 			break
+		case 'post':
+			store.commit("updateIndividualPostList", {data: message.data, what: message.what})
 		case 'posts':
 			if (message.what.threadId != undefined) {
 				store.commit("updatePostList", {data: message.data, what: message.what})
@@ -37,6 +39,10 @@ export function requestThread(params) {
 
 export function requestPosts(params) {
 	request.ws({request: 'posts', boardName: params.boardName, threadId: params.threadId, count: params.count, page: params.page})
+}
+
+export function requestPost(params) {
+	request.ws({request: 'post', id: params})
 }
 
 export async function submitPost(formData) {

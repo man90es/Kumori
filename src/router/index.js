@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Board from '../views/Board.vue'
 import Feed from '../views/Feed.vue'
 import SingleThread from '../views/SingleThread.vue'
+import Bookmarks from '../views/Bookmarks.vue'
 
 Vue.use(VueRouter)
 
@@ -12,6 +13,11 @@ const routes = [
 		path: '/',
 		name: 'home',
 		component: Home
+	},
+	{
+		path: '/bookmarks', 
+		name: 'bookmarks',
+		component: Bookmarks
 	},
 	{
 		path: '/:boardName', 

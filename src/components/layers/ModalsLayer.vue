@@ -8,7 +8,6 @@
 	import Modal from '../misc/Modal'
 	import FormModal from '../modals/FormModal'
 	import SearchModal from '../modals/SearchModal'
-	import StarredModal from '../modals/StarredModal'
 	import SettingsModal from '../modals/SettingsModal'
 	import MediaModal from '../modals/MediaModal'
 	import CaptchaModal from '../modals/CaptchaModal'
@@ -74,7 +73,6 @@
 			this.$bus.on('menu-chat-button-click', (data) => this.isOpen(FormModal) ? this.close(FormModal) : this.open(FormModal, data))
 			this.$bus.on('post-reply-button-click', (data) => this.isOpen(FormModal) ? this.passData(FormModal, data) : this.open(FormModal, data))
 			this.$bus.on('menu-search-button-click', (data) => this.isOpen(SearchModal) ? this.close(SearchModal) : this.open(SearchModal, data))
-			this.$bus.on('menu-star-button-click', (data) => this.isOpen(StarredModal) ? this.close(StarredModal) : this.open(StarredModal, data))
 			this.$bus.on('menu-settings-button-click', (data) => this.isOpen(SettingsModal) ? this.close(SettingsModal) : this.open(SettingsModal, data))
 			this.$bus.on('post-attachment-preview-click', (data) => this.isOpen(MediaModal) ? this.passData(MediaModal, data) : this.open(MediaModal, data))
 			this.$bus.on('unsafe-link-click', (data) => this.isOpen(UnsafeLinkModal) ? this.passData(UnsafeLinkModal, data) : this.open(UnsafeLinkModal, data))

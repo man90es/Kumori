@@ -14,6 +14,14 @@
 			</router-link>
 		</div>
 	</header>
+	<header v-else-if="$route.name == 'bookmarks'">
+		<div>
+			<div>
+				<div class="title">Bookmarks</div>
+				<div>Posts you marked with a star</div>
+			</div>	
+		</div>
+	</header>
 </template>
 
 <script>
@@ -50,5 +58,4 @@
 	.feedLink img {
 		height: 2em;
 	}
-
 </style>

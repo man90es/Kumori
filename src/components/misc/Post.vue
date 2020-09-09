@@ -2,9 +2,9 @@
 	<article :class="{selected: $store.getters.isSelectedForDeletion(post.id)}">
 		<div class="postDetails">
 			<span v-if="post.modifiers && 'sage' in post.modifiers"><img class="icon" src="../../assets/icons/down.svg"></span>
-			<router-link class="refLink" :to="{name: 'thread', params: {threadId: post.threadId}}">
+			<a class="refLink" @click="handleRefLinkClick">
 				<span class="subject" v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
-			</router-link>
+			</a>
 			<button><img class="icon" src="../../assets/icons/menu.svg" @click="showMenu = !showMenu"></button>
 			<PostMenu v-if="showMenu" :parent="{hideMenu, post}" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
@@ -91,6 +91,17 @@
 					threadNumber: thread.head.number, 
 					postNumber: this.post.number, 
 					postId: this.post.id
+				})
+			},
+
+			handleRefLinkClick() {
+				// let thread = this.$store.getters.getThread(this.post.threadId)
+				this.$router.push({
+					name: 'thread', 
+					params: {
+						// boardName: thread.boardName, 
+						threadId: this.post.threadId
+					}
 				})
 			}
 		},

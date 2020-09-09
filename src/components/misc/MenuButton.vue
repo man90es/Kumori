@@ -10,14 +10,33 @@
 		props: ['icon'],
 		methods: {
 			dispatchEvent() {
-				if (this.icon == 'chat') {
-					let thread = this.$store.getters.getThread(this.$route.params.threadId)
-					this.$bus.emit(`menu-${this.icon}-button-click`, {
-						boardName: this.$route.params.boardName, 
-						threadNumber: thread ? thread.head.number : null
-					})
-				} else {
-					this.$bus.emit(`menu-${this.icon}-button-click`, {})
+				switch(this.icon) {
+					case 'chat':
+						let thread = this.$store.getters.getThread(this.$route.params.threadId)
+						this.$bus.emit(`menu-${this.icon}-button-click`, {
+							boardName: this.$route.params.boardName, 
+							threadNumber: thread ? thread.head.number : null
+						})
+						break
+					
+					case 'star':
+						this.$router.push({name: 'bookmarks'})
+						break
+
+					case 'home':
+						this.$router.push({name: 'home'})
+						break
+
+					case 'up':
+						scrollTo({top: 0, behavior: 'smooth'})
+						break
+
+					case 'down':
+						scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})
+						break
+					
+					default:
+						this.$bus.emit(`menu-${this.icon}-button-click`, {})
 				}
 			}
 		},

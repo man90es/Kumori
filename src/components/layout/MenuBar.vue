@@ -6,11 +6,9 @@
 			<MenuButton :icon="'settings'" />
 		</div>
 		<div>
-			<router-link to="/" v-if="mobile">
-				<MenuButton :icon="'home'" />
-			</router-link>
-			<MenuButton :icon="'chat'" />
-			<MenuButton :icon="'star'" />
+			<MenuButton v-if="mobile" :icon="'home'" />
+			<MenuButton v-if="$route.name != 'bookmarks'" :icon="'chat'" />
+			<MenuButton v-if="$route.name != 'bookmarks'" :icon="'star'" />
 			<MenuButton :icon="'down'" />
 		</div>
 	</div>
@@ -31,8 +29,6 @@
 			}
 		},
 		created() {
-			this.$bus.on('menu-up-button-click', () => scrollTo({top: 0, behavior: 'smooth'}))
-			this.$bus.on('menu-down-button-click', () => scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}))
 			this.$bus.on('swipe-left', () => this.visible = true)
 			this.$bus.on('swipe-right', () => this.visible = false)
 		},
