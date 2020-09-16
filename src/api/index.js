@@ -42,7 +42,11 @@ export function requestPosts(params) {
 }
 
 export function requestPost(params) {
-	request.ws({request: 'post', id: params})
+	if (params.id) {
+		request.ws({request: 'post', id: params.id})
+	} else {
+		request.ws({request: 'post', boardName: params.boardName, number: params.number})
+	}
 }
 
 export async function submitPost(formData) {

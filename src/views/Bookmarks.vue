@@ -29,7 +29,7 @@
 		},
 		methods: {
 			getBookmarkedPosts() {
-				this.$store.state.bookmarkedPostIds.forEach(requestPost)
+				this.$store.state.bookmarkedPostIds.forEach(id => requestPost({id}))
 			}
 		},
 		watch: {

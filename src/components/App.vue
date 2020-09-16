@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import { requestBoards } from '../api'
+	import { requestBoards, requestPost } from '../api'
 
 	export default {
 		name: 'App',
@@ -50,15 +50,33 @@
 		methods: {
 			swipeHandler(direction) {
 				this.$bus.emit(`swipe-${direction}`)
-			}
+			},
+
+			postLinkHoveredHandler(link) {
+				if (link.dataset.requested != undefined) return
+				if (link.dataset.boardName == undefined) link.dataset.boardName = this.$route.params.boardName
+				
+				requestPost({boardName: link.dataset.boardName, number: parseInt(link.dataset.number)})
+				link.dataset.requested = true
+ 			},
+
+ 			postLinkClickedHandler(link) {
+ 				this.$router.push({name: 'thread', params: {
+ 					boardName: link.dataset.boardName,
+ 					threadId: this.$store.state.individualPosts.find(post => post.number == link.dataset.number).threadId
+ 				}})
+ 			}
 		},
 		computed: {
 			theme() {
 				return this.themes[this.$store.state.theme]
 			}
 		},
-		created() {
+		created() {	
 			requestBoards()
+
+			this.$bus.on('post-link-hovered', this.postLinkHoveredHandler)
+			this.$bus.on('post-link-clicked', this.postLinkClickedHandler)
 		}
 	}
 </script>

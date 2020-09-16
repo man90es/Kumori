@@ -120,7 +120,7 @@ async function processPostLink(capture, matches) {
 	let boardName = boardFromMatch ? boardFromMatch.replace(/\//g, '') : ''
 
 	capture = capture.replace(/&gt;/g, '>')
-	return `<a class="postLink" data-board="${boardName}" data-number="${postFromMatch}">${capture}</a>`
+	return `<a class="postLink" onmouseover="window.vm.$bus.emit('post-link-hovered', this)" onclick="window.vm.$bus.emit('post-link-clicked', this)" data-board="${boardName}" data-number="${postFromMatch}">${capture}</a>`
 }
 
 function processLink(capture, matches) {
