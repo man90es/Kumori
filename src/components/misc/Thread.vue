@@ -1,13 +1,12 @@
 <template>
-	<div>
-		<Post :post="thread.head" />
-		<Post :key="post.id" :post="post" v-for="post in replies" />
+	<div v-if="thread">
+		<Post :postId="thread.head.id" />
+		<Post :key="postId" :postId="postId" v-for="postId in tail" />
 	</div>
 </template>
 
 <script>
 	import Post from './Post.vue'
-	import { requestPosts } from '../../api'
 	
 	export default {
 		name: 'Thread',
@@ -15,17 +14,65 @@
 			Post
 		},
 		props: [
-			'thread',
-			'pageSize',
-			'tail'
+			'threadId',
+			'pageSize'
 		],
+		data() {
+			return {
+				deferredPostRequest: false
+			}
+		},
 		computed: {
-			replies() {
-				return (this.$store.getters.isHidden(this.thread.head.id) ? [] : this.$store.getters.getThreadReplies(this.thread.id))
+			thread() {
+				return this.$store.state.threads[this.threadId]
+			},
+
+			tail() {
+				if (this.pageSize == 0) {
+					return []
+				} else {
+					return (this.$store.state.postLists[this.threadId] || []).slice(Math.max(this.thread.posts - this.pageSize, 1)).filter(Boolean)
+				}
+			}
+		},
+		methods: {
+			requestPostList() {
+				switch (this.$route.name) {
+					case 'board':
+						if (this.pageSize > 0 && this.thread.posts > 1 && this.tail.length < Math.min(this.thread.posts - 1, this.pageSize)) {
+							this.$store.dispatch('requestPostList', {threadId: this.threadId, count: this.pageSize, page: 'tail'})
+						}
+
+						break
+					case 'thread':
+						if (this.thread.posts > 1) {
+							this.$store.dispatch('requestPostList', {threadId: this.threadId, count: this.pageSize, page: 0})
+						}
+						break
+				}
+			}
+		},
+		watch: {
+			thread(newValue, oldValue) {
+				if (this.deferredPostRequest && oldValue == undefined && newValue != undefined) {
+					this.deferredPostRequest = false
+					this.requestPostList()
+				}
+			},
+
+			pageSize(newValue, oldValue) {
+				if (newValue > oldValue) {
+					this.requestPostList()
+				}
 			}
 		},
 		created() {
-			requestPosts({threadId: this.thread.id, count: this.pageSize, page: this.tail ? 'tail' : 0})
+			try {
+				this.requestPostList()
+			} catch(error) {
+				this.deferredPostRequest = true
+				console.log('Thread not ready for post request')
+			}
 		}
 	}
 </script>

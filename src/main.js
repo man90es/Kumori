@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueBus from 'vue-bus'
-import App from './components/App.vue'
+import App from './App.vue'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
 import './registerServiceWorker'

@@ -13,8 +13,6 @@
 </template>
 
 <script>
-	import { requestBoards, requestPost } from '../api'
-
 	export default {
 		name: 'App',
 		data() {
@@ -52,18 +50,26 @@
 				this.$bus.emit(`swipe-${direction}`)
 			},
 
+			findPost(postNumber) {
+				return Object.values(this.$store.state.posts).find(post => post.number == postNumber)
+			},
+
 			postLinkHoveredHandler(link) {
 				if (link.dataset.requested != undefined) return
 				if (link.dataset.boardName == undefined) link.dataset.boardName = this.$route.params.boardName
+				let postNumber = parseInt(link.dataset.number)
 				
-				requestPost({boardName: link.dataset.boardName, number: parseInt(link.dataset.number)})
+				if (this.findPost(postNumber) == undefined) {
+					this.$store.dispatch('requestPost', {boardName: link.dataset.boardName, number: postNumber})
+				}
+
 				link.dataset.requested = true
  			},
 
  			postLinkClickedHandler(link) {
  				this.$router.push({name: 'thread', params: {
  					boardName: link.dataset.boardName,
- 					threadId: this.$store.state.individualPosts.find(post => post.number == link.dataset.number).threadId
+ 					threadId: this.findPost(parseInt(link.dataset.number)).threadId
  				}})
  			}
 		},
@@ -72,8 +78,8 @@
 				return this.themes[this.$store.state.theme]
 			}
 		},
-		created() {	
-			requestBoards()
+		created() {
+			this.$store.dispatch('requestBoardList')
 
 			this.$bus.on('post-link-hovered', this.postLinkHoveredHandler)
 			this.$bus.on('post-link-clicked', this.postLinkClickedHandler)

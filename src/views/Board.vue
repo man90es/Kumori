@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection>
-			<Thread :key="thread.id" :thread="thread" :pageSize="$store.state.repliesOnBoardPage" :tail="true" v-for="thread in $store.state.threads"/>
+			<Thread v-if="threadId" :key="threadId" :threadId="threadId" :pageSize="$store.state.repliesOnBoardPage" v-for="threadId in threadList"/>
 		</MainSection>
 		<MenuBar />
 
@@ -16,7 +16,6 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Thread from '../components/misc/Thread.vue'
-	import { requestThreads } from '../api'
 
 	export default {
 		name: 'Board',
@@ -27,18 +26,25 @@
 			ModalsLayer,
 			Thread
 		},
+		computed: {
+			threadList() {
+				return this.$store.state.threadLists[this.$route.params.boardName]
+			}
+		},
 		methods: {
-			requestThreads(boardName) {
-				requestThreads({boardName, count: 10, page: 0})
+			requestThreads() {
+				if (this.threadList == undefined) {
+					this.$store.dispatch('requestThreadList', {boardName: this.$route.params.boardName, count: 10, page: 0})
+				}
 			}
 		},
 		watch: {
-			$route(to) {
-				this.requestThreads(to.params.boardName)
+			$route() {
+				this.requestThreads()
 			}
 		},
 		created() {
-			this.requestThreads(this.$route.params.boardName)
+			this.requestThreads()
 		}
 	}
 </script>

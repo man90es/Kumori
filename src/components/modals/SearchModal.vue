@@ -16,8 +16,6 @@
 </template>
 
 <script>
-	import { submitSearchQuery } from '../../api'
-
 	export default {
 		name: 'SearchModal',
 		props: [
@@ -34,7 +32,7 @@
 		},
 		methods: {
 			submit() {
-				submitSearchQuery({
+				this.$store.dispatch('submitSearchQuery', {
 					query: this.query, 
 					parameters: {
 						after: this.dateFrom,

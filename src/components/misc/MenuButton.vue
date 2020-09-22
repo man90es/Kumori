@@ -12,10 +12,9 @@
 			dispatchEvent() {
 				switch(this.icon) {
 					case 'chat':
-						let thread = this.$store.getters.getThread(this.$route.params.threadId)
-						this.$bus.emit(`menu-${this.icon}-button-click`, {
+						this.$bus.emit('menu-chat-button-click', {
 							boardName: this.$route.params.boardName, 
-							threadNumber: thread ? thread.head.number : null
+							threadId: parseInt(this.$route.params.threadId)
 						})
 						break
 					

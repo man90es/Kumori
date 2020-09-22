@@ -115,7 +115,7 @@ function processText(tagString) {
 	}
 }
 
-async function processPostLink(capture, matches) {
+function processPostLink(capture, matches) {
 	let [boardFromMatch, postFromMatch] = matches
 	let boardName = boardFromMatch ? boardFromMatch.replace(/\//g, '') : ''
 
@@ -136,7 +136,7 @@ function processLink(capture, matches) {
 	return `<a onclick="window.vm.$bus.emit('unsafe-link-click', '${uri}')" title="${uri}">${title}</a>`
 }
 
-export default async function processMarkup(text) {
+export default function processMarkup(text) {
 	if (!text) return ''
 
 	// Step 0.
@@ -161,7 +161,7 @@ export default async function processMarkup(text) {
 			if (typeof typeMap[tagType] === 'function') {
 				let {matches, capture} = getMatches(text, regex)
 				for (let k = 0; k < capture.length; k++) {
-					text = text.replace(capture[k], await typeMap[tagType](capture[k], matches[k]))
+					text = text.replace(capture[k], typeMap[tagType](capture[k], matches[k]))
 				}
 				continue
 			}

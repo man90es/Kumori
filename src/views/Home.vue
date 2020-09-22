@@ -3,7 +3,7 @@
 		<div :style="backgroundStyle"></div>
 		<img src="logo.svg">
 		<ul>
-			<li v-for="(board, boardName) in $store.state.boards" :key="boardName">
+			<li v-for="boardName in $store.state.boardList" :key="boardName">
 				<router-link :to="{name: 'board', params: {boardName}}">/{{boardName}}</router-link>
 			</li>
 		</ul>

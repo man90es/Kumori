@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection>
-			<Thread v-if="$store.getters.getCurrentThread" :thread="$store.getters.getCurrentThread" :pageSize="500" :tail="false" />
+			<Thread :threadId="parseInt($route.params.threadId)" :pageSize="500" :tail="false" />
 		</MainSection>
 		<MenuBar />
 
@@ -16,7 +16,6 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Thread from '../components/misc/Thread.vue'
-	import { requestThread } from '../api'
 
 	export default {
 		name: 'SingleThread',
@@ -29,17 +28,18 @@
 		},
 		methods: {
 			requestThread(id) {
-				requestThread({id})
+				if (this.$store.state.threads[id] == undefined) {
+					this.$store.dispatch('requestThread', {id})
+				}
 			}
 		},
 		watch: {
 			$route(to) {
 				this.requestThread(to.params.threadId)
-
 			}
 		},
 		created() {
-			this.requestThread(this.$route.params.threadId)
+			this.requestThread(parseInt(this.$route.params.threadId))
 		}
 	}
 </script>

@@ -1,30 +1,23 @@
-import { APIServer } from '../../config'
-
 export const request = {
 	meta: null,
 	wsGate: null,
 	ready: false,
+	APIServer: '',
 
-	init: function(messageHandler) {
-		let xhr = new XMLHttpRequest()
-		xhr.open('GET', `${APIServer}/api/meta`)
+	init: function(APIServer, messageHandler) {
+		this.APIServer = APIServer
+		this.http('GET', 'meta', null).then(response => {
+			this.meta = response
+			this.wsGate = new WebSocket(this.meta.ws)
 
-		xhr.onload = () => {
-			if (xhr.status == 200) {
-				this.meta = JSON.parse(xhr.response)
-				this.wsGate = new WebSocket(this.meta.ws)
+			this.wsGate.onopen = () => this.ready = true
+			this.wsGate.onclose = () => this.ready = false
+			window.onbeforeunload = () => this.wsGate.close()
 
-				this.wsGate.onopen = () => this.ready = true
-				this.wsGate.onclose = () => this.ready = false
-				window.onbeforeunload = () => this.wsGate.close()
-
-				this.wsGate.addEventListener('message', (message) => {
-					messageHandler(JSON.parse(message.data))
-				})
-			}
-		}
-
-		xhr.send(null)
+			this.wsGate.addEventListener('message', (message) => {
+				messageHandler(JSON.parse(message.data))
+			})
+		})
 	},
 
 	ws: function(req) {
@@ -49,7 +42,7 @@ export const request = {
 		return new Promise((resolve, reject) => {
 			let xhr = new XMLHttpRequest()
 		
-			xhr.open("POST", `${APIServer}/api/${path}`)
+			xhr.open(method, `${this.APIServer}/api/${path}`)
 			
 			xhr.onload = () => {
 				if (xhr.status == 200) {
@@ -60,7 +53,7 @@ export const request = {
 			}
 
 			xhr.responseType = 'json'
-			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+			xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
 			xhr.withCredentials = true
 			xhr.send(body)
 		})

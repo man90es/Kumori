@@ -4,7 +4,7 @@
 			Toggle theme <div id="themeCheckbox"></div>
 		</span>
 		<span>
-			Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', repliesOnBoardPage)">
+			Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
 		</span>
 	</div>
 </template>

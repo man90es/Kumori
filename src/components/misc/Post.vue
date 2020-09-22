@@ -1,16 +1,16 @@
 <template>
-	<article :class="{selected: $store.getters.isSelectedForDeletion(post.id)}">
+	<article :class="{selected}">
 		<div class="postDetails">
 			<span v-if="post.modifiers && 'sage' in post.modifiers"><img class="icon" src="../../assets/icons/down.svg"></span>
 			<a class="refLink" @click="handleRefLinkClick">
-				<span class="subject" v-if="post.subject">{{formatSubject()}}</span> #{{post.number}}
+				<span class="subject" v-if="post.subject">{{formattedSubject}}</span> #{{post.number}}
 			</a>
 			<button><img class="icon" src="../../assets/icons/menu.svg" @click="showMenu = !showMenu"></button>
-			<PostMenu v-if="showMenu" :parent="{hideMenu, post}" />
+			<PostMenu v-if="showMenu" :parent="{hideMenu, post, hidden, bookmarked, selected}" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
 		</div>
-		<div v-if="!$store.getters.isHidden(post.id)">
+		<div v-if="!hidden">
 			<div v-if="post.attachments" class="attachments">
 				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
@@ -32,12 +32,41 @@
 			PostMenu
 		},
 		props: [
-			'post'
+			'postId'
 		],
 		data() {
 			return {
-				parsedText: this.post.text,
 				showMenu: false
+			}
+		},
+		computed: {
+			post() {
+				return this.$store.state.posts[this.postId]
+			},
+
+			parsedText() {
+				return processMarkup(this.post.text)
+			},
+
+			formattedSubject() {
+				let subject = this.post.subject
+				return subject.length > 55 ? truncateString(subject, 55) : subject
+			},
+
+			hidden() {
+				return this.$store.state.hiddenPostsList.includes(this.postId)
+			},
+
+			bookmarked() {
+				return this.$store.state.bookmarkedPostsList.includes(this.postId)
+			},
+
+			selected() {
+				return this.$store.state.selectedPostsList.includes(this.postId)
+			},
+
+			thread() {
+				return this.$store.state.threads[this.post.threadId]
 			}
 		},
 		methods: {
@@ -71,42 +100,40 @@
 				}
 			},
 
-			formatSubject() {
-				let subject = this.post.subject
-				return subject.length > 55 ? truncateString(subject, 55) : subject
-			},
-
-			async formatText() {
-				this.parsedText = await processMarkup(this.post.text)
-			},
-
 			hideMenu() {
 				this.showMenu = false
 			},
 
 			handleReplyClick() {
-				let thread = this.$store.getters.getThread(this.post.threadId)
 				this.$bus.emit('post-reply-button-click', {
-					boardName: thread.boardName, 
-					threadNumber: thread.head.number, 
-					postNumber: this.post.number, 
-					postId: this.post.id
+					threadId: this.post.threadId,
+					boardName: this.thread.boardName, 
+					threadNumber: this.thread.head.number, 
+					postNumber: this.post.number
 				})
 			},
 
 			handleRefLinkClick() {
-				// let thread = this.$store.getters.getThread(this.post.threadId)
 				this.$router.push({
 					name: 'thread', 
 					params: {
-						// boardName: thread.boardName, 
+						boardName: this.thread.boardName,
 						threadId: this.post.threadId
 					}
 				})
 			}
 		},
+		watch: {
+			post(newValue, oldValue) {
+				if (this.thread == undefined && oldValue == undefined && newValue != undefined) {
+					this.$store.dispatch('requestThread', {id: this.post.threadId})
+				}
+			}
+		},
 		created() {
-			this.formatText()
+			if (this.post == undefined) {
+				this.$store.dispatch('requestPost', {id: this.postId})
+			}
 		}
 	}
 </script>

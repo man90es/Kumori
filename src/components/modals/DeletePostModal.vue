@@ -26,7 +26,7 @@
 			okHandler() {
 				let data = new FormData()
 
-				this.$store.state.selectedForDeletionPosts.forEach((postId) => {
+				this.$store.state.selectedPostsList.forEach((postId) => {
 					let checkbox = document.createElement('input')
 					checkbox.type = 'checkbox'
 					checkbox.checked = true
@@ -34,17 +34,16 @@
 				})
 
 				deletePosts(data)
-				this.$store.commit('clearSelectedForDeletionPosts')
-
-				this.parent.close()
+				this.cancelHandler()
 			},
 
 			cancelHandler() {
 				this.parent.close()
+				this.$store.commit('clearSelected')
 			},
 
 			handleDataUpdate() {
-				this.selectedPostCount = this.$store.state.selectedForDeletionPosts.length
+				this.selectedPostCount = this.$store.state.selectedPostsList.length
 
 				if (this.selectedPostCount < 1) {
 					this.parent.close()

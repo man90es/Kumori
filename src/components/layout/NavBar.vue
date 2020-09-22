@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!mobile">
 		<router-link to="/">{{siteTitle}}</router-link>
-		<router-link :key="boardName" :to="{name: 'board', params: {boardName}}" v-for="(board, boardName) in $store.state.boards">/{{boardName}}</router-link>
+		<router-link :key="boardName" :to="{name: 'board', params: {boardName}}" v-for="boardName in $store.state.boardList">/{{boardName}}</router-link>
 	</div>
 </template>
 

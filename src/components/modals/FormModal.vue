@@ -1,7 +1,7 @@
 <template>
 	<form @submit.prevent="submitHandler()">
 		<input hidden name="boardName" v-model="boardName">
-		<input hidden name="threadNumber" v-model="threadNumber">
+		<input hidden name="threadId" v-model="threadId">
 
 		<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
 		<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
@@ -49,6 +49,7 @@
 				files: [],
 				attachmentNSFW: [],
 				thumbs: [],
+				threadId: null,
 				boardName: null,
 				threadNumber: null,
 				waitingToSubmit: false,
@@ -99,11 +100,12 @@
 			handleDataUpdate(data) {
 				this.updatedData = data
 
+				this.threadId = data.threadId
 				this.boardName = data.boardName
 				this.threadNumber = data.threadNumber
 
 				this.parent.setParams({
-					header: data.threadNumber ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`
+					header: data.threadId ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`
 				})
 
 				if (data.postNumber) {

@@ -1,9 +1,9 @@
 <template>
 	<div class="postMenu" @click="parent.hideMenu">
-		<div @click="hideHandler">{{$store.getters.isHidden(parent.post.id) ? 'Show': 'Hide'}}</div>
-		<div @click="bookmarkHandler">{{$store.getters.isBookmarked(parent.post.id) ? 'Remove from bookmarks': 'Bookmark'}}</div>
-		<div @click="deleteHandler">{{$store.getters.isSelectedForDeletion(parent.post.id) ? 'Do not delete': 'Delete'}}</div>
-		<!-- <div>Edit</div> -->
+		<div @click="hideHandler">{{parent.hidden ? 'Show': 'Hide'}}</div>
+		<div @click="bookmarkHandler">{{parent.bookmarked ? 'Remove from bookmarks': 'Bookmark'}}</div>
+		<div @click="deleteHandler">{{parent.selected ? 'Do not delete': 'Delete'}}</div>
+		<div>Cancel</div>
 	</div>
 </template>
 
@@ -15,15 +15,15 @@
 		],
 		methods: {
 			hideHandler() {
-				this.$store.commit('toggleHidePost', this.parent.post.id)
+				this.$store.commit('toggleHidden', this.parent.post.id)
 			},
 
 			bookmarkHandler() {
-				this.$store.commit('toggleBookmarkPost', this.parent.post.id)
+				this.$store.commit('toggleBookmarked', this.parent.post.id)
 			},
 
 			deleteHandler() {
-				this.$store.commit('toggleSelectedForDeletionPost', this.parent.post.id)
+				this.$store.commit('toggleSelected', this.parent.post.id)
 				this.$bus.emit('post-delete-button-click')
 			}
 		}

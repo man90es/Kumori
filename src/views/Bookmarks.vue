@@ -2,7 +2,7 @@
 	<div id="bookmarks">
 		<NavBar />
 		<MainSection>
-			<Post :key="post.id" :post="post" v-for="post in $store.getters.getBookmarkedPosts"/>
+			<Post :key="postId" :postId="postId" v-for="postId in $store.state.bookmarkedPostsList"/>
 		</MainSection>
 		<MenuBar />
 
@@ -16,7 +16,6 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Post from '../components/misc/Post.vue'
-	import { requestPost } from '../api'
 
 	export default {
 		name: 'Bookmarks',
@@ -26,19 +25,6 @@
 			MenuBar,
 			ModalsLayer,
 			Post
-		},
-		methods: {
-			getBookmarkedPosts() {
-				this.$store.state.bookmarkedPostIds.forEach(id => requestPost({id}))
-			}
-		},
-		watch: {
-			$route(to) {
-				this.getBookmarkedPosts()
-			}
-		},
-		created() {
-			this.getBookmarkedPosts()
 		}
 	}
 </script>

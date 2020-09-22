@@ -2,7 +2,7 @@
 	<div id="feed">
 		<NavBar />
 		<MainSection>
-			<Post :key="id" :post="post" v-for="(post, id) in $store.state.feed"/>
+			<Post :key="postId" :postId="postId" v-for="postId in feedList"/>
 		</MainSection>
 		<MenuBar />
 
@@ -16,7 +16,6 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Post from '../components/misc/Post.vue'
-	import { requestPosts } from '../api'
 
 	export default {
 		name: 'Feed',
@@ -27,12 +26,16 @@
 			ModalsLayer,
 			Post
 		},
+		computed: {
+			feedList() {
+				return this.$store.state.feedLists[this.$route.params.boardName]
+			}
+		},
 		methods: {
 			getFeed(boardName) {
-				const postsPerPage = 10 // TODO: Should this be here?
-				const currentPage = 0 // TODO: Must be a parameter
-
-				requestPosts({boardName, count: postsPerPage, page: currentPage})
+				if (this.feedList == undefined) {
+					this.$store.dispatch('requestFeed', {boardName, count: 10, page: 0})
+				}
 			}
 		},
 		watch: {

@@ -38,7 +38,7 @@
 		created() {
 			this.imageSrc = getCaptchaImageURI()
 			this.parent.setParams({
-				header: 'Prove you\'re not gay',
+				header: 'Humanity check',
 				closeable: false,
 				draggable: false,
 				backdrop: true
