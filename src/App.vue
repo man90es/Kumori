@@ -110,7 +110,6 @@
 
 	.icon{
 		filter: invert(var(--icon-invert));
-		vertical-align: middle;
 	}
 
 	q::before{
