@@ -1,7 +1,12 @@
 <template>
 	<div>
 		<span @click="() => $store.commit('toggleTheme')">
-			Toggle theme <div id="themeCheckbox"></div>
+			Light theme
+			<ToggleSwitch :state="!!$store.state.theme" />
+		</span>
+		<span @click="() => $store.commit('toggleCompactBoardMenu')">
+			Compact board menu
+			<ToggleSwitch :state="$store.state.compactBoardMenu" />
 		</span>
 		<span>
 			Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
@@ -10,11 +15,16 @@
 </template>
 
 <script>
+	import ToggleSwitch from '../misc/ToggleSwitch.vue'
+
 	export default {
 		name: 'SettingsModal',
 		props: [
 			'parent'
 		],
+		components: {
+			ToggleSwitch
+		},
 		data() {
 			return {
 				repliesOnBoardPage: this.$store.state.repliesOnBoardPage
@@ -35,13 +45,6 @@
 		height: 2rem;
 		justify-content: space-between;
 		cursor: pointer;
-	}
-
-	#themeCheckbox {
-		background-color: var(--alternative-theme-representative-color);
-		width: 1rem;
-		height: 1rem;
-		border-radius: 50%;
 	}
 
 	input[type="number"] {

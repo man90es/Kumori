@@ -4,7 +4,8 @@ const persistentMutations = {
 	toggleBookmarked: 'bookmarkedPostsList',
 	toggleTheme: 'theme',
 	setRepliesOnBoardPage: 'repliesOnBoardPage',
-	toggleDebug: 'debug'
+	toggleDebug: 'debug',
+	toggleCompactBoardMenu: 'compactBoardMenu'
 }
 
 let data = {}

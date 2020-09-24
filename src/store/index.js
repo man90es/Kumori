@@ -36,7 +36,8 @@ const store = new Vuex.Store({
 		trustedPostCount: 0,
 		theme: 0,
 		repliesOnBoardPage: 3,
-		debug: false
+		debug: false,
+		compactBoardMenu: false
 	},
 
 	plugins: [ VuexLS ],
@@ -141,6 +142,10 @@ const store = new Vuex.Store({
 		toggleDebug(state) {
 			state.debug = !state.debug
 		},
+
+		toggleCompactBoardMenu(state) {
+			state.compactBoardMenu = !state.compactBoardMenu
+		}
 	},
 
 	actions: { // Requests to API

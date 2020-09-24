@@ -28,7 +28,7 @@
 						'--link-over-color': '#40c0f3',
 						'--link-hover-color': '#108fbf',
 						'--gap-size': '0.5rem',
-						'--alternative-theme-representative-color': '#e6e6e6'
+						'--icon-invert': '70%'
 					},
 					{
 						'--text-color': '#37474f',
@@ -40,7 +40,7 @@
 						'--link-over-color': '#d7535c',
 						'--link-hover-color': '#096be8',
 						'--gap-size': '0.5rem',
-						'--alternative-theme-representative-color': '#292d35'
+						'--icon-invert': '40%'
 					}
 				]
 			}
@@ -109,7 +109,7 @@
 	}
 
 	.icon{
-		filter: invert(75%);
+		filter: invert(var(--icon-invert));
 		vertical-align: middle;
 	}
 
