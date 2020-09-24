@@ -98,8 +98,6 @@
 			},
 
 			handleDataUpdate(data) {
-				this.updatedData = data
-
 				this.threadId = data.threadId
 				this.boardName = data.boardName
 				this.threadNumber = data.threadNumber
@@ -151,12 +149,6 @@
 				this.files = []
 				this.attachmentNSFW = []
 				this.thumbs = []
-			}
-		},
-
-		computed: {
-			data() {
-				return updatedData || originalData
 			}
 		},
 

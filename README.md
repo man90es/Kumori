@@ -21,5 +21,10 @@ yarn build
 yarn lint
 ```
 
+### Toggle debug mode using browser console
+```
+vm.$store.commit('toggleDebug')
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

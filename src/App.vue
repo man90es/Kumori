@@ -64,14 +64,14 @@
 				}
 
 				link.dataset.requested = true
- 			},
+			},
 
- 			postLinkClickedHandler(link) {
- 				this.$router.push({name: 'thread', params: {
- 					boardName: link.dataset.boardName,
- 					threadId: this.findPost(parseInt(link.dataset.number)).threadId
- 				}})
- 			}
+			postLinkClickedHandler(link) {
+				this.$router.push({name: 'thread', params: {
+					boardName: link.dataset.boardName,
+					threadId: this.findPost(parseInt(link.dataset.number)).threadId
+				}})
+			}
 		},
 		computed: {
 			theme() {

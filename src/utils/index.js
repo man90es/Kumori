@@ -1,4 +1,5 @@
 export processMarkup from './markup'
+export log from './log'
 
 export function num2Word(n, words) {
 	if (words.length < 3) words[2] = words[1]
@@ -26,17 +27,3 @@ export function	truncateString(string, targetLength) {
 
 	return string.substr(0, frontChars) + "..." + string.substr(string.length - backChars)
 }
-
-// export function promiseTimeout(promise, ms) {
-// 	let timeout = new Promise((resolve, reject) => {
-// 		let id = setTimeout(() => {
-// 			clearTimeout(id)
-// 			reject(`Timed out in ${ms} ms.`)
-// 		}, ms)
-// 	})
-
-// 	return Promise.race([
-// 		promise,
-// 		timeout
-// 	])
-// }

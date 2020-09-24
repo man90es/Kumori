@@ -3,7 +3,8 @@ const persistentMutations = {
 	toggleHidden: 'hiddenPostsList',
 	toggleBookmarked: 'bookmarkedPostsList',
 	toggleTheme: 'theme',
-	setRepliesOnBoardPage: 'repliesOnBoardPage'
+	setRepliesOnBoardPage: 'repliesOnBoardPage',
+	toggleDebug: 'debug'
 }
 
 let data = {}

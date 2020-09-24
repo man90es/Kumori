@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { VuexLS } from './VuexLS'
 import { request } from '../api/request'
-import { APIServer, debug } from '../../config'
+import { APIServer } from '../../config'
+import { log } from '../utils'
 
 Vue.use(Vuex)
 
@@ -34,7 +35,8 @@ const store = new Vuex.Store({
 		bookmarkedPostsList: [],
 		trustedPostCount: 0,
 		theme: 0,
-		repliesOnBoardPage: 3
+		repliesOnBoardPage: 3,
+		debug: false
 	},
 
 	plugins: [ VuexLS ],
@@ -128,65 +130,59 @@ const store = new Vuex.Store({
 			state.trustedPostCount = payload
 		},
 
-		toggleTheme(state, payload) {
+		toggleTheme(state) {
 			state.theme = (state.theme + 1) % 2
 		},
 
 		setRepliesOnBoardPage(state, payload) {
 			state.repliesOnBoardPage = payload
-		}
+		},
+
+		toggleDebug(state) {
+			state.debug = !state.debug
+		},
 	},
 
 	actions: { // Requests to API
+		// eslint-disable-next-line no-unused-vars
 		requestBoardList(context) {
-			if (debug) {
-				console.log('Requesting boards')
-			}
-
+			log('Requesting boards')
 			request.ws({request: 'boards'})
 		},
 
+		// eslint-disable-next-line no-unused-vars
 		requestThreadList(context, {boardName, count, page}) {
-			if (debug) {
-				console.log('Requesting threads for board: ', boardName)
-			}
-
+			log('Requesting threads for board: ', boardName)
 			request.ws({request: 'threads', boardName, count, page})
 		},
 
+		// eslint-disable-next-line no-unused-vars
 		requestThread(context, {id}) {
-			if (debug) {
-				console.log('Requesting thread: ', id)
-			}
-
+			log('Requesting thread: ', id)
 			request.ws({request: 'thread', id})
 		},
 
+		// eslint-disable-next-line no-unused-vars
 		requestPostList(context, {threadId, count, page}) {
-			if (debug) {
-				console.log('Requesting posts for thread: ', threadId)
-			}
-
+			log('Requesting posts for thread: ', threadId)
 			request.ws({request: 'posts', threadId, count, page})
 		},
 
+		// eslint-disable-next-line no-unused-vars
 		requestPost(context, {id}) {
-			if (debug) {
-				console.log('Requesting post: ', id)
-			}
-
+			log('Requesting post: ', id)
 			request.ws({request: 'post', id})
 		},
 
+		// eslint-disable-next-line no-unused-vars
 		requestFeed(context, {boardName, count, page}) {
-			if (debug) {
-				console.log('Requesting feed for board: ', boardName)
-			}
-
+			log('Requesting feed for board: ', boardName)
 			request.ws({request: 'posts', boardName, count, page})
 		},
 
+		// eslint-disable-next-line no-unused-vars
 		submitSearchQuery(context, {query, parameters}) {
+			log('Submitting search query: ', query)
 			request.ws({request: 'search', query, parameters})
 		}
 	}
@@ -264,9 +260,7 @@ request.init(APIServer, (message) => { // API response handlers
 			break
 
 		default:
-			if (debug) {
-				console.log('Unhandled websocket message:', message)
-			}
+			log('Unhandled websocket message:', message)
 	}
 })
 
