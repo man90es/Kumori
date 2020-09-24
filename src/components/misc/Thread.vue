@@ -1,6 +1,7 @@
 <template>
 	<div v-if="thread">
 		<Post :postId="thread.head.id" />
+		<router-link v-if="$route.name == 'board' && omittedPosts && pageSize" :to="{name: 'thread', params: {threadId}}">Omitted posts: {{omittedPosts}}</router-link>
 		<Post :key="postId" :postId="postId" v-for="postId in tail" />
 	</div>
 </template>
@@ -34,6 +35,10 @@
 				} else {
 					return (this.$store.state.postLists[this.threadId] || []).slice(Math.max(this.thread.posts - this.pageSize, 1)).filter(Boolean)
 				}
+			},
+
+			omittedPosts() {
+				return this.$route.name == 'board' ? Math.max(this.thread.posts - 1 - this.pageSize, 0) : 0
 			}
 		},
 		methods: {
@@ -77,3 +82,11 @@
 		}
 	}
 </script>
+
+<style scoped>
+	a {
+		margin-left: calc(var(--gap-size) * 4);
+		font-size: 0.9rem;
+		color: var(--text-secondary-color);
+	}
+</style>

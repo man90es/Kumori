@@ -167,6 +167,7 @@
 		position: absolute;
 		right: 0;
 		color: var(--text-secondary-color);
+		font-size: 0.9rem;
 	}
 
 	.subject{
