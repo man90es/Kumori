@@ -14,7 +14,8 @@
 					case 'chat':
 						this.$bus.emit('menu-chat-button-click', {
 							boardName: this.$route.params.boardName, 
-							threadId: parseInt(this.$route.params.threadId)
+							threadId: parseInt(this.$route.params.threadId),
+							threadNumber: this.$route.name == 'thread' ? this.$store.state.threads[parseInt(this.$route.params.threadId)].head.number : null
 						})
 						break
 					
