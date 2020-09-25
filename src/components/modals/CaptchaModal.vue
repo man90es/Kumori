@@ -10,9 +10,6 @@
 
 	export default {
 		name: 'CaptchaModal',
-		props: [
-			'parent'
-		],
 		data() {
 			return {
 				imageSrc: null
@@ -23,7 +20,7 @@
 				await submitCaptcha(new FormData(this.$el)).then((response) => {
 					if (response.trustedPostCount > 0) {
 						this.$bus.emit('captcha-solved', {})
-						this.parent.close()
+						this.$parent.close()
 					} else {
 						this.refresh()
 					}
@@ -37,7 +34,7 @@
 
 		created() {
 			this.imageSrc = getCaptchaImageURI()
-			this.parent.setParams({
+			this.$parent.setParams({
 				header: 'Humanity check',
 				closeable: false,
 				draggable: false,

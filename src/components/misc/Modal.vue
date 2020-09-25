@@ -4,7 +4,7 @@
 			{{header}}
 			<button @click="close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
 		</div>
-		<component :is="modalBody" :originalData="data" :parent="{key: $vnode.key, setParams, close}"></component>
+		<component :is="modalBody" :originalData="data"></component>
 	</div>
 </template>
 
@@ -23,8 +23,7 @@
 		},
 		props: [
 			'modalBody',
-			'data',
-			'parent'
+			'data'
 		],
 		methods: {
 			mouseDownHandler(event) {
@@ -73,7 +72,7 @@
 
 			close() {
 				if (this.backdrop) {
-					this.parent.setBackdrop(false)
+					this.$parent.setBackdrop(false)
 				}
 
 				this.$bus.emit('modal-close-button-click', this.$vnode.key)
@@ -94,7 +93,7 @@
 
 				if ('backdrop' in params) {
 					this.backdrop = params.backdrop
-					this.parent.setBackdrop(params.backdrop)
+					this.$parent.setBackdrop(params.backdrop)
 				}
 			}
 		},

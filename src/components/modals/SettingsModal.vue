@@ -19,9 +19,6 @@
 
 	export default {
 		name: 'SettingsModal',
-		props: [
-			'parent'
-		],
 		components: {
 			ToggleSwitch
 		},
@@ -31,7 +28,7 @@
 			}
 		},
 		created() {
-			this.parent.setParams({
+			this.$parent.setParams({
 				header: 'Settings'
 			})
 		}

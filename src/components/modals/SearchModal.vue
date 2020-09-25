@@ -18,9 +18,6 @@
 <script>
 	export default {
 		name: 'SearchModal',
-		props: [
-			'parent'
-		],
 		data() {
 			return {
 				query: '',
@@ -45,7 +42,7 @@
 			}
 		},
 		created() {
-			this.parent.setParams({
+			this.$parent.setParams({
 				header: 'Search'
 			})
 		}

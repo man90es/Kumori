@@ -1,6 +1,6 @@
 <template>
 	<div :class="{backdrop: backdrop}" id="ModalsLayer" v-if="modals.length > 0">
-		<Modal v-for="(modalBody, i) in modals" :modalBody="modalBody" :data="datas[i]" :key="keys[i]" :parent="{setBackdrop}" />
+		<Modal v-for="(modalBody, i) in modals" :modalBody="modalBody" :data="datas[i]" :key="keys[i]" />
 	</div>
 </template>
 

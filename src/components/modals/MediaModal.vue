@@ -9,8 +9,7 @@
 	export default {
 		name: 'MediaModal',
 		props: [
-			'data',
-			'parent'
+			'data'
 		],
 		data() {
 			return {
@@ -24,7 +23,7 @@
 			}
 		},
 		mounted() {
-			this.parent.setParams({
+			this.$parent.setParams({
 				header: 'Media'
 			})
 			

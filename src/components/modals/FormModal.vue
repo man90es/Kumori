@@ -39,8 +39,7 @@
 	export default {
 		name: 'FormModal',
 		props: [
-			'originalData',
-			'parent'
+			'originalData'
 		],
 		data() {
 			return {
@@ -102,7 +101,7 @@
 				this.boardName = data.boardName
 				this.threadNumber = data.threadNumber
 
-				this.parent.setParams({
+				this.$parent.setParams({
 					header: data.threadId ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`
 				})
 
@@ -154,7 +153,7 @@
 
 		created() {
 			this.handleDataUpdate(this.originalData)
-			this.$bus.on(`modal-${this.parent.key}-data-update`, this.handleDataUpdate)
+			this.$bus.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
 			this.$bus.on('captcha-solved', this.submit)
 		}
 	}

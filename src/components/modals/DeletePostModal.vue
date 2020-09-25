@@ -14,7 +14,6 @@
 	export default {
 		name: 'DeletePostModal',
 		props: [
-			'parent',
 			'originalData'
 		],
 		data() {
@@ -38,7 +37,7 @@
 			},
 
 			cancelHandler() {
-				this.parent.close()
+				this.$parent.close()
 				this.$store.commit('clearSelected')
 			},
 
@@ -46,9 +45,9 @@
 				this.selectedPostCount = this.$store.state.selectedPostsList.length
 
 				if (this.selectedPostCount < 1) {
-					this.parent.close()
+					this.$parent.close()
 				} else {
-					this.parent.setParams({
+					this.$parent.setParams({
 						header: `Delete ${this.selectedPostCount} selected post${this.selectedPostCount > 1 ? 's' : ''}?`
 					})
 				}
@@ -57,7 +56,7 @@
 		},
 		created() {
 			this.handleDataUpdate()
-			this.$bus.on(`modal-${this.parent.key}-data-update`, this.handleDataUpdate)
+			this.$bus.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
 		}
 	}
 </script>

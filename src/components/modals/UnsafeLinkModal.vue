@@ -12,21 +12,20 @@
 	export default {
 		name: 'UnsafeLinkModal',
 		props: [
-			'parent',
 			'originalData'
 		],
 		methods: {
 			okHandler() {
 				window.open(this.originalData)
-				this.parent.close()
+				this.$parent.close()
 			},
 
 			cancelHandler() {
-				this.parent.close()
+				this.$parent.close()
 			}
 		},
 		created() {
-			this.parent.setParams({
+			this.$parent.setParams({
 				header: 'Are you sure you want to open this link?',
 				closeable: false,
 				draggable: false,

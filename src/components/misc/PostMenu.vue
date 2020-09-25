@@ -1,8 +1,8 @@
 <template>
-	<div class="postMenu" @click="parent.hideMenu">
-		<div @click="hideHandler">{{parent.hidden ? 'Show': 'Hide'}}</div>
-		<div @click="bookmarkHandler">{{parent.bookmarked ? 'Remove from bookmarks': 'Bookmark'}}</div>
-		<div @click="deleteHandler">{{parent.selected ? 'Do not delete': 'Delete'}}</div>
+	<div class="postMenu" @click="$parent.hideMenu">
+		<div @click="hideHandler">{{$parent.hidden ? 'Show': 'Hide'}}</div>
+		<div @click="bookmarkHandler">{{$parent.bookmarked ? 'Remove from bookmarks': 'Bookmark'}}</div>
+		<div @click="deleteHandler">{{$parent.selected ? 'Do not delete': 'Delete'}}</div>
 		<div>Cancel</div>
 	</div>
 </template>
@@ -10,20 +10,17 @@
 <script>
 	export default {
 		name: 'PostMenu',
-		props: [
-			'parent'
-		],
 		methods: {
 			hideHandler() {
-				this.$store.commit('toggleHidden', this.parent.post.id)
+				this.$store.commit('toggleHidden', this.$parent.post.id)
 			},
 
 			bookmarkHandler() {
-				this.$store.commit('toggleBookmarked', this.parent.post.id)
+				this.$store.commit('toggleBookmarked', this.$parent.post.id)
 			},
 
 			deleteHandler() {
-				this.$store.commit('toggleSelected', this.parent.post.id)
+				this.$store.commit('toggleSelected', this.$parent.post.id)
 				this.$bus.emit('post-delete-button-click')
 			}
 		}
