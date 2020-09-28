@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { VuexLS } from './VuexLS'
 import { request } from '../api/request'
-import { APIServer } from '../../config'
 import { log } from '../utils'
 
 Vue.use(Vuex)
@@ -37,7 +36,9 @@ const store = new Vuex.Store({
 		theme: 0,
 		repliesOnBoardPage: 3,
 		debug: false,
-		compactBoardMenu: false
+		compactBoardMenu: false,
+		APIServer: 'http://127.0.0.1:6749',
+		siteTitle: 'Kumori'
 	},
 
 	plugins: [ VuexLS ],
@@ -193,7 +194,7 @@ const store = new Vuex.Store({
 	}
 })
 
-request.init(APIServer, (message) => { // API response handlers
+request.init(store.state.APIServer, (message) => { // API response handlers
 	switch (message.what.request) {
 		case 'boards':
 			store.commit('updateBoardList', Object.keys(message.data))

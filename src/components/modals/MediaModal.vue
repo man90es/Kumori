@@ -1,11 +1,13 @@
 <template>
 	<div>
 		<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
-		<img :class="{ready}" :src="`https://foxtan.tumba.ch/res/${data.path}`" :style="style" ref="img" @load="ready = true">
+		<img :class="{ready}" :src="`${meta.res}${data.path}`" :style="style" ref="img" @load="ready = true">
 	</div>
 </template>
 
 <script>
+	import { meta } from '../../api/request.js'
+
 	export default {
 		name: 'MediaModal',
 		props: [
@@ -19,7 +21,8 @@
 					'width': 'auto',
 					'height': 'auto'
 				},
-				ready: false
+				ready: false,
+				meta: meta
 			}
 		},
 		mounted() {

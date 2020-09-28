@@ -1,5 +1,8 @@
+import store from '../store' 
+
+export let meta = {}
+
 export const request = {
-	meta: null,
 	wsGate: null,
 	ready: false,
 	APIServer: '',
@@ -7,8 +10,8 @@ export const request = {
 	init: function(APIServer, messageHandler) {
 		this.APIServer = APIServer
 		this.http('GET', 'meta', null).then(response => {
-			this.meta = response
-			this.wsGate = new WebSocket(this.meta.ws)
+			meta = response
+			this.wsGate = new WebSocket(meta.ws)
 
 			this.wsGate.onopen = () => this.ready = true
 			this.wsGate.onclose = () => this.ready = false

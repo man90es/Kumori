@@ -1,19 +1,17 @@
 <template>
 	<div v-if="!mobile">
-		<router-link to="/">{{siteTitle}}</router-link>
+		<router-link to="/">{{$store.state.siteTitle}}</router-link>
 		<router-link :key="boardName" :to="{name: 'board', params: {boardName}}" v-for="boardName in $store.state.boardList">/{{boardName}}<span v-if="!$store.state.compactBoardMenu"> — {{$store.state.boards[boardName].title}}</span></router-link>
 	</div>
 </template>
 
 <script>
-	import { siteTitle } from '../../../config'
 
 	export default {
 		name: 'NavBar',
 		data() {
 			return {
-				mobile: window.innerWidth < window.innerHeight,
-				siteTitle: siteTitle
+				mobile: window.innerWidth < window.innerHeight
 			}
 		}
 	}

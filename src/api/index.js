@@ -1,5 +1,4 @@
 import { request } from './request'
-import { APIServer } from '../../config'
 import store from '../store' 
 
 export async function submitPost(formData) {
@@ -9,7 +8,7 @@ export async function submitPost(formData) {
 }
 
 export function getCaptchaImageURI() {
-	return `${APIServer}/api/captcha?image#${+new Date()}`
+	return `${store.state.APIServer}/api/captcha?image#${+new Date()}`
 }
 
 export async function submitCaptcha(formData) {
