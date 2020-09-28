@@ -9,7 +9,7 @@
 			<PostMenu v-if="showMenu" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
-			<span v-if="$store.state.debug">b: {{thread.boardName}} t:{{thread.id}} p:{{postId}}</span>
+			<span v-if="$store.state.debug">b:"{{thread ? thread.boardName : 'undefined'}}" t:{{post.threadId}} p:{{postId}}</span>
 		</div>
 		<div v-if="!hidden">
 			<div v-if="post.attachments" class="attachments">
