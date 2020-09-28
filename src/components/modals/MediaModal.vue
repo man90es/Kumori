@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
-		<img :class="{ready}" :src="`${meta.res}${data.path}`" :style="style" ref="img" @load="ready = true">
+		<img :class="{ready}" :src="`${meta.res}${originalData.hash}.${originalData.mime.split('/')[1]}`" :style="style" ref="img" @load="ready = true">
 	</div>
 </template>
 
@@ -11,7 +11,7 @@
 	export default {
 		name: 'MediaModal',
 		props: [
-			'data'
+			'originalData'
 		],
 		data() {
 			return {
@@ -22,27 +22,15 @@
 					'height': 'auto'
 				},
 				ready: false,
-				meta: meta
+				meta
 			}
 		},
 		mounted() {
 			this.$parent.setParams({
-				header: 'Media'
+				header: this.originalData.title
 			})
 			
 			let computedStyle = getComputedStyle(this.$refs.img)
-
-			try {
-				this.style.width = computedStyle.getPropertyValue('width')
-			} catch {
-				// Pass
-			}
-
-			try {
-				this.style.height = computedStyle.getPropertyValue('height')
-			} catch {
-				// Pass
-			}
 		}
 	}
 </script>
