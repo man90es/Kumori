@@ -13,6 +13,8 @@
 </template>
 
 <script>
+	import { log } from './utils'
+
 	export default {
 		name: 'App',
 		data() {
@@ -71,6 +73,15 @@
 					boardName: link.dataset.boardName,
 					threadId: this.findPost(parseInt(link.dataset.number)).threadId
 				}})
+			},
+
+			scrollHandler(event) {
+				let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
+
+				if (bottomOfWindow) {
+					log('Page end reached')
+					this.$bus.emit('page-end-reached', {})
+				}
 			}
 		},
 		computed: {
@@ -83,6 +94,8 @@
 
 			this.$bus.on('post-link-hovered', this.postLinkHoveredHandler)
 			this.$bus.on('post-link-clicked', this.postLinkClickedHandler)
+
+			window.onscroll = this.scrollHandler
 		}
 	}
 </script>
