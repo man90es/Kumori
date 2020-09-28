@@ -1,5 +1,5 @@
 <template>
-	<img :class="{nsfw: file.nsfw}" :width="width" :height="height" v-lazy="`${meta.thumb}${file.thumb.path}`" @click="clickHandler">
+	<img :class="{nsfw: file.nsfw}" :width="width" :height="height" v-lazy="`${meta.thumb}${this.file.hash}.jpg`" @click="clickHandler">
 </template>
 
 <script>
@@ -7,12 +7,14 @@
 
 	export default {
 		name: 'PostAttachment',
-		props: ['file'],
+		props: [
+			'file',
+		],
 		data() {
 			return {
-				width: `${this.file.thumb.width || 256}px`,
-				height: `${this.file.thumb.height || 200}px`,
-				meta: meta
+				width: `${this.file.thumbWidth || 256}px`,
+				height: `${this.file.thumbHeight || 200}px`,
+				meta
 			}
 		},
 		methods: {
