@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
-		<img :class="{ready}" :src="`${meta.res}${originalData.hash}.${originalData.mime.split('/')[1]}`" :style="style" ref="img" @load="ready = true">
+		<img :class="{ready}" :src="src" @load="ready = true">
 	</div>
 </template>
 
@@ -15,22 +15,25 @@
 		],
 		data() {
 			return {
-				style: {
-					'max-width': '80vw',
-					'max-height': '80vh',
-					'width': 'auto',
-					'height': 'auto'
-				},
-				ready: false,
-				meta
+				ready: false
+			}
+		},
+		computed: {
+			src() {
+				const mimeMap = {
+					'image/png': '.png',
+					'image/jpeg': '.jpg',
+					'image/gif': '.gif',
+					'image/webp': '.webp'
+				}
+
+				return meta.res + this.originalData.hash + mimeMap[this.originalData.mime]
 			}
 		},
 		mounted() {
 			this.$parent.setParams({
 				header: this.originalData.title
 			})
-			
-			let computedStyle = getComputedStyle(this.$refs.img)
 		}
 	}
 </script>
@@ -62,5 +65,12 @@
 
 	img:last-child:not(.ready){
 		opacity: 0;
+	}
+
+	img.ready{
+		max-width: 80vw;
+		max-height: 80vh;
+		width: auto;
+		height: auto;
 	}
 </style>
