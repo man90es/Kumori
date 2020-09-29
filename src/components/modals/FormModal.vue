@@ -130,10 +130,7 @@
 					data.append(`file:${i}`, this.files[i].files[0])
 
 					// NSFW checkbox
-					let checkbox = document.createElement('input')
-					checkbox.type = checkbox
-					checkbox.checked = this.attachmentNSFW[i]
-					data.append(`fileMark:${i}:NSFW`, checkbox)
+					data.append(`fileMark:${i}:NSFW`, this.attachmentNSFW[i])
 				}
 
 				submitPost(data).then((response) => {
