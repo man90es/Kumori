@@ -1,4 +1,5 @@
 import store from '../store' 
+import { log, wait } from '../utils'
 
 export let meta = {}
 
@@ -41,24 +42,26 @@ export const request = {
 		}, 1e2)
 	},
 
-	http: async function(method, path, body) {
-		return new Promise((resolve, reject) => {
-			let xhr = new XMLHttpRequest()
-		
-			xhr.open(method, `${this.APIServer}/api/${path}`)
-			
-			xhr.onload = () => {
-				if (xhr.status == 200) {
-					resolve(xhr.response)
-				} else{
-					reject(xhr.error)
-				}
+	http: async function(method = 'POST', path = '', body = null, delay = 1e3) {
+		let options = {
+			method: method,
+			mode: 'cors',
+			credentials: 'include',
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest'
 			}
+		}
 
-			xhr.responseType = 'json'
-			xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-			xhr.withCredentials = true
-			xhr.send(body)
+		if (!['HEAD', 'GET'].includes(method)) {
+			options.body = JSON.stringify(body)
+		}
+
+		return fetch(`${this.APIServer}/api/${path}`, options)
+		.then(response => response.json())
+		.then(json => json)
+		.catch(error => {
+			log(path, 'fetch request failed, retrying in', delay / 1e3, 'seconds')
+			return wait(delay).then(() => this.http(method, path, body, delay * 2))
 		})
 	}
 }

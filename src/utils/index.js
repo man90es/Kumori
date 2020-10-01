@@ -27,3 +27,7 @@ export function	truncateString(string, targetLength) {
 
 	return string.substr(0, frontChars) + "..." + string.substr(string.length - backChars)
 }
+
+export function wait(delay) {
+	return new Promise(resolve => setTimeout(resolve, delay))
+}
