@@ -18,6 +18,9 @@
 <script>
 	export default {
 		name: 'SearchModal',
+		props: [
+			'originalData'
+		],
 		data() {
 			return {
 				query: '',

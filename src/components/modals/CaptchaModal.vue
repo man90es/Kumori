@@ -10,6 +10,9 @@
 
 	export default {
 		name: 'CaptchaModal',
+		props: [
+			'originalData'
+		],
 		data() {
 			return {
 				imageSrc: null

@@ -22,6 +22,9 @@
 		components: {
 			ToggleSwitch
 		},
+		props: [
+			'originalData'
+		],
 		data() {
 			return {
 				repliesOnBoardPage: this.$store.state.repliesOnBoardPage
