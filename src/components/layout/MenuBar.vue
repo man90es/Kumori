@@ -1,15 +1,15 @@
 <template>
 	<div id="MenuBar" :class="{mobile, visible}">
 		<div>
-			<MenuButton :icon="'up'" />
-			<MenuButton :icon="'search'" />
-			<MenuButton :icon="'settings'" />
+			<MenuButton icon="up" />
+			<MenuButton icon="search" />
+			<MenuButton icon="settings" />
 		</div>
 		<div>
-			<MenuButton v-if="mobile" :icon="'home'" />
-			<MenuButton v-if="$route.name != 'bookmarks'" :icon="'chat'" />
-			<MenuButton v-if="$route.name != 'bookmarks'" :icon="'star'" />
-			<MenuButton :icon="'down'" />
+			<MenuButton v-if="mobile" icon="home" />
+			<MenuButton v-if="$route.name != 'bookmarks'" icon="chat" />
+			<MenuButton v-if="$route.name != 'bookmarks'" icon="star" />
+			<MenuButton icon="down" />
 		</div>
 	</div>
 </template>

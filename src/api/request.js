@@ -42,7 +42,7 @@ export const request = {
 		}, 1e2)
 	},
 
-	http: async function(method = 'POST', path = '', body = null, delay = 1e3) {
+	http: async function(method, path, body, delay = 1e3) {
 		let options = {
 			method: method,
 			mode: 'cors',
@@ -53,7 +53,7 @@ export const request = {
 		}
 
 		if (!['HEAD', 'GET'].includes(method)) {
-			options.body = JSON.stringify(body)
+			options.body = body
 		}
 
 		return fetch(`${this.APIServer}/api/${path}`, options)

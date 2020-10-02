@@ -1,8 +1,5 @@
 <template>
 	<form @submit.prevent="submitHandler()">
-		<input hidden name="boardName" v-model="boardName">
-		<input hidden name="threadId" v-model="threadId">
-
 		<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
 		<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
 		<input hidden type="checkbox" name="modifiers:signed" id="modifiers:signed">
@@ -18,7 +15,7 @@
 				<img class="icon" src="../../assets/icons/attach_file.svg">
 			</button>
 
-			<div class="thumb" :key="i" v-for="(file, i) in files" :style="`background-image:url(${thumbs[i]})`">
+			<div class="thumb" :key="i" v-for="(file, i) in files" :style="{backgroundImage: `url(${thumbs[i]})`}">
 				<button class="nsfwToggle" type="button" @click="toggleAttachmentNSFW(i)">
 					<img class="icon" v-if="attachmentNSFW[i]" src="../../assets/icons/nsfw.svg">
 					<img class="icon" v-else src="../../assets/icons/sfw.svg">
@@ -102,7 +99,11 @@
 				this.threadNumber = data.threadNumber
 
 				this.$parent.setParams({
-					header: data.threadId ? `Reply to thread #${this.threadNumber} on board /${this.boardName}` : `New thread on board /${this.boardName}`
+					header: this.$store.state.debug 
+						? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}` 
+						: data.threadId 
+							? `Reply to thread #${this.threadNumber} on board /${this.boardName}` 
+							: `New thread on board /${this.boardName}`
 				})
 
 				if (data.postNumber) {
@@ -125,6 +126,8 @@
 				this.waitingToSubmit = false
 				let data = new FormData(this.$el)
 
+				this.threadId ? data.append('threadId', this.threadId) : data.append('boardName', this.boardName)
+
 				for (let i in this.files) {
 					// File input
 					data.append(`file:${i}`, this.files[i].files[0])
@@ -135,7 +138,7 @@
 
 				submitPost(data).then((response) => {
 					this.reset()
-					this.$router.push({name: 'thread', threadId: response.threadId})
+					this.$router.push({name: 'thread', threadId: response.threadId}) // TODO: Handle thread creation
 				})
 			},
 
