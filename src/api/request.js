@@ -10,7 +10,7 @@ export const request = {
 
 	init: function(APIServer, messageHandler) {
 		this.APIServer = APIServer
-		this.http('GET', 'meta', null).then(response => {
+		this.http('GET', 'meta', null, 1e3).then(response => {
 			meta = response
 			this.wsGate = new WebSocket(meta.ws)
 
@@ -42,7 +42,7 @@ export const request = {
 		}, 1e2)
 	},
 
-	http: async function(method, path, body, delay = 1e3) {
+	http: async function(method, path, body, delay) {
 		let options = {
 			method: method,
 			mode: 'cors',
@@ -57,11 +57,20 @@ export const request = {
 		}
 
 		return fetch(`${this.APIServer}/api/${path}`, options)
-		.then(response => response.json())
-		.then(json => json)
-		.catch(error => {
-			log(path, 'fetch request failed, retrying in', delay / 1e3, 'seconds')
-			return wait(delay).then(() => this.http(method, path, body, delay * 2))
+		.then(response => {
+			if (response.ok) {
+				return response.json()
+			} else {
+				throw `${response.status}: ${response.statusText}`
+			}
+		})
+		.catch((error) => {
+			if (delay) {
+				log(`${path} fetch request failed with status code ${error}, retrying in ${delay / 1e3} seconds`)
+				return wait(delay).then(() => this.http(method, path, body, delay * 2))
+			} else {
+				throw error
+			}
 		})
 	}
 }

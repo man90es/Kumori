@@ -32,6 +32,7 @@
 
 <script>
 	import { submitPost, submitCaptcha } from '../../api'
+	import { log } from '../../utils'
 
 	export default {
 		name: 'FormModal',
@@ -119,6 +120,8 @@
 						this.waitingToSubmit = true
 						this.$bus.emit('need-captcha', {})
 					}
+				}).catch((error) => {
+					log('Exception occurred while trying to check remaining posts:', error)
 				})
 			},
 
@@ -139,6 +142,8 @@
 				submitPost(data).then((response) => {
 					this.reset()
 					this.$router.push({name: 'thread', threadId: response.threadId}) // TODO: Handle thread creation
+				}).catch((error) => {
+					log('Exception occurred while trying to submit post:', error)
 				})
 			},
 
