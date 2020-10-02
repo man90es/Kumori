@@ -141,7 +141,7 @@
 
 				submitPost(data).then((response) => {
 					this.reset()
-					this.$router.push({name: 'thread', threadId: response.threadId}) // TODO: Handle thread creation
+					this.$router.push({name: 'thread', params: {boardName: response.boardName, threadId: response.threadId}})
 				}).catch((error) => {
 					log('Exception occurred while trying to submit post:', error)
 				})
