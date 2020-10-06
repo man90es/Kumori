@@ -107,8 +107,8 @@ const store = new Vuex.Store({
 				Vue.set(state.feedLists, boardName, [])
 			}
 			
-			for (let i = page * count; i < (page + 1) * count; i++) {
-				Vue.set(state.feedLists[boardName], i, payload[i])
+			for (let i = 0; i < count; i++) {
+				Vue.set(state.feedLists[boardName], page * count + i, payload[i])
 			}
 		},
 
@@ -182,8 +182,12 @@ const store = new Vuex.Store({
 
 		// eslint-disable-next-line no-unused-vars
 		requestFeed(context, {boardName, count, page}) {
-			log('Requesting feed for board: ', boardName)
-			request.ws({request: 'posts', boardName, count, page})
+			if (page == 0 || context.state.feedLists[boardName][context.state.feedLists[boardName].length - 1] != undefined) {
+				log('Requesting feed for board: ', boardName)
+				request.ws({request: 'posts', boardName, count, page})
+			} else {
+				log('Last feed page reached, no need to request')
+			}
 		},
 
 		// eslint-disable-next-line no-unused-vars

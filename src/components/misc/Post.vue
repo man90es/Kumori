@@ -1,5 +1,5 @@
 <template>
-	<article :class="{selected}">
+	<article v-if="postId != undefined" :class="{selected}">
 		<div class="postDetails">
 			<span v-if="post.modifiers && 'sage' in post.modifiers"><img class="icon" src="../../assets/icons/down.svg"></span>
 			<a class="refLink" @click="handleRefLinkClick">
