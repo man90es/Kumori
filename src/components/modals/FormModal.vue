@@ -136,7 +136,9 @@
 					data.append(`file:${i}`, this.files[i].files[0])
 
 					// NSFW checkbox
-					data.append(`fileMark:${i}:NSFW`, this.attachmentNSFW[i])
+					if (this.attachmentNSFW[i]) {
+						data.append(`fileMark:${i}:NSFW`, true)
+					}
 				}
 
 				submitPost(data).then((response) => {
