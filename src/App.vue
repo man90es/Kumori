@@ -174,11 +174,16 @@
 		width: 0;
 	}
 
-	button{
+	button {
 		border: none;
 		background-color: transparent;
 		cursor: pointer;
 		vertical-align: middle;
 		padding: 0 0.25em;
+		outline: none;
+	}
+
+	input, textarea {
+		outline: none;
 	}
 </style>
