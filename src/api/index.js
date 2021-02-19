@@ -9,7 +9,7 @@ export function submitPost(formData) {
 }
 
 export function getCaptchaImageURI() {
-	return `${store.state.APIServer}/api/captcha?image#${+new Date()}`
+	return `${store.state.APIServer}/api/captcha?image&timestamp=${+new Date()}`
 }
 
 export function submitCaptcha(formData) {

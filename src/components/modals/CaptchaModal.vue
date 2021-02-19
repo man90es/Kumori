@@ -1,6 +1,6 @@
 <template>
 	<form @submit.prevent="submit()">
-		<img width="192" height="64" :src="imageSrc">
+		<img width="192" height="64" :src="imageSrc" @click="refresh">
 		<input type="text" name="code" autocomplete="off" placeholder="Captcha">
 	</form>
 </template>
