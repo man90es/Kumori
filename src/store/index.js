@@ -44,10 +44,8 @@ const store = new Vuex.Store({
 	plugins: [ VuexLS ],
 	
 	mutations: {
-		import(state, payload) {
-			for (const [key, value] of Object.entries(payload)) {
-				state[key] = value
-			}
+		import(state, backup) {
+			Object.assign(state, backup)
 		},
 
 		updateBoardList(state, payload) {
