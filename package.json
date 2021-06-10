@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.14.5",
-    "core-js": "^3.13.0",
+    "core-js": "^3.14.0",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
     "vue-bus": "^1.2.1",
