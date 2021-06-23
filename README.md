@@ -1,5 +1,5 @@
 # kumori
-An alternative client for [Foxtan imageboard engine](https://bitbucket.org/bakaso/foxtan).
+An alternative client for [Foxtan imageboard engine](https://github.com/BakaSolutions/foxtan).
 
 ## Project setup
 ```
@@ -25,6 +25,3 @@ yarn lint
 ```
 vm.$store.commit('toggleDebug')
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
