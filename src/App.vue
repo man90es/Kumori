@@ -157,12 +157,12 @@
 	pre {
 		margin: 0;
 		white-space: pre-wrap;
+	}
 
-		& > code {
-			display: block;
-			padding: var(--gap-size);
-			margin: var(--gap-size) 0;
-		}
+	pre > code {
+		display: block;
+		padding: var(--gap-size);
+		margin: var(--gap-size) 0;
 	}
 
 	u {
