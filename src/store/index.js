@@ -91,7 +91,7 @@ const store = Vuex.createStore({
 
 		updatePosts(state, payload) {
 			for (let post of payload) {
-				state.posts[post.id] = post
+				state.posts[post?.id] = post
 			}
 		},
 

@@ -33,7 +33,7 @@
 		},
 		computed: {
 			feedList() {
-				return this.$store.state.feedLists[this.$route.params.boardName].filter(postId => postId)
+				return this.$store.state.feedLists[this.$route.params.boardName]
 			}
 		},
 		methods: {
