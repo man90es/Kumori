@@ -4,8 +4,6 @@ import { VuexLS } from './VuexLS'
 import { request } from '../api/request'
 import { log } from '../utils'
 
-Vue.use(Vuex)
-
 function toggleListEntry(state, listName, entry) {
 	let i = state[listName].indexOf(entry)
 
@@ -20,7 +18,7 @@ function clearList(state, listName) {
 	state[listName] = []
 }
 
-const store = new Vuex.Store({
+const store = Vuex.createStore({
 	state: {
 		boardList: [],
 		boards: {},

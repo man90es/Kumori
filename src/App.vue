@@ -60,7 +60,7 @@
 				if (link.dataset.requested != undefined) return
 				if (link.dataset.boardName == undefined) link.dataset.boardName = this.$route.params.boardName
 				let postNumber = parseInt(link.dataset.number)
-				
+
 				if (this.findPost(postNumber) == undefined) {
 					this.$store.dispatch('requestPost', {boardName: link.dataset.boardName, number: postNumber})
 				}
@@ -75,7 +75,7 @@
 				}})
 			},
 
-			scrollHandler(event) {
+			scrollHandler() {
 				let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
 
 				if (bottomOfWindow) {

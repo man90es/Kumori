@@ -2,7 +2,7 @@
 	<div id="feed">
 		<NavBar />
 		<MainSection>
-			<Post v-if="postId" :key="postId" :postId="postId" v-for="postId in feedList"/>
+			<Post :key="postId" :postId="postId" v-for="postId in feedList"/>
 		</MainSection>
 		<MenuBar />
 
@@ -16,7 +16,6 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Post from '../components/misc/Post.vue'
-	import { log } from '../utils'
 
 	export default {
 		name: 'Feed',
@@ -34,7 +33,7 @@
 		},
 		computed: {
 			feedList() {
-				return this.$store.state.feedLists[this.$route.params.boardName]
+				return this.$store.state.feedLists[this.$route.params.boardName].filter(postId => postId)
 			}
 		},
 		methods: {

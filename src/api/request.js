@@ -1,4 +1,3 @@
-import store from '../store' 
 import { log, wait } from '../utils'
 
 export let meta = {}
@@ -31,7 +30,7 @@ export const request = {
 			} else {
 				clearInterval(i)
 			}
-			
+
 			if (this.ready) {
 				this.wsGate.send(JSON.stringify(req))
 			} else {

@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { createApp } from 'vue';
 import VueBus from 'vue-bus'
 import App from './App.vue'
 import router from './router'
@@ -11,10 +11,7 @@ Vue.use(VueLazyload)
 Vue.use(VueBus)
 Vue.use(Vue2TouchEvents)
 
-Vue.config.productionTip = false
-
-window.vm = new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+window.vm = createApp(App)
+	.use(router)
+	.use(store)
+	.mount('#app')

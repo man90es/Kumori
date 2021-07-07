@@ -1,13 +1,10 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const Home = () => import(/* webpackChunkName: "Home" */ '../views/Home.vue')
 const Board = () => import(/* webpackChunkName: "Main" */ '../views/Board.vue')
 const Feed = () => import(/* webpackChunkName: "Extras" */ '../views/Feed.vue')
 const SingleThread = () => import(/* webpackChunkName: "Main" */ '../views/SingleThread.vue')
 const Bookmarks = () => import(/* webpackChunkName: "Extras" */ '../views/Bookmarks.vue')
-
-Vue.use(VueRouter)
 
 const routes = [
 	{
@@ -37,8 +34,8 @@ const routes = [
 	}
 ]
 
-const router = new VueRouter({
-	mode: 'history',
+const router = createRouter({
+	history: createWebHistory(),
 	routes
 })
 
