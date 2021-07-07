@@ -56,7 +56,7 @@
 		},
 		created() {
 			this.handleDataUpdate()
-			this.$bus.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
+			emitter.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
 		}
 	}
 </script>

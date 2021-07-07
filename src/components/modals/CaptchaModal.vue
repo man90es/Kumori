@@ -22,7 +22,7 @@
 			async submit() {
 				await submitCaptcha(new FormData(this.$el)).then((response) => {
 					if (response.trustedPostCount > 0) {
-						this.$bus.emit('captcha-solved', {})
+						emitter.emit('captcha-solved', {})
 						this.$parent.close()
 					} else {
 						this.refresh()

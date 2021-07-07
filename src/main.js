@@ -1,11 +1,12 @@
-import Vue, { createApp } from 'vue';
+import { createApp } from 'vue'
+import mitt from 'mitt'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+window.emitter = mitt()
 // Vue.use(VueLazyload)
-// Vue.use(VueBus)
 // Vue.use(Vue2TouchEvents)
 
 window.vm = createApp(App)

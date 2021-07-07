@@ -7,7 +7,7 @@
 		<input hidden type="checkbox" name="modifiers:OP" id="modifiers:OP">
 		<label for="modifiers:OP"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
 		<input type="text" name="subject" v-model="subject">
-		
+
 		<textarea v-model="text" name="text"></textarea>
 
 		<div id="attachmentsForm">
@@ -69,7 +69,7 @@
 
 			attachmentChangeHandler(event) {
 				let file = event.target.files[0]
-				
+
 				if (file.type.match('image.*')) {
 					let reader = new FileReader()
 
@@ -100,10 +100,10 @@
 				this.threadNumber = data.threadNumber
 
 				this.$parent.setParams({
-					header: this.$store.state.debug 
-						? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}` 
-						: data.threadId 
-							? `Reply to thread #${this.threadNumber} on board /${this.boardName}` 
+					header: this.$store.state.debug
+						? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
+						: data.threadId
+							? `Reply to thread #${this.threadNumber} on board /${this.boardName}`
 							: `New thread on board /${this.boardName}`
 				})
 
@@ -118,7 +118,7 @@
 						this.submit()
 					} else {
 						this.waitingToSubmit = true
-						this.$bus.emit('need-captcha', {})
+						emitter.emit('need-captcha', {})
 					}
 				}).catch((error) => {
 					log('Exception occurred while trying to check remaining posts:', error)
@@ -160,8 +160,8 @@
 
 		created() {
 			this.handleDataUpdate(this.originalData)
-			this.$bus.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
-			this.$bus.on('captcha-solved', this.submit)
+			emitter.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
+			emitter.on('captcha-solved', this.submit)
 		}
 	}
 </script>

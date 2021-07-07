@@ -18,7 +18,7 @@
 		data() {
 			return {
 				modals: [],
-				datas: [], 
+				datas: [],
 				keys: [],
 				backdrop: false
 			}
@@ -43,12 +43,12 @@
 				this.modals.splice(i, 1)
 				this.datas.splice(i, 1)
 				let key = this.keys.splice(i, 1)[0]
-				
+
 				this.modals.push(modalBody)
 				this.datas.push(data)
 				this.keys.push(key)
 
-				this.$bus.emit(`modal-${this.keys[this.modals.indexOf(modalBody)]}-data-update`, data)
+				emitter.emit(`modal-${this.keys[this.modals.indexOf(modalBody)]}-data-update`, data)
 			},
 
 			closeByKey(key) {
@@ -58,7 +58,7 @@
 					this.modals.splice(i, 1)
 					this.datas.splice(i, 1)
 					this.keys.splice(i, 1)
-				} 
+				}
 			},
 
 			close(modalBody) {
@@ -70,17 +70,45 @@
 			}
 		},
 		created() {
-			this.$bus.on('menu-chat-button-click', (data) => this.isOpen(FormModal) ? this.close(FormModal) : this.open(FormModal, data))
-			this.$bus.on('post-reply-button-click', (data) => this.isOpen(FormModal) ? this.passData(FormModal, data) : this.open(FormModal, data))
-			this.$bus.on('menu-search-button-click', (data) => this.isOpen(SearchModal) ? this.close(SearchModal) : this.open(SearchModal, data))
-			this.$bus.on('menu-settings-button-click', (data) => this.isOpen(SettingsModal) ? this.close(SettingsModal) : this.open(SettingsModal, data))
-			this.$bus.on('post-attachment-preview-click', (data) => this.isOpen(MediaModal) ? this.passData(MediaModal, data) : this.open(MediaModal, data))
-			this.$bus.on('unsafe-link-click', (data) => this.isOpen(UnsafeLinkModal) ? this.passData(UnsafeLinkModal, data) : this.open(UnsafeLinkModal, data))
-			this.$bus.on('post-delete-button-click', (data) => this.isOpen(DeletePostModal) ? this.passData(DeletePostModal, data) : this.open(DeletePostModal, data))
+			emitter.on('menu-chat-button-click', (data) => {
+				return this.isOpen(FormModal)
+					? this.close(FormModal)
+					: this.open(FormModal, data)
+			})
+			emitter.on('post-reply-button-click', (data) => {
+				return this.isOpen(FormModal)
+					? this.passData(FormModal, data)
+					: this.open(FormModal, data)
+			})
+			emitter.on('menu-search-button-click', (data) => {
+				return this.isOpen(SearchModal)
+					? this.close(SearchModal)
+					: this.open(SearchModal, data)
+			})
+			emitter.on('menu-settings-button-click', (data) => {
+				return this.isOpen(SettingsModal)
+					? this.close(SettingsModal)
+					: this.open(SettingsModal, data)
+			})
+			emitter.on('post-attachment-preview-click', (data) => {
+				return this.isOpen(MediaModal)
+					? this.passData(MediaModal, data)
+					: this.open(MediaModal, data)
+			})
+			emitter.on('unsafe-link-click', (data) => {
+				return this.isOpen(UnsafeLinkModal)
+					? this.passData(UnsafeLinkModal, data)
+					: this.open(UnsafeLinkModal, data)
+			})
+			emitter.on('post-delete-button-click', (data) => {
+				return this.isOpen(DeletePostModal)
+					? this.passData(DeletePostModal, data)
+					: this.open(DeletePostModal, data)
+			})
 
-			this.$bus.on('need-captcha', (data) => this.open(CaptchaModal, data))
+			emitter.on('need-captcha', (data) => this.open(CaptchaModal, data))
 
-			this.$bus.on('modal-close-button-click', this.closeByKey)
+			emitter.on('modal-close-button-click', this.closeByKey)
 		},
 	}
 </script>

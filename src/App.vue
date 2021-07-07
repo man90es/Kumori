@@ -49,7 +49,7 @@
 		},
 		methods: {
 			swipeHandler(direction) {
-				this.$bus.emit(`swipe-${direction}`)
+				emitter.emit(`swipe-${direction}`)
 			},
 
 			findPost(postNumber) {
@@ -80,7 +80,7 @@
 
 				if (bottomOfWindow) {
 					log('Page end reached')
-					this.$bus.emit('page-end-reached', {})
+					emitter.emit('page-end-reached', {})
 				}
 			}
 		},
@@ -92,8 +92,8 @@
 		created() {
 			this.$store.dispatch('requestBoardList')
 
-			this.$bus.on('post-link-hovered', this.postLinkHoveredHandler)
-			this.$bus.on('post-link-clicked', this.postLinkClickedHandler)
+			emitter.on('post-link-hovered', this.postLinkHoveredHandler)
+			emitter.on('post-link-clicked', this.postLinkClickedHandler)
 
 			window.onscroll = this.scrollHandler
 		}

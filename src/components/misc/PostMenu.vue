@@ -21,7 +21,7 @@
 
 			deleteHandler() {
 				this.$store.commit('toggleSelected', this.$parent.post.id)
-				this.$bus.emit('post-delete-button-click')
+				emitter.emit('post-delete-button-click')
 			}
 		}
 	}

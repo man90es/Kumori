@@ -33,7 +33,7 @@
 					let computedStyle = getComputedStyle(this.$el)
 
 					this.position = [
-						parseInt(computedStyle.getPropertyValue('left')) || 0, 
+						parseInt(computedStyle.getPropertyValue('left')) || 0,
 						parseInt(computedStyle.getPropertyValue('top')) || 0
 					]
 				}
@@ -53,7 +53,7 @@
 				if (!this.draggable) return
 
 				this.position = [
-					this.position[0] + event.clientX - this.cursorPosition[0], 
+					this.position[0] + event.clientX - this.cursorPosition[0],
 					this.position[1] + event.clientY - this.cursorPosition[1]
 				]
 
@@ -65,7 +65,7 @@
 				this.style = `transform: translate(${transform[0]}px, ${transform[1]}px)`
 
 				this.cursorPosition = [
-					event.clientX, 
+					event.clientX,
 					event.clientY
 				]
 			},
@@ -75,7 +75,7 @@
 					this.$parent.setBackdrop(false)
 				}
 
-				this.$bus.emit('modal-close-button-click', this.$vnode.key)
+				emitter.emit('modal-close-button-click', this.$vnode.key)
 			},
 
 			setParams(params) {

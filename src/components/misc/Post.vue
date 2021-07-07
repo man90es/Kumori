@@ -92,7 +92,7 @@
 
 					let days = Math.round(diff / 8.64e7)
 					if (days == 1){
-						return "yesterday"	
+						return "yesterday"
 					}
 
 					return `${days} ${num2Word(days, ['day', 'days'])} ago`
@@ -106,17 +106,17 @@
 			},
 
 			handleReplyClick() {
-				this.$bus.emit('post-reply-button-click', {
+				emitter.emit('post-reply-button-click', {
 					threadId: this.post.threadId,
-					boardName: this.thread.boardName, 
-					threadNumber: this.thread.head.number, 
+					boardName: this.thread.boardName,
+					threadNumber: this.thread.head.number,
 					postNumber: this.post.number
 				})
 			},
 
 			handleRefLinkClick() {
 				this.$router.push({
-					name: 'thread', 
+					name: 'thread',
 					params: {
 						boardName: this.thread.boardName,
 						threadId: this.post.threadId
