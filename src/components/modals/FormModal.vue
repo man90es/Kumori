@@ -160,7 +160,7 @@
 
 		created() {
 			this.handleDataUpdate(this.originalData)
-			emitter.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
+			emitter.on(`modal-${this.$parent._.vnode.key}-data-update`, this.handleDataUpdate)
 			emitter.on('captcha-solved', this.submit)
 		}
 	}

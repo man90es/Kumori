@@ -14,7 +14,7 @@
 			return {
 				cursorPosition: [null, null],
 				position: [null, null],
-				header: "Header",
+				header: 'Header',
 				closeable: true,
 				draggable: true,
 				backdrop: false,
@@ -75,7 +75,7 @@
 					this.$parent.setBackdrop(false)
 				}
 
-				emitter.emit('modal-close-button-click', this.$vnode.key)
+				emitter.emit('modal-close-button-click', this._.vnode.key)
 			},
 
 			setParams(params) {
