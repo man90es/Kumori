@@ -1,11 +1,10 @@
 <template>
 	<div :class="{backdrop: backdrop}" id="ModalsLayer" v-if="modals.length > 0">
-		<Modal v-for="(modalBody, i) in modals" :modalBody="modalBody" :data="datas[i]" :key="keys[i]" />
+		<component v-for="(modal, i) in modals" :is="modal" v-bind="datas[i]" :key="keys[i]" />
 	</div>
 </template>
 
 <script>
-	import Modal from '../misc/Modal'
 	import FormModal from '../modals/FormModal'
 	import SearchModal from '../modals/SearchModal'
 	import SettingsModal from '../modals/SettingsModal'
@@ -23,9 +22,6 @@
 				backdrop: false
 			}
 		},
-		components: {
-			Modal
-		},
 		methods: {
 			isOpen(modalBody) {
 				return this.modals.includes(modalBody)
@@ -39,16 +35,7 @@
 
 			passData(modalBody, data = {}) {
 				let i = this.modals.indexOf(modalBody)
-
-				this.modals.splice(i, 1)
-				this.datas.splice(i, 1)
-				let key = this.keys.splice(i, 1)[0]
-
-				this.modals.push(modalBody)
-				this.datas.push(data)
-				this.keys.push(key)
-
-				emitter.emit(`modal-${this.keys[this.modals.indexOf(modalBody)]}-data-update`, data)
+				this.datas[i] = data
 			},
 
 			closeByKey(key) {
@@ -107,8 +94,6 @@
 			})
 
 			emitter.on('need-captcha', (data) => this.open(CaptchaModal, data))
-
-			emitter.on('modal-close-button-click', this.closeByKey)
 		},
 	}
 </script>

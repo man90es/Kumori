@@ -1,10 +1,10 @@
 <template>
 	<div class="modal" :style="style">
 		<div :class="{draggable: draggable}" @mousedown="mouseDownHandler">
-			{{header}}
-			<button @click="close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
+			{{ header }}
+			<button @click="$parent.close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
 		</div>
-		<component :is="modalBody" :originalData="data"></component>
+		<slot />
 	</div>
 </template>
 
@@ -14,17 +14,23 @@
 			return {
 				cursorPosition: [null, null],
 				position: [null, null],
-				header: 'Header',
-				closeable: true,
-				draggable: true,
-				backdrop: false,
 				style: ''
 			}
 		},
-		props: [
-			'modalBody',
-			'data'
-		],
+		props: {
+			header: {
+				type: String,
+				required: true,
+			},
+			closeable: {
+				type: Boolean,
+				default: true,
+			},
+			draggable: {
+				type: Boolean,
+				default: true,
+			},
+		},
 		methods: {
 			mouseDownHandler(event) {
 				if (!this.draggable) return
@@ -69,33 +75,6 @@
 					event.clientY
 				]
 			},
-
-			close() {
-				if (this.backdrop) {
-					this.$parent.setBackdrop(false)
-				}
-
-				emitter.emit('modal-close-button-click', this._.vnode.key)
-			},
-
-			setParams(params) {
-				if ('header' in params) {
-					this.header = params.header
-				}
-
-				if ('closeable' in params) {
-					this.closeable = params.closeable
-				}
-
-				if ('draggable' in params) {
-					this.draggable = params.draggable
-				}
-
-				if ('backdrop' in params) {
-					this.backdrop = params.backdrop
-					this.$parent.setBackdrop(params.backdrop)
-				}
-			}
 		},
 
 		mounted() {

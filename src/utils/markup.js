@@ -133,7 +133,7 @@ function processLink(capture, matches) {
 
 	uri = uri.replace(/[*_[\]%~/:.#]/g, (m) => escapeMap[m])
 
-	return `<a onclick="emitter.emit('unsafe-link-click', '${uri}')" title="${uri}">${title}</a>`
+	return `<a onclick="emitter.emit('unsafe-link-click', { link: '${uri}' })" title="${uri}">${title}</a>`
 }
 
 export default function processMarkup(text) {

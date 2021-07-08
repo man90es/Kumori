@@ -1,26 +1,30 @@
 <template>
-	<form @submit.prevent="submit()">
-		<div class="row">
-			<input type="text" id="searchQuery" v-model="query" placeholder="Query" title="Query">
-			<button><img class="icon" src="../../assets/icons/search.svg" title="Search"></button>
-		</div>
-		<div class="row">
-			<input type="text" v-model="boardName" placeholder="Board name" title="Board name">
-			<input type="number" min="1" v-model="threadNumber" placeholder="Thread number" title="Thread number">
-		</div>
-		<div class="row">
-			<input type="date" v-model="dateFrom" title="After">
-			<input type="date" v-model="dateTo" title="Before">
-		</div>
-	</form>
+	<Shell :header="'Search'">
+		<form @submit.prevent="submit()">
+			<div class="row">
+				<input type="text" id="searchQuery" v-model="query" placeholder="Query" title="Query">
+				<button><img class="icon" src="../../assets/icons/search.svg" title="Search"></button>
+			</div>
+			<div class="row">
+				<input type="text" v-model="boardName" placeholder="Board name" title="Board name">
+				<input type="number" min="1" v-model="threadNumber" placeholder="Thread number" title="Thread number">
+			</div>
+			<div class="row">
+				<input type="date" v-model="dateFrom" title="After">
+				<input type="date" v-model="dateTo" title="Before">
+			</div>
+		</form>
+	</Shell>
 </template>
 
 <script>
+	import Shell from './Shell.vue'
+
 	export default {
 		name: 'SearchModal',
-		props: [
-			'originalData'
-		],
+		components: {
+			Shell
+		},
 		data() {
 			return {
 				query: '',
@@ -33,22 +37,20 @@
 		methods: {
 			submit() {
 				this.$store.dispatch('submitSearchQuery', {
-					query: this.query, 
+					query: this.query,
 					parameters: {
 						after: this.dateFrom,
 						before: this.dateTo,
 						boardName: this.boardName,
 						threadNumber: this.threadNumber,
-						searchOnlyInSubjects: false 
+						searchOnlyInSubjects: false
 					}
 				})
-			}
+			},
+			close() {
+				this.$parent.closeByKey(this._.vnode.key)
+			},
 		},
-		created() {
-			this.$parent.setParams({
-				header: 'Search'
-			})
-		}
 	}
 </script>
 

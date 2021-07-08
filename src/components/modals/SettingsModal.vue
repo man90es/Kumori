@@ -1,40 +1,41 @@
 <template>
-	<div>
-		<span @click="() => $store.commit('toggleTheme')">
-			Light theme
-			<ToggleSwitch :state="!!$store.state.theme" />
-		</span>
-		<span @click="() => $store.commit('toggleCompactBoardMenu')">
-			Compact board menu
-			<ToggleSwitch :state="$store.state.compactBoardMenu" />
-		</span>
-		<span>
-			Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
-		</span>
-	</div>
+	<Shell :header="'Settings'">
+		<div>
+			<span @click="() => $store.commit('toggleTheme')">
+				Light theme
+				<ToggleSwitch :state="!!$store.state.theme" />
+			</span>
+			<span @click="() => $store.commit('toggleCompactBoardMenu')">
+				Compact board menu
+				<ToggleSwitch :state="$store.state.compactBoardMenu" />
+			</span>
+			<span>
+				Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
+			</span>
+		</div>
+	</Shell>
 </template>
 
 <script>
 	import ToggleSwitch from '../misc/ToggleSwitch.vue'
+	import Shell from './Shell.vue'
 
 	export default {
 		name: 'SettingsModal',
 		components: {
-			ToggleSwitch
+			ToggleSwitch,
+			Shell
 		},
-		props: [
-			'originalData'
-		],
 		data() {
 			return {
 				repliesOnBoardPage: this.$store.state.repliesOnBoardPage
 			}
 		},
-		created() {
-			this.$parent.setParams({
-				header: 'Settings'
-			})
-		}
+		methods: {
+			close() {
+				this.$parent.closeByKey(this._.vnode.key)
+			},
+		},
 	}
 </script>
 

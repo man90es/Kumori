@@ -1,44 +1,53 @@
 <template>
-	<form @submit.prevent="submitHandler()">
-		<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
-		<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
-		<input hidden type="checkbox" name="modifiers:signed" id="modifiers:signed">
-		<label for="modifiers:signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
-		<input hidden type="checkbox" name="modifiers:OP" id="modifiers:OP">
-		<label for="modifiers:OP"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
-		<input type="text" name="subject" v-model="subject">
+	<Shell :header="header">
+		<form @submit.prevent="submitHandler()">
+			<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
+			<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
+			<input hidden type="checkbox" name="modifiers:signed" id="modifiers:signed">
+			<label for="modifiers:signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
+			<input hidden type="checkbox" name="modifiers:OP" id="modifiers:OP">
+			<label for="modifiers:OP"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
+			<input type="text" name="subject" v-model="subject">
 
-		<textarea v-model="text" name="text"></textarea>
+			<textarea v-model="text" name="text"></textarea>
 
-		<div id="attachmentsForm">
-			<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
-				<img class="icon" src="../../assets/icons/attach_file.svg">
-			</button>
-
-			<div class="thumb" :key="i" v-for="(file, i) in files" :style="{backgroundImage: `url(${thumbs[i]})`}">
-				<button class="nsfwToggle" type="button" @click="toggleAttachmentNSFW(i)">
-					<img class="icon" v-if="attachmentNSFW[i]" src="../../assets/icons/nsfw.svg">
-					<img class="icon" v-else src="../../assets/icons/sfw.svg">
+			<div id="attachmentsForm">
+				<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
+					<img class="icon" src="../../assets/icons/attach_file.svg">
 				</button>
-				<button class="deleteAttachment" type="button" @click="deleteAttachment(i)"><img class="icon" src="../../assets/icons/close.svg"></button>
-			</div>
-		</div>
 
-		<button id="submit">
-			<img class="icon" src="../../assets/icons/send.svg">
-		</button>
-	</form>
+				<div class="thumb" :key="i" v-for="(file, i) in files" :style="{backgroundImage: `url(${thumbs[i]})`}">
+					<button class="nsfwToggle" type="button" @click="toggleAttachmentNSFW(i)">
+						<img class="icon" v-if="attachmentNSFW[i]" src="../../assets/icons/nsfw.svg">
+						<img class="icon" v-else src="../../assets/icons/sfw.svg">
+					</button>
+					<button class="deleteAttachment" type="button" @click="deleteAttachment(i)"><img class="icon" src="../../assets/icons/close.svg"></button>
+				</div>
+			</div>
+
+			<button id="submit">
+				<img class="icon" src="../../assets/icons/send.svg">
+			</button>
+		</form>
+	</Shell>
 </template>
 
 <script>
 	import { submitPost, submitCaptcha } from '../../api'
 	import { log } from '../../utils'
+	import Shell from './Shell.vue'
 
 	export default {
 		name: 'FormModal',
 		props: [
-			'originalData'
+			'threadId',
+			'boardName',
+			'threadNumber',
+			'postNumber',
 		],
+		components: {
+			Shell
+		},
 		data() {
 			return {
 				text: '',
@@ -46,14 +55,21 @@
 				files: [],
 				attachmentNSFW: [],
 				thumbs: [],
-				threadId: null,
-				boardName: null,
-				threadNumber: null,
 				waitingToSubmit: false,
 				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
 			}
 		},
+		watch: {
+			postNumber: function(newPostNumber) {
+				this.insertPostLink(newPostNumber)
+			}
+		},
 		methods: {
+			insertPostLink(postNumber) {
+				if (undefined === postNumber) return
+				this.text += `>>${postNumber}\r`
+			},
+
 			attachHandler() {
 				let fileInput = document.createElement('input')
 				fileInput.type = 'file'
@@ -92,24 +108,6 @@
 				this.files.splice(i, 1)
 				this.thumbs.splice(i, 1)
 				this.attachmentNSFW.splice(i, 1)
-			},
-
-			handleDataUpdate(data) {
-				this.threadId = data.threadId
-				this.boardName = data.boardName
-				this.threadNumber = data.threadNumber
-
-				this.$parent.setParams({
-					header: this.$store.state.debug
-						? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
-						: data.threadId
-							? `Reply to thread #${this.threadNumber} on board /${this.boardName}`
-							: `New thread on board /${this.boardName}`
-				})
-
-				if (data.postNumber) {
-					this.text += `>>${data.postNumber}\r`
-				}
 			},
 
 			submitHandler() {
@@ -155,12 +153,23 @@
 				this.files = []
 				this.attachmentNSFW = []
 				this.thumbs = []
+			},
+
+			close() {
+				this.$parent.closeByKey(this._.vnode.key)
+			},
+		},
+		computed: {
+			header: function () {
+				return this.$store.state.debug
+					? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
+					: this.threadId
+						? `Reply to thread #${this.threadNumber} on board /${this.boardName}`
+						: `New thread on board /${this.boardName}`
 			}
 		},
-
 		created() {
-			this.handleDataUpdate(this.originalData)
-			emitter.on(`modal-${this.$parent._.vnode.key}-data-update`, this.handleDataUpdate)
+			this.insertPostLink(this.postNumber)
 			emitter.on('captcha-solved', this.submit)
 		}
 	}
@@ -204,7 +213,7 @@
 		margin-bottom: 0;
 	}
 
-	div {
+	#attachmentsForm, .thumb {
 		grid-column: 1/5;
 		width: 100%;
 		height: 100%;
