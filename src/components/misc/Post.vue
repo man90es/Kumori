@@ -1,5 +1,5 @@
 <template>
-	<article v-if="undefined !== post" :class="{ selected }">
+	<article v-if="![postId, post].includes(undefined)" :class="{ selected }">
 		<div class="postDetails">
 			<img v-if="post.modifiers.includes('sage')" class="sage icon" src="../../assets/icons/down.svg">
 			<a class="refLink" @click="handleRefLinkClick">
@@ -132,7 +132,7 @@
 			}
 		},
 		created() {
-			if (this.post == undefined) {
+			if (undefined === this.post && undefined !== this.postId) {
 				this.$store.dispatch('requestPost', {id: this.postId})
 			}
 		}

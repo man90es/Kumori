@@ -43,11 +43,6 @@
 				}
 			}
 		},
-		watch: {
-			$route(to) {
-				this.getFeed(to.params.boardName)
-			}
-		},
 		created() {
 			this.getFeed(this.$route.params.boardName)
 			emitter.on('page-end-reached', () => {
