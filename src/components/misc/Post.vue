@@ -1,7 +1,7 @@
 <template>
-	<article v-if="postId != undefined" :class="{selected}">
+	<article v-if="undefined !== post" :class="{ selected }">
 		<div class="postDetails">
-			<span v-if="post.modifiers && 'sage' in post.modifiers"><img class="icon" src="../../assets/icons/down.svg"></span>
+			<img v-if="post.modifiers.includes('sage')" class="sage icon" src="../../assets/icons/down.svg">
 			<a class="refLink" @click="handleRefLinkClick">
 				<span class="subject" v-if="post.subject">{{formattedSubject}}</span> #{{post.number}}
 			</a>
@@ -9,7 +9,7 @@
 			<PostMenu v-if="showMenu" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
-			<span v-if="$store.state.debug">b:"{{thread ? thread.boardName : 'undefined'}}" tid:{{post.threadId}} pid:{{postId}}</span>
+			<span v-if="$store.state.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
 		</div>
 		<div v-if="!hidden">
 			<div v-if="post.attachments" class="attachments">
@@ -50,8 +50,8 @@
 			},
 
 			formattedSubject() {
-				let subject = this.post.subject
-				return subject.length > 55 ? truncateString(subject, 55) : subject
+				const subject = this.post.subject
+				return subject?.length > 55 ? truncateString(subject, 55) : subject
 			},
 
 			hidden() {
@@ -180,5 +180,10 @@
 
 	p {
 		margin: 0;
+	}
+
+	.sage.icon {
+		vertical-align: middle;
+		height: 1.3em;
 	}
 </style>
