@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import { log } from './utils'
+	import { Logger } from './utils'
 
 	export default {
 		name: 'App',
@@ -79,7 +79,7 @@
 				let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
 
 				if (bottomOfWindow) {
-					log('Page end reached')
+					Logger.debug('Page end reached')
 					emitter.emit('page-end-reached', {})
 				}
 			}

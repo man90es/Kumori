@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import { VuexLS } from './VuexLS'
 import { request } from '../api/request'
-import { log } from '../utils'
+import { Logger } from '../utils'
 
 function toggleListEntry(state, listName, entry) {
 	let i = state[listName].indexOf(entry)
@@ -145,53 +145,57 @@ const store = Vuex.createStore({
 	actions: { // Requests to API
 		// eslint-disable-next-line no-unused-vars
 		requestBoardList(context) {
-			log('Requesting boards')
+			Logger.debug('Requesting boards')
 			request.ws({request: 'boards'})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestThreadList(context, {boardName, count, page}) {
-			log('Requesting threads for board: ', boardName)
+			Logger.debug('Requesting threads for board: ', boardName)
 			request.ws({request: 'threads', boardName, count, page})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestThread(context, {id}) {
-			log('Requesting thread: ', id)
+			Logger.debug('Requesting thread: ', id)
 			request.ws({request: 'thread', id})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestPostList(context, {threadId, count, page}) {
-			log('Requesting posts for thread: ', threadId)
+			Logger.debug('Requesting posts for thread: ', threadId)
 			request.ws({request: 'posts', threadId, count, page})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestPost(context, {id}) {
-			log('Requesting post: ', id)
+			Logger.debug('Requesting post: ', id)
 			request.ws({request: 'post', id})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestFeed(context, {boardName, count, page}) {
 			if (page == 0 || context.state.feedLists[boardName][context.state.feedLists[boardName].length - 1] != undefined) {
-				log('Requesting feed for board: ', boardName)
+				Logger.debug('Requesting feed for board: ', boardName)
 				request.ws({request: 'posts', boardName, count, page})
 			} else {
-				log('Last feed page reached, no need to request')
+				Logger.debug('Last feed page reached, no need to request')
 			}
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		submitSearchQuery(context, {query, parameters}) {
-			log('Submitting search query: ', query)
+			Logger.debug('Submitting search query: ', query)
 			request.ws({request: 'search', query, parameters})
 		}
 	}
 })
 
 request.init(store.state.APIServer, (message) => { // API response handlers
+	if (undefined !== message.error) {
+		Logger.error('Websocket error occured:', message)
+	}
+
 	switch (message.what.request) {
 		case 'boards':
 			store.commit('updateBoardList', Object.keys(message.data))
@@ -263,7 +267,7 @@ request.init(store.state.APIServer, (message) => { // API response handlers
 			break
 
 		default:
-			log('Unhandled websocket message:', message)
+			Logger.error('Unhandled websocket message:', message)
 	}
 })
 

@@ -34,7 +34,7 @@
 
 <script>
 	import { submitPost, submitCaptcha } from '../../api'
-	import { log } from '../../utils'
+	import { Logger } from '../../utils'
 	import Shell from './Shell.vue'
 
 	export default {
@@ -119,7 +119,7 @@
 						emitter.emit('need-captcha', {})
 					}
 				}).catch((error) => {
-					log('Exception occurred while trying to check remaining posts:', error)
+					Logger.error('Exception occurred while trying to check remaining posts:', error)
 				})
 			},
 
@@ -143,7 +143,7 @@
 					this.reset()
 					this.$router.push({name: 'thread', params: {boardName: response.boardName, threadId: response.threadId}})
 				}).catch((error) => {
-					log('Exception occurred while trying to submit post:', error)
+					Logger.error('Exception occurred while trying to submit post:', error)
 				})
 			},
 
