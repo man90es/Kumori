@@ -1,6 +1,6 @@
 <template>
 	<div v-if="!mobile">
-		<router-link to="/">{{$store.state.siteTitle}}</router-link>
+		<router-link to="/">{{ title }}</router-link>
 		<router-link :key="boardName" :to="{name: 'board', params: {boardName}}" v-for="boardName in $store.state.boardList">/{{boardName}}<span v-if="!$store.state.compactBoardMenu"> — {{$store.state.boards[boardName].title}}</span></router-link>
 	</div>
 </template>
@@ -11,7 +11,8 @@
 		name: 'NavBar',
 		data() {
 			return {
-				mobile: window.innerWidth < window.innerHeight
+				mobile: window.innerWidth < window.innerHeight,
+				title: process.env.VUE_APP_TITLE,
 			}
 		}
 	}

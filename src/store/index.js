@@ -34,8 +34,6 @@ const store = Vuex.createStore({
 		repliesOnBoardPage: 3,
 		debug: false,
 		compactBoardMenu: false,
-		APIServer: 'http://127.0.0.1:6749',
-		siteTitle: 'Kumori'
 	},
 
 	plugins: [ VuexLS ],
@@ -191,7 +189,7 @@ const store = Vuex.createStore({
 	}
 })
 
-request.init(store.state.APIServer, (message) => { // API response handlers
+request.init(process.env.VUE_APP_API_ENDPOINT, (message) => { // API response handlers
 	if (undefined !== message.error) {
 		Logger.error('Websocket error occured:', message)
 	}

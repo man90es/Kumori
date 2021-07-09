@@ -1,5 +1,5 @@
 import { request } from './request'
-import store from '../store' 
+import store from '../store'
 
 export function submitPost(formData) {
 	return request.http('POST', 'createPost', formData).then((response) => {
@@ -9,7 +9,7 @@ export function submitPost(formData) {
 }
 
 export function getCaptchaImageURI() {
-	return `${store.state.APIServer}/api/captcha?image&timestamp=${+new Date()}`
+	return `${process.env.VUE_APP_API_ENDPOINT}/api/captcha?image&timestamp=${+new Date()}`
 }
 
 export function submitCaptcha(formData) {
