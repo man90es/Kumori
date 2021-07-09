@@ -1,10 +1,7 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
 import { VuexLS } from './VuexLS'
 import { request } from '../api/request'
-import { log } from '../utils'
-
-Vue.use(Vuex)
+import { Logger } from '../utils'
 
 function toggleListEntry(state, listName, entry) {
 	let i = state[listName].indexOf(entry)
@@ -20,7 +17,7 @@ function clearList(state, listName) {
 	state[listName] = []
 }
 
-const store = new Vuex.Store({
+const store = Vuex.createStore({
 	state: {
 		boardList: [],
 		boards: {},
@@ -42,7 +39,7 @@ const store = new Vuex.Store({
 	},
 
 	plugins: [ VuexLS ],
-	
+
 	mutations: {
 		import(state, backup) {
 			Object.assign(state, backup)
@@ -53,60 +50,58 @@ const store = new Vuex.Store({
 		},
 
 		updateBoards(state, payload) {
-			for (let key in payload) {
-				Vue.set(state.boards, key, payload[key])
-			}
+			state.boards = { ...state.boards, ...payload }
 		},
 
 		updateThreadList(state, {boardName, payload, count, page}) {
-			if (state.threadLists[boardName] == undefined) {
-				Vue.set(state.threadLists, boardName, [])
+			if (state.threadLists[boardName] === undefined) {
+				state.threadLists[boardName] = []
 			}
 
 			for (let i = page * count; i < (page + 1) * count; i++) {
 				if (payload[i]) {
-					Vue.set(state.threadLists[boardName], i, payload[i])
+					state.threadLists[boardName][i] = payload[i]
 				}
 			}
 		},
 
 		updateThreads(state, payload) {
 			for (let thread of payload) {
-				Vue.set(state.threads, thread.id, thread)
+				state.threads[thread.id] = thread
 			}
 		},
-		
+
 		updatePostList(state, {threadId, payload, count, page}) {
-			if (state.postLists[threadId] == undefined) {
-				Vue.set(state.postLists, threadId, [])
+			if (state.postLists[threadId] === undefined) {
+				state.postLists[threadId] = []
 			}
 
 			if (page == 'tail') {
 				let totalPosts = state.threads[threadId].posts
 
 				for (let i = Math.max(totalPosts - count, 0), j = 0; i < totalPosts; i++, j++) {
-					Vue.set(state.postLists[threadId], i, payload[j])
+					state.postLists[threadId][i] = payload[j]
 				}
 			} else {
 				for (let i = page * count; i < (page + 1) * count; i++) {
-					Vue.set(state.postLists[threadId], i, payload[i])
+					state.postLists[threadId][i] = payload[i]
 				}
 			}
 		},
 
 		updatePosts(state, payload) {
 			for (let post of payload) {
-				Vue.set(state.posts, post.id, post)
+				state.posts[post?.id] = post
 			}
 		},
 
 		updateFeed(state, {boardName, payload, count, page}) {
-			if (state.feedLists[boardName] == undefined) {
-				Vue.set(state.feedLists, boardName, [])
+			if (state.feedLists[boardName] === undefined) {
+				state.feedLists[boardName] = []
 			}
-			
+
 			for (let i = 0; i < count; i++) {
-				Vue.set(state.feedLists[boardName], page * count + i, payload[i])
+				state.feedLists[boardName][page * count + i] = payload[i]
 			}
 		},
 
@@ -123,7 +118,7 @@ const store = new Vuex.Store({
 		},
 
 		clearSelected(state) {
-			clearList(state, 'selectedPostsList')			
+			clearList(state, 'selectedPostsList')
 		},
 
 		setTrustedPostCount(state, payload) {
@@ -150,53 +145,57 @@ const store = new Vuex.Store({
 	actions: { // Requests to API
 		// eslint-disable-next-line no-unused-vars
 		requestBoardList(context) {
-			log('Requesting boards')
+			Logger.debug('Requesting boards')
 			request.ws({request: 'boards'})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestThreadList(context, {boardName, count, page}) {
-			log('Requesting threads for board: ', boardName)
+			Logger.debug('Requesting threads for board: ', boardName)
 			request.ws({request: 'threads', boardName, count, page})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestThread(context, {id}) {
-			log('Requesting thread: ', id)
+			Logger.debug('Requesting thread: ', id)
 			request.ws({request: 'thread', id})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestPostList(context, {threadId, count, page}) {
-			log('Requesting posts for thread: ', threadId)
+			Logger.debug('Requesting posts for thread: ', threadId)
 			request.ws({request: 'posts', threadId, count, page})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestPost(context, {id}) {
-			log('Requesting post: ', id)
+			Logger.debug('Requesting post: ', id)
 			request.ws({request: 'post', id})
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		requestFeed(context, {boardName, count, page}) {
 			if (page == 0 || context.state.feedLists[boardName][context.state.feedLists[boardName].length - 1] != undefined) {
-				log('Requesting feed for board: ', boardName)
+				Logger.debug('Requesting feed for board: ', boardName)
 				request.ws({request: 'posts', boardName, count, page})
 			} else {
-				log('Last feed page reached, no need to request')
+				Logger.debug('Last feed page reached, no need to request')
 			}
 		},
 
 		// eslint-disable-next-line no-unused-vars
 		submitSearchQuery(context, {query, parameters}) {
-			log('Submitting search query: ', query)
+			Logger.debug('Submitting search query: ', query)
 			request.ws({request: 'search', query, parameters})
 		}
 	}
 })
 
 request.init(store.state.APIServer, (message) => { // API response handlers
+	if (undefined !== message.error) {
+		Logger.error('Websocket error occured:', message)
+	}
+
 	switch (message.what.request) {
 		case 'boards':
 			store.commit('updateBoardList', Object.keys(message.data))
@@ -205,19 +204,19 @@ request.init(store.state.APIServer, (message) => { // API response handlers
 
 		case 'threads':
 			store.commit('updateThreadList', {
-				boardName: message.what.boardName, 
-				payload: message.data.map(thread => thread.id), 
-				count: message.what.count, 
+				boardName: message.what.boardName,
+				payload: message.data.map(thread => thread.id),
+				count: message.what.count,
 				page: message.what.page
 			})
 
 			store.commit('updateThreads', message.data)
-			
+
 			for (let thread of message.data) {
 				store.commit('updatePostList', {
-					threadId: thread.id, 
-					payload: [thread.head.id], 
-					count: 1, 
+					threadId: thread.id,
+					payload: [thread.head.id],
+					count: 1,
 					page: 0
 				})
 
@@ -228,11 +227,11 @@ request.init(store.state.APIServer, (message) => { // API response handlers
 
 		case 'thread':
 			store.commit('updateThreads', [message.data])
-			
+
 			store.commit('updatePostList', {
-				threadId: message.data.id, 
-				payload: [message.data.head.id], 
-				count: 1, 
+				threadId: message.data.id,
+				payload: [message.data.head.id],
+				count: 1,
 				page: 0
 			})
 
@@ -241,20 +240,20 @@ request.init(store.state.APIServer, (message) => { // API response handlers
 			break
 
 		case 'posts':
-			if (message.what.boardName) { 
+			if (message.what.boardName) {
 				// Feed
 				store.commit('updateFeed', {
-					boardName: message.what.boardName, 
-					payload: message.data.map(post => post.id), 
-					count: message.what.count, 
+					boardName: message.what.boardName,
+					payload: message.data.map(post => post.id),
+					count: message.what.count,
 					page: message.what.page
 				})
-			} else { 
+			} else {
 				// Thread
 				store.commit('updatePostList', {
-					threadId: message.what.threadId, 
-					payload: message.data.map(post => post.id), 
-					count: message.what.count, 
+					threadId: message.what.threadId,
+					payload: message.data.map(post => post.id),
+					count: message.what.count,
 					page: message.what.page
 				})
 			}
@@ -268,7 +267,7 @@ request.init(store.state.APIServer, (message) => { // API response handlers
 			break
 
 		default:
-			log('Unhandled websocket message:', message)
+			Logger.error('Unhandled websocket message:', message)
 	}
 })
 

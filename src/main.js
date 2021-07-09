@@ -1,20 +1,17 @@
-import Vue from 'vue'
-import VueBus from 'vue-bus'
+import { createApp } from 'vue'
+import mitt from 'mitt'
 import App from './App.vue'
 import router from './router'
-import VueLazyload from 'vue-lazyload'
-import './registerServiceWorker'
 import store from './store'
-import Vue2TouchEvents from 'vue2-touch-events'
+import Vue3TouchEvents from 'vue3-touch-events'
+import VueLazyLoad from 'vue3-lazyload'
+import './registerServiceWorker'
 
-Vue.use(VueLazyload)
-Vue.use(VueBus)
-Vue.use(Vue2TouchEvents)
+window.emitter = mitt()
 
-Vue.config.productionTip = false
-
-window.vm = new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+window.vm = createApp(App)
+	.use(router)
+	.use(store)
+	.use(Vue3TouchEvents)
+	.use(VueLazyLoad)
+	.mount('body')

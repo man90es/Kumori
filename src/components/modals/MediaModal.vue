@@ -1,18 +1,25 @@
 <template>
-	<div>
-		<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
-		<img :class="{ready}" :src="src" @load="ready = true">
-	</div>
+	<Shell :header="data.title">
+		<div>
+			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
+			<img :class="{ready}" :src="src" @load="ready = true">
+		</div>
+	</Shell>
 </template>
 
 <script>
 	import { meta } from '../../api/request.js'
+	import Shell from './Shell.vue'
 
 	export default {
 		name: 'MediaModal',
 		props: [
-			'originalData'
+			'hash',
+			'mime'
 		],
+		components: {
+			Shell
+		},
 		data() {
 			return {
 				ready: false
@@ -27,14 +34,14 @@
 					'image/webp': '.webp'
 				}
 
-				return meta.res + this.originalData.hash + mimeMap[this.originalData.mime]
+				return meta.res + this.hash + mimeMap[this.mime]
 			}
 		},
-		mounted() {
-			this.$parent.setParams({
-				header: this.originalData.title
-			})
-		}
+		methods: {
+			close() {
+				this.$parent.closeByKey(this._.vnode.key)
+			},
+		},
 	}
 </script>
 

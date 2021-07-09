@@ -24,7 +24,7 @@
 		},
 		methods: {
 			clickHandler() {
-				this.$bus.emit('post-attachment-preview-click', this.file)
+				emitter.emit('post-attachment-preview-click', this.file)
 			}
 		}
 	}

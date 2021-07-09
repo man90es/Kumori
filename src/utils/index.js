@@ -1,11 +1,11 @@
 export processMarkup from './markup'
-export log from './log'
+export Logger from './Logger'
 
 export function num2Word(n, words) {
 	if (words.length < 3) words[2] = words[1]
 	let t = n % 100
 	if (n > 19) t %= 10
-	
+
 	switch (t) {
 		case 1:
 			return words[0]

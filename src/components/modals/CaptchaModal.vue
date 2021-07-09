@@ -1,18 +1,21 @@
 <template>
-	<form @submit.prevent="submit()">
-		<img width="192" height="64" :src="imageSrc" @click="refresh">
-		<input type="text" name="code" autocomplete="off" placeholder="Captcha">
-	</form>
+	<Shell :header="'Humanity check'" :closeable="false" :draggable="false">
+		<form @submit.prevent="submit()">
+			<img width="192" height="64" :src="imageSrc" @click="refresh">
+			<input type="text" name="code" autocomplete="off" placeholder="Captcha">
+		</form>
+	</Shell>
 </template>
 
 <script>
 	import { getCaptchaImageURI, submitCaptcha } from '../../api'
+	import Shell from './Shell.vue'
 
 	export default {
 		name: 'CaptchaModal',
-		props: [
-			'originalData'
-		],
+		components: {
+			Shell
+		},
 		data() {
 			return {
 				imageSrc: null
@@ -22,7 +25,7 @@
 			async submit() {
 				await submitCaptcha(new FormData(this.$el)).then((response) => {
 					if (response.trustedPostCount > 0) {
-						this.$bus.emit('captcha-solved', {})
+						emitter.emit('captcha-solved', {})
 						this.$parent.close()
 					} else {
 						this.refresh()
@@ -32,18 +35,16 @@
 
 			refresh() {
 				this.imageSrc = getCaptchaImageURI()
-			}
+			},
+
+			close() {
+				this.$parent.setBackdrop(false)
+				this.$parent.closeByKey(this._.vnode.key)
+			},
 		},
-
 		created() {
+			this.$parent.setBackdrop(true)
 			this.imageSrc = getCaptchaImageURI()
-			this.$parent.setParams({
-				header: 'Humanity check',
-				closeable: false,
-				draggable: false,
-				backdrop: true
-			})
-
 			this.submit()
 		}
 	}

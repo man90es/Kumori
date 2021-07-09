@@ -2,7 +2,7 @@
 	<div id="feed">
 		<NavBar />
 		<MainSection>
-			<Post v-if="postId" :key="postId" :postId="postId" v-for="postId in feedList"/>
+			<Post :key="postId" :postId="postId" v-for="postId in feedList"/>
 		</MainSection>
 		<MenuBar />
 
@@ -16,7 +16,6 @@
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Post from '../components/misc/Post.vue'
-	import { log } from '../utils'
 
 	export default {
 		name: 'Feed',
@@ -44,14 +43,9 @@
 				}
 			}
 		},
-		watch: {
-			$route(to) {
-				this.getFeed(to.params.boardName)
-			}
-		},
 		created() {
 			this.getFeed(this.$route.params.boardName)
-			this.$bus.on('page-end-reached', () => {
+			emitter.on('page-end-reached', () => {
 				if (this.$route.name == 'feed') {
 					let page = this.feedList.length / this.postsPerPage
 					this.$store.dispatch('requestFeed', {boardName: this.$route.params.boardName, count: this.postsPerPage, page})

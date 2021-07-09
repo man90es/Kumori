@@ -39,7 +39,8 @@
 			}
 		},
 		watch: {
-			$route() {
+			$route(to) {
+				if (to.name !== 'board') return
 				this.requestThreads()
 			}
 		},

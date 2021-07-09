@@ -33,11 +33,6 @@
 				}
 			}
 		},
-		watch: {
-			$route(to) {
-				this.requestThread(to.params.threadId)
-			}
-		},
 		created() {
 			this.requestThread(parseInt(this.$route.params.threadId))
 		}

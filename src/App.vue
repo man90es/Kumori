@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import { log } from './utils'
+	import { Logger } from './utils'
 
 	export default {
 		name: 'App',
@@ -49,7 +49,7 @@
 		},
 		methods: {
 			swipeHandler(direction) {
-				this.$bus.emit(`swipe-${direction}`)
+				emitter.emit(`swipe-${direction}`)
 			},
 
 			findPost(postNumber) {
@@ -60,7 +60,7 @@
 				if (link.dataset.requested != undefined) return
 				if (link.dataset.boardName == undefined) link.dataset.boardName = this.$route.params.boardName
 				let postNumber = parseInt(link.dataset.number)
-				
+
 				if (this.findPost(postNumber) == undefined) {
 					this.$store.dispatch('requestPost', {boardName: link.dataset.boardName, number: postNumber})
 				}
@@ -75,12 +75,12 @@
 				}})
 			},
 
-			scrollHandler(event) {
+			scrollHandler() {
 				let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
 
 				if (bottomOfWindow) {
-					log('Page end reached')
-					this.$bus.emit('page-end-reached', {})
+					Logger.debug('Page end reached')
+					emitter.emit('page-end-reached', {})
 				}
 			}
 		},
@@ -92,8 +92,8 @@
 		created() {
 			this.$store.dispatch('requestBoardList')
 
-			this.$bus.on('post-link-hovered', this.postLinkHoveredHandler)
-			this.$bus.on('post-link-clicked', this.postLinkClickedHandler)
+			emitter.on('post-link-hovered', this.postLinkHoveredHandler)
+			emitter.on('post-link-clicked', this.postLinkClickedHandler)
 
 			window.onscroll = this.scrollHandler
 		}
@@ -157,12 +157,12 @@
 	pre {
 		margin: 0;
 		white-space: pre-wrap;
+	}
 
-		& > code {
-			display: block;
-			padding: var(--gap-size);
-			margin: var(--gap-size) 0;
-		}
+	pre > code {
+		display: block;
+		padding: var(--gap-size);
+		margin: var(--gap-size) 0;
 	}
 
 	u {

@@ -29,8 +29,8 @@
 			}
 		},
 		created() {
-			this.$bus.on('swipe-left', () => this.visible = true)
-			this.$bus.on('swipe-right', () => this.visible = false)
+			emitter.on('swipe-left', () => this.visible = true)
+			emitter.on('swipe-right', () => this.visible = false)
 		},
 	}
 </script>

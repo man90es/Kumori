@@ -8,8 +8,8 @@
 
 <script>
 	import Post from './Post.vue'
-	import { log } from '../../utils'
-	
+	import { Logger } from '../../utils'
+
 	export default {
 		name: 'Thread',
 		components: {
@@ -77,7 +77,7 @@
 				this.requestPostList()
 			} catch(error) {
 				this.deferredPostRequest = true
-				log('Thread not ready for post request')
+				Logger.debug('Thread is not ready for post request')
 			}
 		}
 	}

@@ -12,13 +12,13 @@
 			dispatchEvent() {
 				switch(this.icon) {
 					case 'chat':
-						this.$bus.emit('menu-chat-button-click', {
-							boardName: this.$route.params.boardName, 
+						emitter.emit('menu-chat-button-click', {
+							boardName: this.$route.params.boardName,
 							threadId: parseInt(this.$route.params.threadId),
 							threadNumber: this.$route.name == 'thread' ? this.$store.state.threads[parseInt(this.$route.params.threadId)].head.number : null
 						})
 						break
-					
+
 					case 'star':
 						this.$router.push({name: 'bookmarks'})
 						break
@@ -34,9 +34,9 @@
 					case 'down':
 						scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})
 						break
-					
+
 					default:
-						this.$bus.emit(`menu-${this.icon}-button-click`, {})
+						emitter.emit(`menu-${this.icon}-button-click`, {})
 				}
 			}
 		},

@@ -1,24 +1,33 @@
 <template>
-	<div>
-		<span>This action may fail if you don't have right do delete {{selectedPostCount > 1 ? 'those posts' : 'that post'}}.</span>
-		<span>Deletion of OP deletes thread too.</span>
-		<span class="row">
-			<button type="button" @click="okHandler">Ok</button><button type="button" @click="cancelHandler">Cancel</button>
-		</span>
-	</div>
+	<Shell :header="`Delete ${selectedPostCount} selected post${selectedPostCount > 1 ? 's' : ''}?`">
+		<div>
+			<span>This action may fail if you don't have right do delete {{selectedPostCount > 1 ? 'those posts' : 'that post'}}.</span>
+			<span>Deletion of OP deletes thread too.</span>
+			<span class="row">
+				<button type="button" @click="okHandler">Ok</button><button type="button" @click="close">Cancel</button>
+			</span>
+		</div>
+	</Shell>
 </template>
 
 <script>
 	import { deletePosts } from '../../api'
+	import Shell from './Shell.vue'
 
 	export default {
 		name: 'DeletePostModal',
-		props: [
-			'originalData'
-		],
-		data() {
-			return {
-				selectedPostCount: 0
+		components: {
+			Shell
+		},
+		computed: {
+			selectedPostCount: function() {
+				const selectedPostCount = this.$store.state.selectedPostsList.length
+
+				if (selectedPostCount > 0) {
+					return selectedPostCount
+				} else {
+					this.close()
+				}
 			}
 		},
 		methods: {
@@ -36,27 +45,10 @@
 				this.cancelHandler()
 			},
 
-			cancelHandler() {
-				this.$parent.close()
+			close() {
+				this.$parent.closeByKey(this._.vnode.key)
 				this.$store.commit('clearSelected')
 			},
-
-			handleDataUpdate() {
-				this.selectedPostCount = this.$store.state.selectedPostsList.length
-
-				if (this.selectedPostCount < 1) {
-					this.$parent.close()
-				} else {
-					this.$parent.setParams({
-						header: `Delete ${this.selectedPostCount} selected post${this.selectedPostCount > 1 ? 's' : ''}?`
-					})
-				}
-
-			}
-		},
-		created() {
-			this.handleDataUpdate()
-			this.$bus.on(`modal-${this.$parent.$vnode.key}-data-update`, this.handleDataUpdate)
 		}
 	}
 </script>

@@ -1,36 +1,43 @@
 <template>
-	<div>
-		<a>{{this.originalData}}</a>
-		<span>It may be not safe.</span>
-		<span class="row">
-			<button type="button" @click="okHandler">Ok</button><button type="button" @click="cancelHandler">Cancel</button>
-		</span>
-	</div>
+	<Shell :header="'Are you sure you want to open this link?'" :closeable="false" :draggable="false">
+		<div>
+			<a>{{link}}</a>
+			<span>It may be not safe.</span>
+			<span class="row">
+				<button type="button" @click="okHandler">Ok</button><button type="button" @click="cancelHandler">Cancel</button>
+			</span>
+		</div>
+	</Shell>
 </template>
 
 <script>
+	import Shell from './Shell.vue'
+
 	export default {
 		name: 'UnsafeLinkModal',
 		props: [
-			'originalData'
+			'link'
 		],
+		components: {
+			Shell
+		},
 		methods: {
 			okHandler() {
-				window.open(this.originalData)
+				window.open(this.link)
 				this.$parent.close()
 			},
 
 			cancelHandler() {
 				this.$parent.close()
-			}
+			},
+
+			close() {
+				this.$parent.setBackdrop(false)
+				this.$parent.closeByKey(this._.vnode.key)
+			},
 		},
 		created() {
-			this.$parent.setParams({
-				header: 'Are you sure you want to open this link?',
-				closeable: false,
-				draggable: false,
-				backdrop: true
-			})
+			this.$parent.setBackdrop(true)
 		}
 	}
 </script>
