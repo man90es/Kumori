@@ -1,6 +1,6 @@
 <template>
 	<Shell :header="header">
-		<form @submit.prevent="submitHandler()">
+		<form @submit.prevent="() => API.checkCaptcha(null)">
 			<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
 			<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
 			<input hidden type="checkbox" name="modifiers:signed" id="modifiers:signed">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	import { submitPost, submitCaptcha } from '../../api'
+	import API from '../../api'
 	import { Logger } from '../../utils'
 	import Shell from './Shell.vue'
 
@@ -110,19 +110,6 @@
 				this.attachmentNSFW.splice(i, 1)
 			},
 
-			submitHandler() {
-				submitCaptcha(null).then((response) => {
-					if (response.trustedPostCount > 0) {
-						this.submit()
-					} else {
-						this.waitingToSubmit = true
-						emitter.emit('need-captcha', {})
-					}
-				}).catch((error) => {
-					Logger.error('Exception occurred while trying to check remaining posts:', error)
-				})
-			},
-
 			submit() {
 				this.waitingToSubmit = false
 				let data = new FormData(this.$el)
@@ -139,12 +126,7 @@
 					}
 				}
 
-				submitPost(data).then((response) => {
-					this.reset()
-					this.$router.push({name: 'thread', params: {boardName: response.boardName, threadId: response.threadId}})
-				}).catch((error) => {
-					Logger.error('Exception occurred while trying to submit post:', error)
-				})
+				API.createPost(data)
 			},
 
 			reset() {
@@ -171,6 +153,34 @@
 		created() {
 			this.insertPostLink(this.postNumber)
 			emitter.on('captcha-solved', this.submit)
+
+			// Handle reply to captcha submission
+			API.addListener(
+				message => 'POST /checkCaptcha' === message.what?.request,
+				(message) => {
+					if (message.data.trustedPostCount > 0) {
+						this.submit()
+					} else {
+						this.waitingToSubmit = true
+						emitter.emit('need-captcha', {})
+					}
+				}
+			)
+
+			// Handle reply to post submission
+			API.addListener(
+				message => 'POST /createPost' === message.what?.request,
+				(message) => {
+					this.reset()
+					this.$router.push({
+						name: 'thread',
+						params: {
+							boardName: message.data.boardName,
+							threadId: message.data.threadId,
+						},
+					})
+				}
+			)
 		}
 	}
 </script>

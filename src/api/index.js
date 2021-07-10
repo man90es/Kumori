@@ -1,24 +1,3 @@
-import { request } from './request'
-import store from '../store'
+import FKClient from '@bakaso/fkclient'
 
-export function submitPost(formData) {
-	return request.http('POST', 'createPost', formData).then((response) => {
-		store.commit('setTrustedPostCount', response.trustedPostCount)
-		return response
-	})
-}
-
-export function getCaptchaImageURI() {
-	return `${process.env.VUE_APP_API_ENDPOINT}/api/captcha?image&timestamp=${+new Date()}`
-}
-
-export function submitCaptcha(formData) {
-	return request.http('POST', 'checkCaptcha', formData).then((response) => {
-		store.commit('setTrustedPostCount', response.trustedPostCount)
-		return response
-	})
-}
-
-export function deletePosts(formData) {
-	return request.http('POST', 'deletePosts', formData)
-}
+export default new FKClient(process.env.VUE_APP_API_ENDPOINT)

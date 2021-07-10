@@ -8,7 +8,7 @@
 </template>
 
 <script>
-	import { meta } from '../../api/request.js'
+	import API from '../../api'
 	import Shell from './Shell.vue'
 
 	export default {
@@ -34,7 +34,7 @@
 					'image/webp': '.webp'
 				}
 
-				return meta.res + this.hash + mimeMap[this.mime]
+				return API.resPath + this.hash + mimeMap[this.mime]
 			}
 		},
 		methods: {

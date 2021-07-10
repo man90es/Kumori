@@ -18,6 +18,7 @@
 </template>
 
 <script>
+	import API from '../../api'
 	import Shell from './Shell.vue'
 
 	export default {
@@ -36,15 +37,12 @@
 		},
 		methods: {
 			submit() {
-				this.$store.dispatch('submitSearchQuery', {
-					query: this.query,
-					parameters: {
-						after: this.dateFrom,
-						before: this.dateTo,
-						boardName: this.boardName,
-						threadNumber: this.threadNumber,
-						searchOnlyInSubjects: false
-					}
+				API.search(this.query, {
+					after: this.dateFrom,
+					before: this.dateTo,
+					boardName: this.boardName,
+					threadNumber: this.threadNumber,
+					searchOnlyInSubjects: false
 				})
 			},
 			close() {

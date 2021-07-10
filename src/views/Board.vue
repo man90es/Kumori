@@ -11,6 +11,7 @@
 </template>
 
 <script>
+	import API from '../api'
 	import MainSection from '../components/layout/MainSection.vue'
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
@@ -33,8 +34,8 @@
 		},
 		methods: {
 			requestThreads() {
-				if (this.threadList == undefined) {
-					this.$store.dispatch('requestThreadList', {boardName: this.$route.params.boardName, count: 10, page: 0})
+				if (this.threadList === undefined) {
+					API.readManyThreads(this.$route.params.boardName, 10, 0)
 				}
 			}
 		},
