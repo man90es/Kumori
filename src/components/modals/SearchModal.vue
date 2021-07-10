@@ -54,7 +54,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.icon {
 		cursor: pointer;
 	}
@@ -81,13 +81,13 @@
 	.row {
 		display: flex;
 		width: 100%;
-	}
 
-	.row *:not(:last-child) {
-		margin-right: var(--gap-size);
-	}
+		&:not(:last-child) {
+			margin-bottom: var(--gap-size);
+		}
 
-	.row:not(:last-child) {
-		margin-bottom: var(--gap-size);
+		*:not(:last-child) {
+			margin-right: var(--gap-size);
+		}
 	}
 </style>

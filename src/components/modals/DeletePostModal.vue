@@ -53,7 +53,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	div {
 		display: flex;
 		text-align: center;
@@ -70,9 +70,9 @@
 		color: var(--text-color);
 		font-size: 1rem;
 		width: 50%;
-	}
 
-	button:hover {
-		background-color: #fff1;
+		&:hover {
+			background-color: #fff1;
+		}
 	}
 </style>

@@ -83,7 +83,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.modal {
 		pointer-events: auto;
 		min-height: 5em;
@@ -92,20 +92,20 @@
 		box-shadow: 0 0 var(--gap-size) #0005;
 		padding: var(--gap-size);
 		position: fixed;
-	}
 
-	.modal > div:first-child {
-		height: 2rem;
-		text-align: center;
-		user-select: none;
+		& > div:first-child {
+			height: 2rem;
+			text-align: center;
+			user-select: none;
+		}
+
+		button{
+			position: absolute;
+			right: 0;
+		}
 	}
 
 	.draggable {
 		cursor: move;
-	}
-
-	.modal button{
-		position: absolute;
-		right: 0;
 	}
 </style>

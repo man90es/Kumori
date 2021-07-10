@@ -5,7 +5,7 @@
 				<div class="title" v-if="['board', 'thread'].includes($route.name)">/{{board.name}}/ — {{board.title}}</div>
 				<div class="title" v-if="$route.name == 'feed'">/{{board.name}}/'s feed — {{board.title}}</div>
 				<div>{{board.subtitle}}</div>
-			</router-link>	
+			</router-link>
 		</div>
 
 		<div>
@@ -19,7 +19,7 @@
 			<div>
 				<div class="title">Bookmarks</div>
 				<div>Posts you marked with a star</div>
-			</div>	
+			</div>
 		</div>
 	</header>
 </template>
@@ -35,24 +35,24 @@
 	}
 </script>
 
-<style scoped>
-	header{
+<style scoped lang="scss">
+	header {
 		background-color: var(--card-color);
 		margin-bottom: calc(var(--gap-size) / 2);
 		padding: var(--gap-size);
 		display: flex;
 		justify-content: space-between;
+
+		& > div:last-child {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
 	}
 
 	.title {
 		font-size: 1.5rem;
 		color: var(--text-color);
-	}
-
-	header > div:last-child {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
 	}
 
 	.feedLink img {

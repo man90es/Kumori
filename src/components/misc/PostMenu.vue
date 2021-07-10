@@ -27,19 +27,19 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.postMenu {
 		position: absolute;
 		background-color: var(--card-color);
 		z-index: 99;
-	}
 
-	.postMenu div {
-		cursor: pointer;
-		padding: var(--gap-size);
-	}
+		div {
+			cursor: pointer;
+			padding: var(--gap-size);
 
-	.postMenu div:hover {
-		background-color: var(--card-secondary-color);
+			&:hover {
+				background-color: var(--card-secondary-color);
+			}
+		}
 	}
 </style>

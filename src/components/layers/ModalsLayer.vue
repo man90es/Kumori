@@ -98,7 +98,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	#ModalsLayer {
 		top: 0;
 		left: 0;
@@ -108,13 +108,14 @@
 		justify-content: center;
 		align-items: center;
 		display: flex;
-	}
 
-	#ModalsLayer:not(.backdrop) {
-		pointer-events: none;
-	}
+		&:not(.backdrop) {
+			pointer-events: none;
+		}
 
-	.backdrop {
-		background-color: #0005;
+		&.backdrop {
+			background-color: #0005;
+
+		}
 	}
 </style>

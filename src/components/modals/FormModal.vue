@@ -175,7 +175,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	form {
 		display: grid;
 		grid-template-rows: 1.75rem 1fr 3.5rem;
@@ -247,21 +247,21 @@
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
+
+		button {
+			opacity: 0;
+			width: 50%;
+			height: 100%;
+		}
+
+		&:hover button {
+			opacity: 1;
+			filter: blur(0);
+		}
 	}
 
 	#attachFile {
 		width: 3rem;
-	}
-
-	.thumb button {
-		opacity: 0;
-		width: 50%;
-		height: 100%;
-	}
-
-	.thumb:hover button {
-		opacity: 1;
-		filter: blur(0);
 	}
 
 	.nsfwToggle {

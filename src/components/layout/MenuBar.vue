@@ -35,31 +35,31 @@
 	}
 </script>
 
-<style scoped>
-	#MenuBar{
+<style scoped lang="scss">
+	#MenuBar {
 		display: flex;
 		justify-content: space-between;
 		flex-direction: column;
 		height: 100vh;
 		top: 0;
 		position: sticky;
-	}
 
-	#MenuBar.mobile {
-		position: fixed;
-		right: -3.5em;
-		transition-duration: .2s;
-	}
+		button {
+			margin: var(--gap-size) 0;
+		}
 
-	#MenuBar.mobile button {
-		border: 1px solid var(--background-color);
-	}
+		&.mobile {
+			position: fixed;
+			right: -3.5em;
+			transition-duration: .2s;
 
-	#MenuBar.mobile.visible {
-		right: var(--gap-size);
-	}
+			&.visible {
+				right: var(--gap-size);
+			}
 
-	button{
-		margin: var(--gap-size) 0;
+			button {
+				border: 1px solid var(--background-color);
+			}
+		}
 	}
 </style>

@@ -30,12 +30,12 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	img {
 		cursor: pointer;
-	}
 
-	img.nsfw {
-		filter: url("#sharpBlur");
+		&.nsfw {
+			filter: url("#sharpBlur");
+		}
 	}
 </style>

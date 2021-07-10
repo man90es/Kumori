@@ -22,7 +22,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	#home {
 		height: 100vh;
 		width: 100vw;
@@ -30,18 +30,18 @@
 		justify-content: center;
 		align-items: center;
 		background-color: #000;
-	}
 
-	#home > :first-child {
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		background-position: center;
-		background-size: cover;
-		filter: url("#sharpBlur");
-		opacity: .4;
+		& > :first-child {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-position: center;
+			background-size: cover;
+			filter: url("#sharpBlur");
+			opacity: .4;
+		}
 	}
 
 	img {
@@ -51,11 +51,11 @@
 		padding: 1.5rem 1rem;
 		background-color: #fff1;
 		transition: padding .2s, background-color .2s;
-	}
 
-	img:hover {
-		padding: 2.5rem 2rem;
-		background-color: #fff2;
+		&:hover {
+			padding: 2.5rem 2rem;
+			background-color: #fff2;
+		}
 	}
 
 	ul {
@@ -68,11 +68,11 @@
 		bottom: 1rem;
 		font-weight: bold;
 		list-style: none;
-	}
 
-	li {
-		width: 100%;
-		text-align: center;
+		li {
+			width: 100%;
+			text-align: center;
+		}
 	}
 
 	a {
@@ -80,9 +80,9 @@
 		color: #a8afbc;
 		display: block;
 		transition: background-color .2s;
-	}
 
-	a:hover {
-		background-color: #fff1;
+		&:hover {
+			background-color: #fff1;
+		}
 	}
 </style>

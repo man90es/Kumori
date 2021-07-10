@@ -139,51 +139,51 @@
 	}
 </script>
 
-<style scoped>
-	article{
+<style scoped lang="scss">
+	article {
 		margin: calc(var(--gap-size) - 1px) 0;
 		padding: var(--gap-size);
 		border: 1px solid transparent;
-	}
 
-	article.selected {
-		border-color: var(--link-hover-color);
-	}
+		&.selected {
+			border-color: var(--link-hover-color);
+		}
 
-	article:first-child{
-		background-color: var(--card-color);
-	}
+		&:first-child {
+			background-color: var(--card-color);
+		}
 
-	article:not(:first-child){
-		background-color: var(--card-secondary-color);
-		margin-left: calc(var(--gap-size) * 4);
-	}
+		&:not(:first-child) {
+			background-color: var(--card-secondary-color);
+			margin-left: calc(var(--gap-size) * 4);
+		}
 
-	.postDetails{
-		position: relative;
-	}
+		.postDetails {
+			position: relative;
+		}
 
-	time{
-		position: absolute;
-		right: 0;
-		color: var(--text-secondary-color);
-		font-size: 0.9rem;
-	}
+		time {
+			position: absolute;
+			right: 0;
+			color: var(--text-secondary-color);
+			font-size: 0.9rem;
+		}
 
-	.subject{
-		color: var(--text-secondary-color);
-	}
+		.subject {
+			color: var(--text-secondary-color);
+		}
 
-	.attachments *{
-		margin-right: var(--gap-size);
-	}
+		.attachments * {
+			margin-right: var(--gap-size);
+		}
 
-	p {
-		margin: 0;
-	}
+		p {
+			margin: 0;
+		}
 
-	.sage.icon {
-		vertical-align: middle;
-		height: 1.3em;
+		.sage.icon {
+			vertical-align: middle;
+			height: 1.3em;
+		}
 	}
 </style>

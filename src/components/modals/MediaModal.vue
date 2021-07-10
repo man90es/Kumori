@@ -45,7 +45,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	@keyframes spin {
 		0% {
 			transform:rotate(0deg) scale(-1, 1);
@@ -70,14 +70,16 @@
 		animation-timing-function: linear;
 	}
 
-	img:last-child:not(.ready){
-		opacity: 0;
-	}
+	img {
+		&:last-child:not(.ready){
+			opacity: 0;
+		}
 
-	img.ready{
-		max-width: 80vw;
-		max-height: 80vh;
-		width: auto;
-		height: auto;
+		&.ready{
+			max-width: 80vw;
+			max-height: 80vh;
+			width: auto;
+			height: auto;
+		}
 	}
 </style>
