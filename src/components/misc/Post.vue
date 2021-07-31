@@ -22,6 +22,7 @@
 </template>
 
 <script>
+	import API from '../../api'
 	import PostAttachment from './PostAttachment'
 	import PostMenu from './PostMenu'
 	import { num2Word, truncateString, processMarkup } from '../../utils'
@@ -126,14 +127,14 @@
 		},
 		watch: {
 			post(newValue, oldValue) {
-				if (this.thread == undefined && oldValue == undefined && newValue != undefined) {
-					this.$store.dispatch('requestThread', {id: this.post.threadId})
+				if (undefined === this.thread && undefined === oldValue && undefined !== newValue) {
+					API.thread.request({ threadId: this.post.threadId })
 				}
 			}
 		},
 		created() {
 			if (undefined === this.post && undefined !== this.postId) {
-				this.$store.dispatch('requestPost', {id: this.postId})
+				API.post.request({ postId: this.postId })
 			}
 		}
 	}

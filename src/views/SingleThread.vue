@@ -11,6 +11,7 @@
 </template>
 
 <script>
+	import API from '../api'
 	import MainSection from '../components/layout/MainSection.vue'
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
@@ -27,9 +28,9 @@
 			Thread
 		},
 		methods: {
-			requestThread(id) {
-				if (this.$store.state.threads[id] == undefined) {
-					this.$store.dispatch('requestThread', {id})
+			requestThread(threadId) {
+				if (undefined === this.$store.state.threads[threadId]) {
+					API.thread.request({ threadId })
 				}
 			}
 		},

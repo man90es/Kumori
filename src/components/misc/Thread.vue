@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import API from '../../api'
 	import Post from './Post.vue'
 	import { Logger } from '../../utils'
 
@@ -46,13 +47,13 @@
 				switch (this.$route.name) {
 					case 'board':
 						if (this.pageSize > 0 && this.thread.posts > 1 && this.tail.length < Math.min(this.thread.posts - 1, this.pageSize)) {
-							this.$store.dispatch('requestPostList', {threadId: this.threadId, count: this.pageSize, page: 'tail'})
+							API.post.requestMany({ threadId: this.threadId, count: this.pageSize, page: 'tail'})
 						}
 
 						break
 					case 'thread':
 						if (this.thread.posts > 1) {
-							this.$store.dispatch('requestPostList', {threadId: this.threadId, count: this.pageSize, page: 0})
+							API.post.requestMany({ threadId: this.threadId, count: this.pageSize })
 						}
 						break
 				}

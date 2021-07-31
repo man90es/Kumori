@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import { deletePosts } from '../../api'
+	import API from '../../api'
 	import Shell from './Shell.vue'
 
 	export default {
@@ -32,16 +32,7 @@
 		},
 		methods: {
 			okHandler() {
-				let data = new FormData()
-
-				this.$store.state.selectedPostsList.forEach((postId) => {
-					let checkbox = document.createElement('input')
-					checkbox.type = 'checkbox'
-					checkbox.checked = true
-					data.append(`selectedPost:${postId}`, checkbox)
-				})
-
-				deletePosts(data)
+				API.post.deleteMany(this.$store.state.selectedPostsList.map(postId => { return { postId } }))
 				this.cancelHandler()
 			},
 

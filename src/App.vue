@@ -13,6 +13,7 @@
 </template>
 
 <script>
+	import API from './api'
 	import { Logger } from './utils'
 
 	export default {
@@ -61,8 +62,8 @@
 				if (link.dataset.boardName == undefined) link.dataset.boardName = this.$route.params.boardName
 				let postNumber = parseInt(link.dataset.number)
 
-				if (this.findPost(postNumber) == undefined) {
-					this.$store.dispatch('requestPost', {boardName: link.dataset.boardName, number: postNumber})
+				if (undefined === this.findPost(postNumber)) {
+					API.post.request({ boardName: link.dataset.boardName, postNumber })
 				}
 
 				link.dataset.requested = true
@@ -90,7 +91,7 @@
 			}
 		},
 		created() {
-			this.$store.dispatch('requestBoardList')
+			API.board.requestMany()
 
 			emitter.on('post-link-hovered', this.postLinkHoveredHandler)
 			emitter.on('post-link-clicked', this.postLinkClickedHandler)

@@ -898,6 +898,11 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
+"@bakaso/fkclient@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@bakaso/fkclient/-/fkclient-1.1.1.tgz#fa341d7c6c5eaf1c9d0f3b7dd11e5bcd37166bb0"
+  integrity sha512-shbLc2F/5BclMu78CXrEKIEua6DoJKrh1P8aTwAWLJdyguV8N96DKdMXTIrybkDu973eJJvIz8193wB8OCl5Rg==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
