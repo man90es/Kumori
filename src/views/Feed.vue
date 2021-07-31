@@ -40,7 +40,7 @@
 		methods: {
 			getFeed(boardName) {
 				if (undefined === this.feedList) {
-					API.readFeed(boardName, this.postsPerPage, 0)
+					API.post.requestMany({ boardName, count: this.postsPerPage })
 				}
 			}
 		},

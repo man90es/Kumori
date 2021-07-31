@@ -32,10 +32,7 @@
 		},
 		methods: {
 			okHandler() {
-				for (const postId of this.$store.state.selectedPostsList) {
-					API.deleteOnePost(postId)
-				}
-
+				API.post.deleteMany(this.$store.state.selectedPostsList.map(postId => { return { postId } }))
 				this.cancelHandler()
 			},
 

@@ -27,6 +27,11 @@
 			ModalsLayer,
 			Thread
 		},
+		data() {
+			return {
+				threadsPerPage: 10,
+			}
+		},
 		computed: {
 			threadList() {
 				return this.$store.state.threadLists[this.$route.params.boardName]
@@ -35,7 +40,7 @@
 		methods: {
 			requestThreads() {
 				if (this.threadList === undefined) {
-					API.readManyThreads(this.$route.params.boardName, 10, 0)
+					API.thread.requestMany({ boardName: this.$route.params.boardName, count: this.threadsPerPage })
 				}
 			}
 		},

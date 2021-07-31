@@ -128,13 +128,13 @@
 		watch: {
 			post(newValue, oldValue) {
 				if (undefined === this.thread && undefined === oldValue && undefined !== newValue) {
-					API.readOneThread(this.post.threadId)
+					API.thread.request({ threadId: this.post.threadId })
 				}
 			}
 		},
 		created() {
 			if (undefined === this.post && undefined !== this.postId) {
-				API.readOnePost(this.postId)
+				API.post.request({ postId: this.postId })
 			}
 		}
 	}

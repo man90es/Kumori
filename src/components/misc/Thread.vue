@@ -47,13 +47,13 @@
 				switch (this.$route.name) {
 					case 'board':
 						if (this.pageSize > 0 && this.thread.posts > 1 && this.tail.length < Math.min(this.thread.posts - 1, this.pageSize)) {
-							API.readManyPosts(this.threadId, this.pageSize, 'tail')
+							API.post.requestMany({ threadId: this.threadId, count: this.pageSize, page: 'tail'})
 						}
 
 						break
 					case 'thread':
 						if (this.thread.posts > 1) {
-							API.readManyPosts(this.threadId, this.pageSize, 0)
+							API.post.requestMany({ threadId: this.threadId, count: this.pageSize })
 						}
 						break
 				}

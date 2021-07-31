@@ -24,11 +24,11 @@
 		},
 		methods: {
 			submit() {
-				API.checkCaptcha(this.code)
+				API.captcha.validate({ code: this.code })
 			},
 
 			refresh() {
-				this.imageSrc = API.captchaImageURI
+				this.imageSrc = API.captcha.imageURI
 			},
 
 			close() {
@@ -39,7 +39,7 @@
 		created() {
 			// Handle reply to captcha submission
 			API.addListener(
-				message => 'POST /checkCaptcha' === message.what?.request,
+				message => 'checkCaptcha' === message.what?.request,
 				(message) => {
 					if (message.data.trustedPostCount > 0) {
 						emitter.emit('captcha-solved', {})

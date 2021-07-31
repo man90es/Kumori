@@ -1,15 +1,15 @@
 <template>
 	<Shell :header="header">
-		<form @submit.prevent="() => API.checkCaptcha(null)">
-			<input hidden type="checkbox" name="modifiers:sage" id="modifiers:sage">
-			<label for="modifiers:sage"><img class="icon" src="../../assets/icons/down.svg"></label>
-			<input hidden type="checkbox" name="modifiers:signed" id="modifiers:signed">
-			<label for="modifiers:signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
-			<input hidden type="checkbox" name="modifiers:OP" id="modifiers:OP">
-			<label for="modifiers:OP"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
-			<input type="text" name="subject" v-model="subject">
+		<form @submit.prevent="initialCaptchaCheck">
+			<input hidden type="checkbox" id="sage" v-model="sage">
+			<label for="sage"><img class="icon" src="../../assets/icons/down.svg"></label>
+			<input hidden type="checkbox" id="signed" v-model="signed">
+			<label for="signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
+			<input hidden type="checkbox" id="op" v-model="op">
+			<label for="op"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
+			<input type="text" v-model="subject">
 
-			<textarea v-model="text" name="text"></textarea>
+			<textarea v-model="text"></textarea>
 
 			<div id="attachmentsForm">
 				<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
@@ -34,7 +34,6 @@
 
 <script>
 	import API from '../../api'
-	import { Logger } from '../../utils'
 	import Shell from './Shell.vue'
 
 	export default {
@@ -50,13 +49,16 @@
 		},
 		data() {
 			return {
-				text: '',
 				subject: '',
+				text: '',
+				sage: false,
+				signed: false,
+				op: false,
 				files: [],
 				attachmentNSFW: [],
 				thumbs: [],
 				waitingToSubmit: false,
-				fileLimit: 2 // Hardcoded for now, needs to be real value taken from API
+				fileLimit: 2, // Hardcoded for now, the real value has to be taken from API
 			}
 		},
 		watch: {
@@ -65,6 +67,10 @@
 			}
 		},
 		methods: {
+			initialCaptchaCheck() {
+				API.captcha.validate({ code: 0 })
+			},
+
 			insertPostLink(postNumber) {
 				if (undefined === postNumber) return
 				this.text += `>>${postNumber}\r`
@@ -112,21 +118,22 @@
 
 			submit() {
 				this.waitingToSubmit = false
-				let data = new FormData(this.$el)
 
-				this.threadId ? data.append('threadId', this.threadId) : data.append('boardName', this.boardName)
-
-				for (let i in this.files) {
-					// File input
-					data.append(`file:${i}`, this.files[i].files[0])
-
-					// NSFW checkbox
-					if (this.attachmentNSFW[i]) {
-						data.append(`fileMark:${i}:NSFW`, true)
-					}
-				}
-
-				API.createPost(data)
+				API.post.create({
+					threadId: this.threadId,
+					boardName: this.boardName,
+					sage: this.sage,
+					signed: this.signed,
+					op: this.op,
+					subject: this.subject,
+					text: this.text,
+					attachments: this.files.map((fileInput, i) => {
+						return {
+							file: fileInput.files[0],
+							spoiler: this.attachmentNSFW[i],
+						}
+					})
+				})
 			},
 
 			reset() {
@@ -156,7 +163,7 @@
 
 			// Handle reply to captcha submission
 			API.addListener(
-				message => 'POST /checkCaptcha' === message.what?.request,
+				message => 'checkCaptcha' === message.what?.request,
 				(message) => {
 					if (message.data.trustedPostCount > 0) {
 						this.submit()
@@ -169,7 +176,7 @@
 
 			// Handle reply to post submission
 			API.addListener(
-				message => 'POST /createPost' === message.what?.request,
+				message => 'createPost' === message.what?.request,
 				(message) => {
 					this.reset()
 					this.$router.push({

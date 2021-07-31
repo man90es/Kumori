@@ -28,9 +28,9 @@
 			Thread
 		},
 		methods: {
-			requestThread(id) {
-				if (undefined === this.$store.state.threads[id]) {
-					API.readOneThread(id)
+			requestThread(threadId) {
+				if (undefined === this.$store.state.threads[threadId]) {
+					API.thread.request({ threadId })
 				}
 			}
 		},

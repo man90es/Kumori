@@ -63,7 +63,7 @@
 				let postNumber = parseInt(link.dataset.number)
 
 				if (undefined === this.findPost(postNumber)) {
-					API.readOnePost(link.dataset.boardName, postNumber)
+					API.post.request({ boardName: link.dataset.boardName, postNumber })
 				}
 
 				link.dataset.requested = true
@@ -91,7 +91,7 @@
 			}
 		},
 		created() {
-			API.readManyBoards()
+			API.board.requestMany()
 
 			emitter.on('post-link-hovered', this.postLinkHoveredHandler)
 			emitter.on('post-link-clicked', this.postLinkClickedHandler)

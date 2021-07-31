@@ -37,12 +37,14 @@
 		},
 		methods: {
 			submit() {
-				API.search(this.query, {
-					after: this.dateFrom,
-					before: this.dateTo,
-					boardName: this.boardName,
-					threadNumber: this.threadNumber,
-					searchOnlyInSubjects: false
+				API.post.findMany({
+					query: this.query,
+					parameters: {
+						after: this.dateFrom,
+						before: this.dateTo,
+						boardName: this.boardName,
+						threadNumber: this.threadNumber,
+					},
 				})
 			},
 			close() {
