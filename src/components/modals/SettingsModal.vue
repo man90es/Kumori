@@ -1,16 +1,17 @@
 <template>
-	<Shell :header="'Settings'">
+	<Shell :header="$t('settingsModal.header')">
 		<div>
 			<span @click="() => $store.commit('toggleTheme')">
-				Light theme
+				{{ $t("settingsModal.lightTheme") }}
 				<ToggleSwitch :state="!!$store.state.theme" />
 			</span>
 			<span @click="() => $store.commit('toggleCompactBoardMenu')">
-				Compact board menu
+				{{ $t("settingsModal.compactBoardMenu") }}
 				<ToggleSwitch :state="$store.state.compactBoardMenu" />
 			</span>
 			<span>
-				Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
+				{{ $t("settingsModal.repliesOnBoardPage") }}
+				<input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
 			</span>
 		</div>
 	</Shell>

@@ -1,17 +1,17 @@
 <template>
-	<Shell :header="'Search'">
+	<Shell :header="$t('searchModal.header')">
 		<form @submit.prevent="submit()">
 			<div class="row">
-				<input type="text" id="searchQuery" v-model="query" placeholder="Query" title="Query">
-				<button><img class="icon" src="../../assets/icons/search.svg" title="Search"></button>
+				<input type="text" id="searchQuery" v-model="query" :placeholder="$t('searchModal.query')" :title="$t('searchModal.query')">
+				<button><img class="icon" src="../../assets/icons/search.svg" :title="$t('searchModal.header')"></button>
 			</div>
 			<div class="row">
-				<input type="text" v-model="boardName" placeholder="Board name" title="Board name">
-				<input type="number" min="1" v-model="threadNumber" placeholder="Thread number" title="Thread number">
+				<input type="text" v-model="boardName" :placeholder="$t('searchModal.boardName')" :title="$t('searchModal.boardName')">
+				<input type="number" min="1" v-model="threadNumber" :placeholder="$t('searchModal.threadNumber')" :title="$t('searchModal.threadNumber')">
 			</div>
 			<div class="row">
-				<input type="date" v-model="dateFrom" title="After">
-				<input type="date" v-model="dateTo" title="Before">
+				<input type="date" v-model="dateFrom" :title="$t('searchModal.after')">
+				<input type="date" v-model="dateTo" :title="$t('searchModal.before')">
 			</div>
 		</form>
 	</Shell>

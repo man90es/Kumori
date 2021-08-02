@@ -153,8 +153,8 @@
 				return this.$store.state.debug
 					? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
 					: this.threadId
-						? `Reply to thread #${this.threadNumber} on board /${this.boardName}`
-						: `New thread on board /${this.boardName}`
+						? this.$t("formModal.postHeader", { boardName: this.boardName, threadNumber: this.threadNumber })
+						: this.$t("formModal.threadHeader", { boardName: this.boardName })
 			}
 		},
 		created() {

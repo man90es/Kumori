@@ -1,10 +1,10 @@
 <template>
-	<Shell :header="'Are you sure you want to open this link?'" :closeable="false" :draggable="false">
+	<Shell :header="$t('unsafeLinkModal.header')" :closeable="false" :draggable="false">
 		<div>
 			<a>{{link}}</a>
-			<span>It may be not safe.</span>
+			<span>{{ $t("unsafeLinkModal.warning") }}</span>
 			<span class="row">
-				<button type="button" @click="okHandler">Ok</button><button type="button" @click="cancelHandler">Cancel</button>
+				<button type="button" @click="okHandler">{{ $t("ok") }}</button><button type="button" @click="cancelHandler">{{ $t("cancel") }}</button>
 			</span>
 		</div>
 	</Shell>
