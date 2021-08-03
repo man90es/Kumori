@@ -1,5 +1,4 @@
 export default {
-	omittedPosts: "Omitted posts: {count}",
 	ok: "OK",
 	cancel: "Cancel",
 
@@ -46,6 +45,15 @@ export default {
 		boardTitle: "/{boardName}/ — {boardTitle}",
 		feedTitle: "/{boardName}/'s feed — {boardTitle}",
 		boardDescription: "{boardDescription}",
+	},
+
+	post: {
+		recently: "recently",
+		yesterday: "yesterday",
+		minutesAgo: "{count} minute ago | {count} minutes ago",
+		hoursAgo: "{count} hour ago | {count} hours ago",
+		daysAgo: "{count} day ago | {count} days ago",
+		omittedCount: "Omitted posts: {count}",
 	},
 
 	postMenu: {
