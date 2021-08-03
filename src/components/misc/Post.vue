@@ -25,7 +25,7 @@
 	import API from '../../api'
 	import PostAttachment from './PostAttachment'
 	import PostMenu from './PostMenu'
-	import { num2Word, truncateString, processMarkup } from '../../utils'
+	import { truncateString, processMarkup } from '../../utils'
 
 	export default {
 		name: 'Post',
