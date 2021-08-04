@@ -97,6 +97,9 @@
 			emitter.on('post-link-clicked', this.postLinkClickedHandler)
 
 			window.onscroll = this.scrollHandler
+
+			const lang = (process.env.VUE_APP_LOCALE || "en").split("-")[0]
+			document.documentElement.setAttribute("lang", lang)
 		}
 	}
 </script>

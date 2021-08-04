@@ -3,7 +3,7 @@ import en from "./en"
 import ru, { ruPluralisationRules } from "./ru"
 
 export default createI18n({
-	locale: "en",
+	locale: process.env.VUE_APP_LOCALE || "en",
 	fallbackLocale: "en",
 	messages: { en, ru },
 	pluralizationRules: { ru: ruPluralisationRules }
