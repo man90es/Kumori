@@ -14,3 +14,7 @@ export function	truncateString(string, targetLength) {
 export function wait(delay) {
 	return new Promise(resolve => setTimeout(resolve, delay))
 }
+
+export function capitalise(string) {
+    return string[0].toUpperCase() + string.slice(1)
+}

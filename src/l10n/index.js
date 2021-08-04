@@ -6,5 +6,7 @@ export default createI18n({
 	locale: process.env.VUE_APP_LOCALE || "en",
 	fallbackLocale: "en",
 	messages: { en, ru },
-	pluralizationRules: { ru: ruPluralisationRules }
+	pluralizationRules: { ru: ruPluralisationRules },
+	silentTranslationWarn: true,
+	silentFallbackWarn: true,
 })

@@ -13,6 +13,14 @@
 				{{ $t("settingsModal.repliesOnBoardPage") }}
 				<input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
 			</span>
+			<span>
+				{{ $t("settingsModal.language") }}
+				<select v-model="language" @change="languageChangeHandler">
+					<option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+						{{ $t(`settingsModal.language${capitalise(locale)}`) }}
+					</option>
+				</select>
+			</span>
 		</div>
 	</Shell>
 </template>
@@ -20,6 +28,7 @@
 <script>
 	import ToggleSwitch from '../misc/ToggleSwitch.vue'
 	import Shell from './Shell.vue'
+	import { capitalise } from "../../utils"
 
 	export default {
 		name: 'SettingsModal',
@@ -29,13 +38,19 @@
 		},
 		data() {
 			return {
-				repliesOnBoardPage: this.$store.state.repliesOnBoardPage
+				capitalise,
+				repliesOnBoardPage: this.$store.state.repliesOnBoardPage,
+				language: "en",
 			}
 		},
 		methods: {
 			close() {
 				this.$parent.closeByKey(this._.vnode.key)
 			},
+
+			languageChangeHandler() {
+				this.$i18n.locale = this.language
+			}
 		},
 	}
 </script>
@@ -49,7 +64,7 @@
 		cursor: pointer;
 	}
 
-	input[type="number"] {
-		width: 3rem;
+	input[type="number"], select {
+		margin: 0.3em 0;
 	}
 </style>

@@ -7,6 +7,9 @@ export default {
 		lightTheme: "Light theme",
 		compactBoardMenu: "Compact board menu",
 		repliesOnBoardPage: "Replies on board page",
+		language: "UI language",
+		languageEn: "English",
+		languageRu: "Русский",
 	},
 
 	searchModal: {

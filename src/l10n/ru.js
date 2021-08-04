@@ -7,6 +7,7 @@ export default {
 		lightTheme: "Светлая тема",
 		compactBoardMenu: "Компактное меню досок",
 		repliesOnBoardPage: "Ответов на странице доски",
+		language: "Язык интерфейса",
 	},
 
 	searchModal: {
