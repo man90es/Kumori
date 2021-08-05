@@ -25,7 +25,7 @@
 	import API from '../../api'
 	import PostAttachment from './PostAttachment'
 	import PostMenu from './PostMenu'
-	import { num2Word, truncateString, processMarkup } from '../../utils'
+	import { truncateString, processMarkup } from '../../utils'
 
 	export default {
 		name: 'Post',
@@ -73,32 +73,32 @@
 		},
 		methods: {
 			formatDate() {
-				let date = new Date(this.post.created)
-				let diff = new Date() - date
+				const date = new Date(this.post.created)
+				const diff = new Date() - date
 
 				if (diff < 6048e5) {
 					if (diff < 4e4){
-						return "recently"
+						return this.$t("post.recently")
 					}
 
-					let minutes = Math.round(diff / 6e4)
+					const minutes = Math.round(diff / 6e4)
 					if (minutes < 50){
-						return `${minutes} ${num2Word(minutes, ['minute', 'minutes'])} ago`
+						return this.$t("post.minutesAgo", minutes, { count: minutes })
 					}
 
-					let hours = Math.round(diff / 3.6e6)
+					const hours = Math.round(diff / 3.6e6)
 					if (hours < 20){
-						return `${hours} ${num2Word(hours, ['hour', 'hours'])} ago`
+						return this.$t("post.hoursAgo", hours, { count: hours })
 					}
 
-					let days = Math.round(diff / 8.64e7)
+					const days = Math.round(diff / 8.64e7)
 					if (days == 1){
-						return "yesterday"
+						return this.$t("post.yesterday")
 					}
 
-					return `${days} ${num2Word(days, ['day', 'days'])} ago`
+					return this.$t("post.daysAgo", days, { count: days })
 				} else {
-					return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
+					return date.toLocaleDateString(this.$i18n.locale, { year: "numeric", month: "long", day: "numeric" })
 				}
 			},
 

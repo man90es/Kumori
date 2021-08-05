@@ -1,7 +1,9 @@
 <template>
 	<div v-if="thread">
 		<Post :postId="thread.head.id" />
-		<router-link v-if="$route.name == 'board' && omittedPosts && pageSize" :to="{name: 'thread', params: {threadId}}">Omitted posts: {{omittedPosts}}</router-link>
+		<router-link v-if="$route.name == 'board' && omittedPosts && pageSize" :to="{ name: 'thread', params: { threadId } }">
+			{{ $t("post.omittedCount", { count: omittedPosts }) }}
+		</router-link>
 		<Post :key="postId" :postId="postId" v-for="postId in tail" />
 	</div>
 </template>

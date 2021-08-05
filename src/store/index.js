@@ -33,6 +33,7 @@ const store = Vuex.createStore({
 		repliesOnBoardPage: 3,
 		debug: false,
 		compactBoardMenu: false,
+		locale: process.env.VUE_APP_LOCALE || "en",
 	},
 
 	plugins: [ VuexLS ],
@@ -136,6 +137,10 @@ const store = Vuex.createStore({
 
 		toggleCompactBoardMenu(state) {
 			state.compactBoardMenu = !state.compactBoardMenu
+		},
+
+		setLocale(state, locale) {
+			state.locale = locale
 		},
 	},
 })

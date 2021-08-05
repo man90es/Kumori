@@ -1,8 +1,8 @@
 <template>
-	<Shell :header="'Humanity check'" :closeable="false" :draggable="false">
+	<Shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false">
 		<form @submit.prevent="submit()">
 			<img width="192" height="64" :src="imageSrc" @click="refresh">
-			<input type="text" name="code" autocomplete="off" placeholder="Captcha" v-model="code">
+			<input type="text" name="code" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
 		</form>
 	</Shell>
 </template>

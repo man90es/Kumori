@@ -83,7 +83,11 @@
 					Logger.debug('Page end reached')
 					emitter.emit('page-end-reached', {})
 				}
-			}
+			},
+
+			updateHTMLLocale(locale) {
+				document.documentElement.setAttribute("lang", locale.split("-")[0])
+			},
 		},
 		computed: {
 			theme() {
@@ -97,6 +101,12 @@
 			emitter.on('post-link-clicked', this.postLinkClickedHandler)
 
 			window.onscroll = this.scrollHandler
+
+			this.updateHTMLLocale(this.$store.state.locale)
+			this.$store.watch(state => state.locale, (newLocale) => {
+				this.$i18n.locale = newLocale
+				this.updateHTMLLocale(newLocale)
+			})
 		}
 	}
 </script>

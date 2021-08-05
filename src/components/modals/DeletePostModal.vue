@@ -1,10 +1,11 @@
 <template>
-	<Shell :header="`Delete ${selectedPostCount} selected post${selectedPostCount > 1 ? 's' : ''}?`">
+	<Shell :header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })">
 		<div>
-			<span>This action may fail if you don't have right do delete {{selectedPostCount > 1 ? 'those posts' : 'that post'}}.</span>
-			<span>Deletion of OP deletes thread too.</span>
+			<span>{{ $t("deletePostModal.warning1", selectedPostCount) }}</span>
+			<span>{{ $t("deletePostModal.warning2") }}</span>
 			<span class="row">
-				<button type="button" @click="okHandler">Ok</button><button type="button" @click="close">Cancel</button>
+				<button type="button" @click="okHandler">{{ $t("ok") }}</button>
+				<button type="button" @click="close">{{ $t("cancel") }}</button>
 			</span>
 		</div>
 	</Shell>

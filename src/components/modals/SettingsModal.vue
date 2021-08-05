@@ -1,16 +1,25 @@
 <template>
-	<Shell :header="'Settings'">
+	<Shell :header="$t('settingsModal.header')">
 		<div>
 			<span @click="() => $store.commit('toggleTheme')">
-				Light theme
+				{{ $t("settingsModal.lightTheme") }}
 				<ToggleSwitch :state="!!$store.state.theme" />
 			</span>
 			<span @click="() => $store.commit('toggleCompactBoardMenu')">
-				Compact board menu
+				{{ $t("settingsModal.compactBoardMenu") }}
 				<ToggleSwitch :state="$store.state.compactBoardMenu" />
 			</span>
 			<span>
-				Replies on board page <input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
+				{{ $t("settingsModal.repliesOnBoardPage") }}
+				<input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
+			</span>
+			<span>
+				{{ $t("settingsModal.language") }}
+				<select v-model="language" @change="languageChangeHandler">
+					<option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+						{{ $t(`settingsModal.language${capitalise(locale)}`) }}
+					</option>
+				</select>
 			</span>
 		</div>
 	</Shell>
@@ -19,6 +28,7 @@
 <script>
 	import ToggleSwitch from '../misc/ToggleSwitch.vue'
 	import Shell from './Shell.vue'
+	import { capitalise } from "../../utils"
 
 	export default {
 		name: 'SettingsModal',
@@ -28,13 +38,19 @@
 		},
 		data() {
 			return {
-				repliesOnBoardPage: this.$store.state.repliesOnBoardPage
+				capitalise,
+				repliesOnBoardPage: this.$store.state.repliesOnBoardPage,
+				language: this.$store.state.locale,
 			}
 		},
 		methods: {
 			close() {
 				this.$parent.closeByKey(this._.vnode.key)
 			},
+
+			languageChangeHandler() {
+				this.$store.commit("setLocale", this.language)
+			}
 		},
 	}
 </script>
@@ -48,7 +64,7 @@
 		cursor: pointer;
 	}
 
-	input[type="number"] {
-		width: 3rem;
+	input[type="number"], select {
+		margin: 0.3em 0;
 	}
 </style>

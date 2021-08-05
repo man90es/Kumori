@@ -1,9 +1,9 @@
 <template>
 	<div class="postMenu" @click="$parent.hideMenu">
-		<div @click="hideHandler">{{$parent.hidden ? 'Show': 'Hide'}}</div>
-		<div @click="bookmarkHandler">{{$parent.bookmarked ? 'Remove from bookmarks': 'Bookmark'}}</div>
-		<div @click="deleteHandler">{{$parent.selected ? 'Do not delete': 'Delete'}}</div>
-		<div>Cancel</div>
+		<div @click="hideHandler">{{ $parent.hidden ? $t("postMenu.show") : $t("postMenu.hide") }}</div>
+		<div @click="bookmarkHandler">{{ $parent.bookmarked ? $t("postMenu.unbookmark") : $t("postMenu.bookmark") }}</div>
+		<div @click="deleteHandler">{{ $parent.selected ? $t("postMenu.undelete") : $t("postMenu.delete") }}</div>
+		<div>{{ $t("cancel") }}</div>
 	</div>
 </template>
 

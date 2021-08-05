@@ -1,23 +1,6 @@
 export processMarkup from './markup'
 export Logger from './Logger'
 
-export function num2Word(n, words) {
-	if (words.length < 3) words[2] = words[1]
-	let t = n % 100
-	if (n > 19) t %= 10
-
-	switch (t) {
-		case 1:
-			return words[0]
-		case 2:
-		case 3:
-		case 4:
-			return words[1]
-		default:
-			return words[2]
-	}
-}
-
 export function	truncateString(string, targetLength) {
 	if (string.length <= targetLength) return string
 
@@ -30,4 +13,8 @@ export function	truncateString(string, targetLength) {
 
 export function wait(delay) {
 	return new Promise(resolve => setTimeout(resolve, delay))
+}
+
+export function capitalise(string) {
+    return string[0].toUpperCase() + string.slice(1)
 }
