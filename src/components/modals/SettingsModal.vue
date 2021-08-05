@@ -40,7 +40,7 @@
 			return {
 				capitalise,
 				repliesOnBoardPage: this.$store.state.repliesOnBoardPage,
-				language: "en",
+				language: this.$store.state.locale,
 			}
 		},
 		methods: {
@@ -49,7 +49,7 @@
 			},
 
 			languageChangeHandler() {
-				this.$i18n.locale = this.language
+				this.$store.commit("setLocale", this.language)
 			}
 		},
 	}

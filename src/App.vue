@@ -83,7 +83,11 @@
 					Logger.debug('Page end reached')
 					emitter.emit('page-end-reached', {})
 				}
-			}
+			},
+
+			updateHTMLLocale(locale) {
+				document.documentElement.setAttribute("lang", locale.split("-")[0])
+			},
 		},
 		computed: {
 			theme() {
@@ -98,8 +102,11 @@
 
 			window.onscroll = this.scrollHandler
 
-			const lang = (process.env.VUE_APP_LOCALE || "en").split("-")[0]
-			document.documentElement.setAttribute("lang", lang)
+			this.updateHTMLLocale(this.$store.state.locale)
+			this.$store.watch(state => state.locale, (newLocale) => {
+				this.$i18n.locale = newLocale
+				this.updateHTMLLocale(newLocale)
+			})
 		}
 	}
 </script>

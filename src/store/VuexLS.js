@@ -5,7 +5,8 @@ const persistentMutations = {
 	toggleTheme: 'theme',
 	setRepliesOnBoardPage: 'repliesOnBoardPage',
 	toggleDebug: 'debug',
-	toggleCompactBoardMenu: 'compactBoardMenu'
+	toggleCompactBoardMenu: 'compactBoardMenu',
+	setLocale: 'locale',
 }
 
 let data = {}
