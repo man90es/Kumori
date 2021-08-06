@@ -1,6 +1,6 @@
-import Vuex from 'vuex'
-import { VuexLS } from './VuexLS'
-import API from '../api'
+import Vuex from "vuex"
+import Memento from "memento-vuex"
+import API from "../api"
 
 function toggleListEntry(state, listName, entry) {
 	let i = state[listName].indexOf(entry)
@@ -36,7 +36,18 @@ const store = Vuex.createStore({
 		locale: process.env.VUE_APP_LOCALE || "en",
 	},
 
-	plugins: [ VuexLS ],
+	plugins: [
+		Memento({
+			setRepliesOnBoardPage:  "repliesOnBoardPage",
+			setTrustedPostCount:    "trustedPostCount",
+			setLocale:              "locale",
+			toggleCompactBoardMenu: "compactBoardMenu",
+			toggleBookmarked:       "bookmarkedPostsList",
+			toggleHidden:           "hiddenPostsList",
+			toggleTheme:            "theme",
+			toggleDebug:            "debug",
+		}, "kumori-vuex")
+	],
 
 	mutations: {
 		import(state, backup) {
