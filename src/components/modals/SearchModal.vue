@@ -10,16 +10,17 @@
 				<input type="number" min="1" v-model="threadNumber" :placeholder="$t('searchModal.threadNumber')" :title="$t('searchModal.threadNumber')">
 			</div>
 			<div class="row">
-				<input type="date" v-model="dateFrom" :title="$t('searchModal.after')">
-				<input type="date" v-model="dateTo" :title="$t('searchModal.before')">
+				<input type="date" v-model="after" :title="$t('searchModal.after')">
+				<input type="date" v-model="before" :title="$t('searchModal.before')">
 			</div>
 		</form>
 	</Shell>
 </template>
 
 <script>
-	import API from '../../api'
-	import Shell from './Shell.vue'
+	import Shell from "./Shell"
+	import API from "../../api"
+	import { getProps } from "../../utils"
 
 	export default {
 		name: 'SearchModal',
@@ -28,23 +29,18 @@
 		},
 		data() {
 			return {
-				query: '',
-				boardName: '',
-				threadNumber: '',
-				dateFrom: null,
-				dateTo: null
+				query: "",
+				boardName: "",
+				threadNumber: "",
+				after: null,
+				before: null,
 			}
 		},
 		methods: {
 			submit() {
 				API.post.findMany({
 					query: this.query,
-					parameters: {
-						after: this.dateFrom,
-						before: this.dateTo,
-						boardName: this.boardName,
-						threadNumber: this.threadNumber,
-					},
+					parameters: getProps(this, ["after", "before", "boardName", "threadNumber"])
 				})
 			},
 			close() {

@@ -1,6 +1,7 @@
 import Vuex from "vuex"
 import Memento from "memento-vuex"
 import API from "../api"
+import { getProps } from "../utils"
 
 function toggleListEntry(state, listName, entry) {
 	let i = state[listName].indexOf(entry)
@@ -157,48 +158,46 @@ const store = Vuex.createStore({
 })
 
 API.addListener(
-	message => 'boards' === message.what?.request,
+	message => "boards" === message.what?.request,
 	(message) => {
-		store.commit('updateBoardList', Object.keys(message.data))
-		store.commit('updateBoards', message.data)
+		store.commit("updateBoardList", Object.keys(message.data))
+		store.commit("updateBoards", message.data)
 	}
 )
 
 API.addListener(
-	message => 'threads' === message.what?.request,
+	message => "threads" === message.what?.request,
 	(message) => {
-		store.commit('updateThreadList', {
-			boardName: message.what?.boardName,
+		store.commit("updateThreadList", {
+			...getProps(message.what, ["boardName", "count", "page"]),
 			payload: message.data.map(thread => thread.id),
-			count: message.what?.count,
-			page: message.what?.page
 		})
 
-		store.commit('updateThreads', message.data)
+		store.commit("updateThreads", message.data)
 
 		for (let thread of message.data) {
-			store.commit('updatePostList', {
+			store.commit("updatePostList", {
 				threadId: thread.id,
 				payload: [thread.head.id],
 				count: 1,
-				page: 0
+				page: 0,
 			})
 
-			store.commit('updatePosts', [thread.head])
+			store.commit("updatePosts", [thread.head])
 		}
 	}
 )
 
 API.addListener(
-	message => 'thread' === message.what?.request,
+	message => "thread" === message.what?.request,
 	(message) => {
-		store.commit('updateThreads', [message.data])
+		store.commit("updateThreads", [message.data])
 
-		store.commit('updatePostList', {
+		store.commit("updatePostList", {
 			threadId: message.data.id,
 			payload: [message.data.head.id],
 			count: 1,
-			page: 0
+			page: 0,
 		})
 
 		store.commit('updatePosts', [message.data.head])
@@ -206,34 +205,30 @@ API.addListener(
 )
 
 API.addListener(
-	message => 'posts' === message.what?.request,
+	message => "posts" === message.what?.request,
 	(message) => {
 		if (message.what?.boardName) {
 			// Feed
-			store.commit('updateFeed', {
-				boardName: message.what?.boardName,
+			store.commit("updateFeed", {
+				...getProps(message.what, ["boardName", "count", "page"]),
 				payload: message.data.map(post => post.id),
-				count: message.what?.count,
-				page: message.what?.page
 			})
 		} else {
 			// Thread
-			store.commit('updatePostList', {
-				threadId: message.what?.threadId,
+			store.commit("updatePostList", {
+				...getProps(message.what, ["threadId", "count", "page"]),
 				payload: message.data.map(post => post.id),
-				count: message.what?.count,
-				page: message.what?.page
 			})
 		}
 
-		store.commit('updatePosts', message.data)
+		store.commit("updatePosts", message.data)
 	}
 )
 
 API.addListener(
-	message => 'post' === message.what?.request,
+	message => "post" === message.what?.request,
 	(message) => {
-		store.commit('updatePosts', [message.data])
+		store.commit("updatePosts", [message.data])
 	}
 )
 

@@ -33,8 +33,9 @@
 </template>
 
 <script>
-	import API from '../../api'
-	import Shell from './Shell.vue'
+	import Shell from "./Shell"
+	import API from "../../api"
+	import { getProps } from "../../utils"
 
 	export default {
 		name: 'FormModal',
@@ -120,13 +121,7 @@
 				this.waitingToSubmit = false
 
 				API.post.create({
-					threadId: this.threadId,
-					boardName: this.boardName,
-					sage: this.sage,
-					signed: this.signed,
-					op: this.op,
-					subject: this.subject,
-					text: this.text,
+					...getProps(this, ["threadId", "boardName", "sage", "signed", "op", "subject", "text"]),
 					attachments: this.files.map((fileInput, i) => {
 						return {
 							file: fileInput.files[0],
@@ -153,8 +148,8 @@
 				return this.$store.state.debug
 					? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
 					: this.threadId
-						? this.$t("formModal.postHeader", { boardName: this.boardName, threadNumber: this.threadNumber })
-						: this.$t("formModal.threadHeader", { boardName: this.boardName })
+						? this.$t("formModal.postHeader", getProps(this, ["threadNumber", "boardName"]))
+						: this.$t("formModal.threadHeader", getProps(this, ["boardName"]))
 			}
 		},
 		created() {
@@ -176,14 +171,14 @@
 
 			// Handle reply to post submission
 			API.addListener(
-				message => 'createPost' === message.what?.request,
+				message => "createPost" === message.what?.request,
 				(message) => {
 					this.reset()
 					this.$router.push({
-						name: 'thread',
+						name: "thread",
 						params: {
-							boardName: message.data.boardName,
-							threadId: message.data.threadId,
+							threadId: message.what?.threadId || message.data?.threadId,
+							boardName: message.what?.boardName,
 						},
 					})
 				}
