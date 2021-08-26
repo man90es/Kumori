@@ -10,49 +10,32 @@
 	</div>
 </template>
 
-<script>
-	import API from '../api'
-	import MainSection from '../components/layout/MainSection.vue'
-	import NavBar from '../components/layout/NavBar.vue'
-	import MenuBar from '../components/layout/MenuBar.vue'
-	import ModalsLayer from '../components/layers/ModalsLayer.vue'
-	import Post from '../components/misc/Post.vue'
+<script setup>
+	import { computed } from "vue"
+	import { useStore } from "vuex"
+	import { useRoute } from "vue-router"
 
-	export default {
-		name: 'Feed',
-		components: {
-			MainSection,
-			NavBar,
-			MenuBar,
-			ModalsLayer,
-			Post
-		},
-		data() {
-			return {
-				postsPerPage: 10
-			}
-		},
-		computed: {
-			feedList() {
-				return this.$store.state.feedLists[this.$route.params.boardName]
-			}
-		},
-		methods: {
-			getFeed(boardName) {
-				if (undefined === this.feedList) {
-					API.post.requestMany({ boardName, count: this.postsPerPage })
-				}
-			}
-		},
-		created() {
-			this.getFeed(this.$route.params.boardName)
-			emitter.on('page-end-reached', () => {
-				if (this.$route.name == 'feed') {
-					API.readFeed(this.$route.params.boardName, this.postsPerPage, this.feedList.length / this.postsPerPage)
-				}
-			})
-		}
-	}
+	import MainSection from "../components/layout/MainSection.vue"
+	import NavBar from "../components/layout/NavBar.vue"
+	import MenuBar from "../components/layout/MenuBar.vue"
+	import ModalsLayer from "../components/layers/ModalsLayer.vue"
+	import Post from "../components/misc/Post.vue"
+
+	import API from "../api.js"
+
+	const store = useStore()
+	const route = useRoute()
+	const postsPerPage = 10
+
+	const feedList = computed(() => {
+		return store.state.feedLists[route.params.boardName]
+	})
+
+	API.post.requestMany({ boardName: route.params.boardName, count: postsPerPage })
+	emitter.on("page-end-reached", () => {
+		if (route.name !== "feed") return
+		API.post.requestMany({ boardName: route.params.boardName, count: postsPerPage, page: feedList.value.length / postsPerPage })
+	})
 </script>
 
 <style>

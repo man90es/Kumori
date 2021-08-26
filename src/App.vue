@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :style="theme" v-touch:swipe="swipeHandler">
+	<div id="app" :style="theme" v-touch:swipe="(dir) => emitter.emit(`swipe-${dir}`)">
 		<svg class="zero"> <!-- Used for blurring NSFW images -->
 			<filter id="sharpBlur">
 				<feGaussianBlur stdDeviation="5"></feGaussianBlur>
@@ -12,100 +12,30 @@
 	</div>
 </template>
 
+<script setup>
+	import API from "./api.js"
+	import { useTheme } from "./hooks/theme.js"
+	import { usePostLinkEventHandler } from "./hooks/postLinkEventHandler.js"
+	import { usePageEndReachedEventEmitter } from "./hooks/pageEndReachedEventEmitter.js"
+
+	const theme = useTheme()
+	usePostLinkEventHandler()
+	usePageEndReachedEventEmitter()
+
+	API.board.requestMany()
+</script>
+
 <script>
-	import API from './api'
-	import { Logger } from './utils'
-
 	export default {
-		name: 'App',
-		data() {
-			return {
-				themes: [
-					{
-						'--text-color': '#bbc',
-						'--text-secondary-color': '#99a',
-						'--text-green-color': '#98c379',
-						'--card-color': '#292d35',
-						'--card-secondary-color': '#252931',
-						'--background-color': '#21252b',
-						'--link-over-color': '#40c0f3',
-						'--link-hover-color': '#108fbf',
-						'--gap-size': '0.5rem',
-						'--icon-invert': '70%'
-					},
-					{
-						'--text-color': '#37474f',
-						'--text-secondary-color': '#666',
-						'--text-green-color': '#789922',
-						'--card-color': '#ededed',
-						'--card-secondary-color': '#ededed',
-						'--background-color': '#e6e6e6',
-						'--link-over-color': '#d7535c',
-						'--link-hover-color': '#096be8',
-						'--gap-size': '0.5rem',
-						'--icon-invert': '40%'
-					}
-				]
-			}
-		},
-		methods: {
-			swipeHandler(direction) {
-				emitter.emit(`swipe-${direction}`)
-			},
-
-			findPost(postNumber) {
-				return Object.values(this.$store.state.posts).find(post => post.number == postNumber)
-			},
-
-			postLinkHoveredHandler(link) {
-				if (link.dataset.requested != undefined) return
-				if (link.dataset.boardName == undefined) link.dataset.boardName = this.$route.params.boardName
-				let postNumber = parseInt(link.dataset.number)
-
-				if (undefined === this.findPost(postNumber)) {
-					API.post.request({ boardName: link.dataset.boardName, postNumber })
-				}
-
-				link.dataset.requested = true
-			},
-
-			postLinkClickedHandler(link) {
-				this.$router.push({name: 'thread', params: {
-					boardName: link.dataset.boardName,
-					threadId: this.findPost(parseInt(link.dataset.number)).threadId
-				}})
-			},
-
-			scrollHandler() {
-				let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
-
-				if (bottomOfWindow) {
-					Logger.debug('Page end reached')
-					emitter.emit('page-end-reached', {})
-				}
-			},
-
-			updateHTMLLocale(locale) {
-				document.documentElement.setAttribute("lang", locale.split("-")[0])
-			},
-		},
-		computed: {
-			theme() {
-				return this.themes[this.$store.state.theme]
-			}
-		},
 		created() {
-			API.board.requestMany()
+			function updateHTMLLocale(locale) {
+				document.documentElement.setAttribute("lang", locale.split("-")[0])
+			}
 
-			emitter.on('post-link-hovered', this.postLinkHoveredHandler)
-			emitter.on('post-link-clicked', this.postLinkClickedHandler)
-
-			window.onscroll = this.scrollHandler
-
-			this.updateHTMLLocale(this.$store.state.locale)
+			updateHTMLLocale(this.$store.state.locale)
 			this.$store.watch(state => state.locale, (newLocale) => {
 				this.$i18n.locale = newLocale
-				this.updateHTMLLocale(newLocale)
+				updateHTMLLocale(newLocale)
 			})
 		}
 	}

@@ -10,16 +10,12 @@
 	</div>
 </template>
 
-<script>
-	export default {
-		name: 'home',
+<script setup>
+	import { computed } from "vue"
 
-		computed: {
-			backgroundStyle() {
-				return `background-image:url(https://picsum.photos/${Math.round(window.screen.width / 2)}/${Math.round(window.screen.height / 2)})`
-			}
-		}
-	}
+	const backgroundStyle = computed(() => {
+		return `background-image:url(https://picsum.photos/${Math.round(window.screen.width / 2)}/${Math.round(window.screen.height / 2)})`
+	})
 </script>
 
 <style scoped lang="scss">

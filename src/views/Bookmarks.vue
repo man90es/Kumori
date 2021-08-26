@@ -10,23 +10,12 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 	import MainSection from '../components/layout/MainSection.vue'
 	import NavBar from '../components/layout/NavBar.vue'
 	import MenuBar from '../components/layout/MenuBar.vue'
 	import ModalsLayer from '../components/layers/ModalsLayer.vue'
 	import Post from '../components/misc/Post.vue'
-
-	export default {
-		name: 'Bookmarks',
-		components: {
-			MainSection,
-			NavBar,
-			MenuBar,
-			ModalsLayer,
-			Post
-		}
-	}
 </script>
 
 <style scoped>

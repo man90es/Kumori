@@ -10,33 +10,24 @@
 	</div>
 </template>
 
-<script>
-	import API from '../api'
-	import MainSection from '../components/layout/MainSection.vue'
-	import NavBar from '../components/layout/NavBar.vue'
-	import MenuBar from '../components/layout/MenuBar.vue'
-	import ModalsLayer from '../components/layers/ModalsLayer.vue'
-	import Thread from '../components/misc/Thread.vue'
+<script setup>
+	import { useStore } from "vuex"
+	import { useRoute } from "vue-router"
 
-	export default {
-		name: 'SingleThread',
-		components: {
-			MainSection,
-			NavBar,
-			MenuBar,
-			ModalsLayer,
-			Thread
-		},
-		methods: {
-			requestThread(threadId) {
-				if (undefined === this.$store.state.threads[threadId]) {
-					API.thread.request({ threadId })
-				}
-			}
-		},
-		created() {
-			this.requestThread(parseInt(this.$route.params.threadId))
-		}
+	import MainSection from "../components/layout/MainSection.vue"
+	import NavBar from "../components/layout/NavBar.vue"
+	import MenuBar from "../components/layout/MenuBar.vue"
+	import ModalsLayer from "../components/layers/ModalsLayer.vue"
+	import Thread from "../components/misc/Thread.vue"
+
+	import API from "../api.js"
+
+	const store = useStore()
+	const route = useRoute()
+	const threadId = parseInt(route.params.threadId)
+
+	if (undefined === store.state.threads[threadId]) {
+		API.thread.request({ threadId })
 	}
 </script>
 
