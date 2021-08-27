@@ -9,10 +9,14 @@
 		</svg>
 
 		<router-view />
+
+		<ModalsLayer />
 	</div>
 </template>
 
 <script setup>
+	import ModalsLayer from "./components/layers/ModalsLayer.vue"
+
 	import API from "./api.js"
 	import { useTheme } from "./hooks/theme.js"
 	import { usePostLinkEventHandler } from "./hooks/postLinkEventHandler.js"

@@ -5,8 +5,6 @@
 			<Thread :threadId="parseInt($route.params.threadId)" :pageSize="500" :tail="false" />
 		</MainSection>
 		<MenuBar />
-
-		<ModalsLayer />
 	</div>
 </template>
 
@@ -17,7 +15,6 @@
 	import MainSection from "../components/layout/MainSection.vue"
 	import NavBar from "../components/layout/NavBar.vue"
 	import MenuBar from "../components/layout/MenuBar.vue"
-	import ModalsLayer from "../components/layers/ModalsLayer.vue"
 	import Thread from "../components/misc/Thread.vue"
 
 	import API from "../api.js"

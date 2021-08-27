@@ -5,8 +5,6 @@
 			<Post :key="postId" :postId="postId" v-for="postId in feedList"/>
 		</MainSection>
 		<MenuBar />
-
-		<ModalsLayer />
 	</div>
 </template>
 
@@ -18,7 +16,6 @@
 	import MainSection from "../components/layout/MainSection.vue"
 	import NavBar from "../components/layout/NavBar.vue"
 	import MenuBar from "../components/layout/MenuBar.vue"
-	import ModalsLayer from "../components/layers/ModalsLayer.vue"
 	import Post from "../components/misc/Post.vue"
 
 	import API from "../api.js"

@@ -5,8 +5,6 @@
 			<Thread :key="threadId" :threadId="threadId" :pageSize="$store.state.repliesOnBoardPage" v-for="threadId in threadList"/>
 		</MainSection>
 		<MenuBar />
-
-		<ModalsLayer />
 	</div>
 </template>
 
@@ -18,7 +16,6 @@
 	import MainSection from "../components/layout/MainSection.vue"
 	import NavBar from "../components/layout/NavBar.vue"
 	import MenuBar from "../components/layout/MenuBar.vue"
-	import ModalsLayer from "../components/layers/ModalsLayer.vue"
 	import Thread from "../components/misc/Thread.vue"
 
 	import API from "../api.js"

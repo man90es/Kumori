@@ -1,5 +1,5 @@
 <template>
-	<div :class="{backdrop: backdrop}" id="ModalsLayer" v-if="modals.length > 0">
+	<div :class="{backdrop: backdrop}" id="ModalsLayer" v-if="modals.length > 0 && $route.name !== 'home'">
 		<component v-for="(modal, i) in modals" :is="modal" v-bind="datas[i]" :key="keys[i]" />
 	</div>
 </template>
