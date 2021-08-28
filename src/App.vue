@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :style="theme" v-touch:swipe="(dir) => emitter.emit(`swipe-${dir}`)">
+	<div id="app" :style="theme" v-touch:swipe="emitSwipeEvent">
 		<svg class="zero"> <!-- Used for blurring NSFW images -->
 			<filter id="sharpBlur">
 				<feGaussianBlur stdDeviation="5"></feGaussianBlur>
@@ -27,6 +27,10 @@
 	usePageEndReachedEventEmitter()
 
 	API.board.requestMany()
+
+	function emitSwipeEvent(direction) {
+		emitter.emit(`swipe-${direction}`)
+	}
 </script>
 
 <script>
@@ -53,6 +57,7 @@
 		color: var(--text-color);
 		display: flex;
 		background-color: var(--background-color);
+		min-height: 100vh;
 	}
 
 	a {
