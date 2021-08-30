@@ -4,53 +4,53 @@
 	</button>
 </template>
 
-<script>
-	export default {
-		name: 'MenuButton',
-		props: ['icon'],
-		methods: {
-			dispatchEvent() {
-				switch(this.icon) {
-					case 'chat':
-						emitter.emit('menu-chat-button-click', {
-							boardName: this.$route.params.boardName,
-							threadId: parseInt(this.$route.params.threadId),
-							threadNumber: this.$route.name == 'thread' ? this.$store.state.threads[parseInt(this.$route.params.threadId)].head.number : null
-						})
-						break
+<script setup>
+	import { defineProps, computed } from "vue"
+	import { useStore } from "vuex"
+	import { useRoute, useRouter } from "vue-router"
 
-					case 'star':
-						this.$router.push({name: 'bookmarks'})
-						break
+	import { useScroll } from "../../hooks/scroll.js"
 
-					case 'home':
-						this.$router.push({name: 'home'})
-						break
+	const props = defineProps({ icon: String })
+	const store = useStore()
+	const route = useRoute()
+	const router = useRouter()
 
-					case 'up':
-						scrollTo({top: 0, behavior: 'smooth'})
-						break
+	const images = require.context("../../assets/icons", false, /\.svg$/)
+	const { scrollToTop, scrollToBottom } = useScroll()
+	const src = computed(() => {
+		return images(`./${props.icon}.svg`)
+	})
 
-					case 'down':
-						scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})
-						break
+	function dispatchEvent() {
+		switch(props.icon) {
+			case "chat":
+				return emitter.emit("menu-chat-button-click", {
+					boardName: route.params.boardName,
+					threadId: parseInt(route.params.threadId),
+					threadNumber: route.name === "thread" ? store.state.threads[parseInt(route.params.threadId)].head.number : null
+				})
 
-					default:
-						emitter.emit(`menu-${this.icon}-button-click`, {})
-				}
-			}
-		},
-		computed: {
-			src() {
-				let images = require.context('../../assets/icons', false, /\.svg$/)
-				return images(`./${this.icon}.svg`)
-			},
+			case "star":
+				return router.push({ name: "bookmarks" })
+
+			case "home":
+				return router.push({ name: "home" })
+
+			case "up":
+				return scrollToTop()
+
+			case "down":
+				return scrollToBottom()
+
+			default:
+				return emitter.emit(`menu-${props.icon}-button-click`, {})
 		}
 	}
 </script>
 
 <style scoped>
-	button{
+	button {
 		height: 3.5rem;
 		width: 3.5rem;
 		justify-content: center;
