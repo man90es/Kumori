@@ -5,7 +5,7 @@
 <script setup>
 	import { defineProps } from "vue"
 
-	const props = defineProps({ state: String })
+	const props = defineProps({ state: Boolean })
 </script>
 
 <style scoped>
