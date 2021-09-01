@@ -1,5 +1,5 @@
 <template>
-	<div class="modal" :style="style" ref="dragElement">
+	<div class="modal" ref="dragElement">
 		<div :class="{ draggable }" ref="dragHandle">
 			{{ header }}
 			<button @click="$parent.close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
