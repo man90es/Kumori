@@ -1,6 +1,6 @@
 <template>
-	<div class="modal" :style="style">
-		<div :class="{draggable: draggable}" @mousedown="mouseDownHandler">
+	<div class="modal" :style="style" ref="dragElement">
+		<div :class="{ draggable }" ref="dragHandle">
 			{{ header }}
 			<button @click="$parent.close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
 		</div>
@@ -8,79 +8,31 @@
 	</div>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				cursorPosition: [null, null],
-				position: [null, null],
-				style: ''
-			}
+<script setup>
+	import { ref, defineProps, onMounted } from "vue"
+
+	import { useDrag } from "../../hooks/drag.js"
+
+	const props = defineProps({
+		header: {
+			type: String,
+			required: true,
 		},
-		props: {
-			header: {
-				type: String,
-				required: true,
-			},
-			closeable: {
-				type: Boolean,
-				default: true,
-			},
-			draggable: {
-				type: Boolean,
-				default: true,
-			},
+		closeable: {
+			type: Boolean,
+			default: true,
 		},
-		methods: {
-			mouseDownHandler(event) {
-				if (!this.draggable) return
-
-				if (this.position.includes(null)) {
-					let computedStyle = getComputedStyle(this.$el)
-
-					this.position = [
-						parseInt(computedStyle.getPropertyValue('left')) || 0,
-						parseInt(computedStyle.getPropertyValue('top')) || 0
-					]
-				}
-
-				this.cursorPosition = [event.clientX, event.clientY]
-				document.addEventListener('mousemove', this.dragHandler)
-				document.addEventListener('mouseup', this.mouseUpHandler.bind(this))
-			},
-
-			mouseUpHandler() {
-				if (!this.draggable) return
-				document.removeEventListener('mousemove', this.dragHandler)
-				document.removeEventListener('mouseup', this.mouseUpHandler)
-			},
-
-			dragHandler(event) {
-				if (!this.draggable) return
-
-				this.position = [
-					this.position[0] + event.clientX - this.cursorPosition[0],
-					this.position[1] + event.clientY - this.cursorPosition[1]
-				]
-
-				let computedStyle = getComputedStyle(this.$el)
-				let transform = [
-					this.position[0] - parseInt(computedStyle.getPropertyValue('left')),
-					this.position[1] - parseInt(computedStyle.getPropertyValue('top'))
-				]
-				this.style = `transform: translate(${transform[0]}px, ${transform[1]}px)`
-
-				this.cursorPosition = [
-					event.clientX,
-					event.clientY
-				]
-			},
+		draggable: {
+			type: Boolean,
+			default: true,
 		},
+	})
+	const dragElement = ref(null)
+	const dragHandle = ref(null)
 
-		mounted() {
-			this.position = [null, null]
-		}
-	}
+	onMounted(() => {
+		props.draggable && useDrag(dragElement, dragHandle)
+	})
 </script>
 
 <style scoped lang="scss">
