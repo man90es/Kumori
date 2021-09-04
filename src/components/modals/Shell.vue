@@ -10,8 +10,7 @@
 
 <script setup>
 	import { ref, defineProps, onMounted } from "vue"
-
-	import { useDrag } from "../../hooks/drag.js"
+	import { useDraggability } from "vue-draggability"
 
 	const props = defineProps({
 		header: {
@@ -31,7 +30,7 @@
 	const dragHandle = ref(null)
 
 	onMounted(() => {
-		props.draggable && useDrag(dragElement, dragHandle)
+		props.draggable && useDraggability(dragElement, dragHandle)
 	})
 </script>
 
