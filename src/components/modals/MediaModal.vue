@@ -37,11 +37,6 @@
 				return API.resPath + this.hash + mimeMap[this.mime]
 			}
 		},
-		methods: {
-			close() {
-				this.$parent.closeByKey(this._.vnode.key)
-			},
-		},
 	}
 </script>
 

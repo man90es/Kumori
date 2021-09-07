@@ -138,10 +138,6 @@
 				this.attachmentNSFW = []
 				this.thumbs = []
 			},
-
-			close() {
-				this.$parent.closeByKey(this._.vnode.key)
-			},
 		},
 		computed: {
 			header: function () {

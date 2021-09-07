@@ -25,33 +25,22 @@
 	</Shell>
 </template>
 
-<script>
-	import ToggleSwitch from '../misc/ToggleSwitch.vue'
-	import Shell from './Shell.vue'
+<script setup>
+	import { ref, getCurrentInstance } from "vue"
+	import { useStore } from "vuex"
+
+	import ToggleSwitch from "../misc/ToggleSwitch.vue"
+	import Shell from "./Shell.vue"
 	import { capitalise } from "../../utils"
 
-	export default {
-		name: 'SettingsModal',
-		components: {
-			ToggleSwitch,
-			Shell
-		},
-		data() {
-			return {
-				capitalise,
-				repliesOnBoardPage: this.$store.state.repliesOnBoardPage,
-				language: this.$store.state.locale,
-			}
-		},
-		methods: {
-			close() {
-				this.$parent.closeByKey(this._.vnode.key)
-			},
+	const store = useStore()
+	const component = getCurrentInstance()
 
-			languageChangeHandler() {
-				this.$store.commit("setLocale", this.language)
-			}
-		},
+	const repliesOnBoardPage = ref(store.state.repliesOnBoardPage)
+	const language = ref(store.state.locale)
+
+	function languageChangeHandler() {
+		store.commit("setLocale", language)
 	}
 </script>
 

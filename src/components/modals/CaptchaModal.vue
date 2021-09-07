@@ -1,5 +1,5 @@
 <template>
-	<Shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false">
+	<Shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
 		<form @submit.prevent="submit()">
 			<img width="192" height="64" :src="imageSrc" @click="refresh">
 			<input type="text" name="code" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
@@ -15,6 +15,16 @@
 		name: 'CaptchaModal',
 		components: {
 			Shell
+		},
+		props: {
+			closeHandler: {
+				type: Function,
+				required: true,
+			},
+			setBackdrop: {
+				type: Function,
+				required: true,
+			},
 		},
 		data() {
 			return {
@@ -32,8 +42,8 @@
 			},
 
 			close() {
-				this.$parent.setBackdrop(false)
-				this.$parent.closeByKey(this._.vnode.key)
+				this.setBackdrop(false)
+				this.closeHandler()
 			},
 		},
 		created() {
@@ -43,14 +53,14 @@
 				(message) => {
 					if (message.data.trustedPostCount > 0) {
 						emitter.emit('captcha-solved', {})
-						this.$parent.close()
+						this.close()
 					} else {
 						this.refresh()
 					}
 				}
 			)
 
-			this.$parent.setBackdrop(true)
+			this.setBackdrop(true)
 			this.refresh()
 			this.submit()
 		}

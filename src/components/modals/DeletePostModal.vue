@@ -1,5 +1,5 @@
 <template>
-	<Shell :header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })">
+	<Shell :header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })" :closeHandler="close">
 		<div>
 			<span>{{ $t("deletePostModal.warning1", selectedPostCount) }}</span>
 			<span>{{ $t("deletePostModal.warning2") }}</span>
@@ -20,6 +20,12 @@
 		components: {
 			Shell
 		},
+		props: {
+			closeHandler: {
+				type: Function,
+				required: true,
+			}
+		},
 		computed: {
 			selectedPostCount: function() {
 				const selectedPostCount = this.$store.state.selectedPostsList.length
@@ -34,11 +40,11 @@
 		methods: {
 			okHandler() {
 				API.post.deleteMany(this.$store.state.selectedPostsList.map(postId => { return { postId } }))
-				this.cancelHandler()
+				this.close()
 			},
 
 			close() {
-				this.$parent.closeByKey(this._.vnode.key)
+				this.closeHandler(this._.vnode.key)
 				this.$store.commit('clearSelected')
 			},
 		}

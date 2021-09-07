@@ -2,7 +2,7 @@
 	<div class="modal" ref="dragElement">
 		<div :class="{ draggable }" ref="dragHandle">
 			{{ header }}
-			<button @click="$parent.close" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
+			<button @click="closeHandler" v-if="closeable"><img class="icon" src="../../assets/icons/close.svg"></button>
 		</div>
 		<slot />
 	</div>
@@ -25,6 +25,10 @@
 			type: Boolean,
 			default: true,
 		},
+		closeHandler: {
+			type: Function,
+			required: true,
+		}
 	})
 	const dragElement = ref(null)
 	const dragHandle = ref(null)
@@ -33,6 +37,13 @@
 		props.draggable && useDraggability(dragElement, dragHandle)
 	})
 </script>
+
+<script>
+	export default {
+		inheritAttrs: false
+	}
+</script>
+
 
 <style scoped lang="scss">
 	.modal {

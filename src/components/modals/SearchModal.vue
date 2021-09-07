@@ -43,9 +43,6 @@
 					parameters: getProps(this, ["after", "before", "boardName", "threadNumber"])
 				})
 			},
-			close() {
-				this.$parent.closeByKey(this._.vnode.key)
-			},
 		},
 	}
 </script>

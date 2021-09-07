@@ -1,10 +1,11 @@
 <template>
-	<Shell :header="$t('unsafeLinkModal.header')" :closeable="false" :draggable="false">
+	<Shell :header="$t('unsafeLinkModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
 		<div>
 			<a>{{link}}</a>
 			<span>{{ $t("unsafeLinkModal.warning") }}</span>
 			<span class="row">
-				<button type="button" @click="okHandler">{{ $t("ok") }}</button><button type="button" @click="cancelHandler">{{ $t("cancel") }}</button>
+				<button type="button" @click="okHandler">{{ $t("ok") }}</button>
+				<button type="button" @click="cancelHandler">{{ $t("cancel") }}</button>
 			</span>
 		</div>
 	</Shell>
@@ -15,29 +16,40 @@
 
 	export default {
 		name: 'UnsafeLinkModal',
-		props: [
-			'link'
-		],
+		props: {
+			link: {
+				type: String,
+				required: true,
+			},
+			closeHandler: {
+				type: Function,
+				required: true,
+			},
+			setBackdrop: {
+				type: Function,
+				required: true,
+			},
+		},
 		components: {
 			Shell
 		},
 		methods: {
 			okHandler() {
 				window.open(this.link)
-				this.$parent.close()
+				this.close()
 			},
 
 			cancelHandler() {
-				this.$parent.close()
+				this.close()
 			},
 
 			close() {
-				this.$parent.setBackdrop(false)
-				this.$parent.closeByKey(this._.vnode.key)
+				this.setBackdrop(false)
+				this.closeHandler()
 			},
 		},
 		created() {
-			this.$parent.setBackdrop(true)
+			this.setBackdrop(true)
 		}
 	}
 </script>

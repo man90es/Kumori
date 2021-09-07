@@ -1,101 +1,62 @@
 <template>
-	<div :class="{backdrop: backdrop}" id="ModalsLayer" v-if="modals.length > 0 && $route.name !== 'home'">
-		<component v-for="(modal, i) in modals" :is="modal" v-bind="datas[i]" :key="keys[i]" />
+	<div :class="{ backdrop }" id="ModalsLayer" v-if="modalsMeta.length > 0 && $route.name !== 'home'">
+		<component v-for="meta in modalsMeta" :is="meta.modal" v-bind="meta.data" :key="meta.key" :closeHandler="() => close(meta.modal)" :setBackdrop="setBackdrop" />
 	</div>
 </template>
 
-<script>
-	import FormModal from '../modals/FormModal'
-	import SearchModal from '../modals/SearchModal'
-	import SettingsModal from '../modals/SettingsModal'
-	import MediaModal from '../modals/MediaModal'
-	import CaptchaModal from '../modals/CaptchaModal'
-	import UnsafeLinkModal from '../modals/UnsafeLinkModal'
-	import DeletePostModal from '../modals/DeletePostModal'
+<script setup>
+	import { ref, markRaw } from "vue"
 
-	export default {
-		data() {
-			return {
-				modals: [],
-				datas: [],
-				keys: [],
-				backdrop: false
-			}
-		},
-		methods: {
-			isOpen(modalBody) {
-				return this.modals.includes(modalBody)
-			},
+	import CaptchaModal from "../modals/CaptchaModal.vue"
+	import DeletePostModal from "../modals/DeletePostModal.vue"
+	import FormModal from "../modals/FormModal.vue"
+	import MediaModal from "../modals/MediaModal.vue"
+	import SearchModal from "../modals/SearchModal.vue"
+	import SettingsModal from "../modals/SettingsModal.vue"
+	import UnsafeLinkModal from "../modals/UnsafeLinkModal.vue"
 
-			open(modalBody, data = {}) {
-				this.modals.push(modalBody)
-				this.datas.push(data)
-				this.keys.push(+new Date)
-			},
+	const modalsMeta = ref([])
+	const backdrop = ref(false)
 
-			passData(modalBody, data = {}) {
-				let i = this.modals.indexOf(modalBody)
-				this.datas[i] = data
-			},
-
-			closeByKey(key) {
-				let i = this.keys.indexOf(key)
-
-				if (i > -1) {
-					this.modals.splice(i, 1)
-					this.datas.splice(i, 1)
-					this.keys.splice(i, 1)
-				}
-			},
-
-			close(modalBody) {
-				this.closeByKey(this.keys[this.modals.indexOf(modalBody)])
-			},
-
-			setBackdrop(state) {
-				this.backdrop = state
-			}
-		},
-		created() {
-			emitter.on('menu-chat-button-click', (data) => {
-				return this.isOpen(FormModal)
-					? this.close(FormModal)
-					: this.open(FormModal, data)
-			})
-			emitter.on('post-reply-button-click', (data) => {
-				return this.isOpen(FormModal)
-					? this.passData(FormModal, data)
-					: this.open(FormModal, data)
-			})
-			emitter.on('menu-search-button-click', (data) => {
-				return this.isOpen(SearchModal)
-					? this.close(SearchModal)
-					: this.open(SearchModal, data)
-			})
-			emitter.on('menu-settings-button-click', (data) => {
-				return this.isOpen(SettingsModal)
-					? this.close(SettingsModal)
-					: this.open(SettingsModal, data)
-			})
-			emitter.on('post-attachment-preview-click', (data) => {
-				return this.isOpen(MediaModal)
-					? this.passData(MediaModal, data)
-					: this.open(MediaModal, data)
-			})
-			emitter.on('unsafe-link-click', (data) => {
-				return this.isOpen(UnsafeLinkModal)
-					? this.passData(UnsafeLinkModal, data)
-					: this.open(UnsafeLinkModal, data)
-			})
-			emitter.on('post-delete-button-click', (data) => {
-				return this.isOpen(DeletePostModal)
-					? this.passData(DeletePostModal, data)
-					: this.open(DeletePostModal, data)
-			})
-
-			emitter.on('need-captcha', (data) => this.open(CaptchaModal, data))
-		},
+	function isOpen(modal) {
+		return !!modalsMeta.value.find(meta => meta.modal === modal)
 	}
+
+	function open(modal, data = {}) {
+		markRaw(modal)
+		modalsMeta.value.push({ modal, data, key: +new Date })
+	}
+
+	function close(modal) {
+		const i = modalsMeta.value.findIndex(meta => meta.modal === modal)
+		modalsMeta.value.splice(i, 1)
+	}
+
+	function openOrPassData(modal, data) {
+		if (!isOpen(modal)) return open(modal, data)
+
+		const i = modalsMeta.value.findIndex(meta => meta.modal === modal)
+		modalsMeta.value[i].data = data
+	}
+
+	function openOrClose(modal, data = {}) {
+		if (!isOpen(modal)) return open(modal, data)
+
+		close(modal)
+	}
+
+	function setBackdrop(state) {
+		backdrop.value = state
+	}
+
+	emitter.on("menu-chat-button-click", data => openOrClose(FormModal, data))
+	emitter.on("post-reply-button-click", data => openOrPassData(FormModal, data))
+	emitter.on("menu-search-button-click", data => openOrClose(SearchModal, data))
+	emitter.on("menu-settings-button-click", data => openOrClose(SettingsModal, data))
+	emitter.on("post-attachment-preview-click", data => openOrPassData(MediaModal, data))
+	emitter.on("unsafe-link-click", data => openOrPassData(UnsafeLinkModal, data))
+	emitter.on("post-delete-button-click", data => openOrPassData(DeletePostModal, data))
+	emitter.on("need-captcha", data => open(CaptchaModal, data))
 </script>
 
 <style scoped lang="scss">
@@ -108,14 +69,11 @@
 		justify-content: center;
 		align-items: center;
 		display: flex;
-
-		&:not(.backdrop) {
-			pointer-events: none;
-		}
+		pointer-events: none;
 
 		&.backdrop {
 			background-color: #0005;
-
+			pointer-events: auto;
 		}
 	}
 </style>
