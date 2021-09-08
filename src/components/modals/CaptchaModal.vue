@@ -1,91 +1,81 @@
 <template>
 	<Shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
-		<form @submit.prevent="submit()">
+		<form @submit.prevent="submit()" id="captcha-form">
 			<img width="192" height="64" :src="imageSrc" @click="refresh">
-			<input type="text" name="code" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
+			<input type="number" min="0" max="999999" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
 		</form>
 	</Shell>
 </template>
 
-<script>
-	import API from '../../api'
-	import Shell from './Shell.vue'
+<script setup>
+	import { ref, defineProps } from "vue"
 
-	export default {
-		name: 'CaptchaModal',
-		components: {
-			Shell
-		},
-		props: {
-			closeHandler: {
-				type: Function,
-				required: true,
-			},
-			setBackdrop: {
-				type: Function,
-				required: true,
-			},
-		},
-		data() {
-			return {
-				imageSrc: null,
-				code: ''
-			}
-		},
-		methods: {
-			submit() {
-				API.captcha.validate({ code: this.code })
-			},
+	import Shell from "./Shell.vue"
 
-			refresh() {
-				this.imageSrc = API.captcha.imageURI
-			},
+	import API from "../../api.js"
 
-			close() {
-				this.setBackdrop(false)
-				this.closeHandler()
-			},
+	const { closeHandler, setBackdrop } = defineProps({
+		closeHandler: {
+			type: Function,
+			required: true,
 		},
-		created() {
-			// Handle reply to captcha submission
-			API.addListener(
-				message => 'checkCaptcha' === message.what?.request,
-				(message) => {
-					if (message.data.trustedPostCount > 0) {
-						emitter.emit('captcha-solved', {})
-						this.close()
-					} else {
-						this.refresh()
-					}
-				}
-			)
+		setBackdrop: {
+			type: Function,
+			required: true,
+		},
+	})
+	const imageSrc = ref(null)
+	const code = ref("")
 
-			this.setBackdrop(true)
-			this.refresh()
-			this.submit()
-		}
+	function submit() {
+		API.captcha.validate({ code })
 	}
+
+	function refresh() {
+		imageSrc.value = API.captcha.imageURI
+	}
+
+	function close() {
+		setBackdrop(false)
+		closeHandler()
+	}
+
+	API.addListener( // Handle replies to captcha submission
+		message => "checkCaptcha" === message.what?.request,
+		(message) => {
+			if (message.data.trustedPostCount > 0) {
+				emitter.emit("captcha-solved", {})
+				return close()
+			}
+
+			refresh()
+		}
+	)
+
+	setBackdrop(true)
+	refresh()
 </script>
 
-<style scoped>
-	form {
+<style lang="scss">
+	#captcha-form {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
-	}
 
-	img {
-		margin-bottom: 1em;
-	}
+		img {
+			margin-bottom: 1em;
+			cursor: pointer;
+		}
 
-	input {
-		border: none;
-		padding: 2%;
-		background-color: var(--background-color);
-		color: var(--text-color);
-		text-align: center;
-		font-size: 1rem;
-		width: 100%;
+		input {
+			border: none;
+			padding: 2%;
+			background-color: var(--background-color);
+			color: var(--text-color);
+			text-align: center;
+			font-size: 1rem;
+			width: 100%;
+		}
 	}
 </style>
