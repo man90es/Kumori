@@ -11,43 +11,31 @@
 	</Shell>
 </template>
 
-<script>
-	import API from '../../api'
-	import Shell from './Shell.vue'
+<script setup>
+	import { computed, defineProps } from "vue"
+	import { useStore } from "vuex"
 
-	export default {
-		name: 'DeletePostModal',
-		components: {
-			Shell
-		},
-		props: {
-			closeHandler: {
-				type: Function,
-				required: true,
-			}
-		},
-		computed: {
-			selectedPostCount: function() {
-				const selectedPostCount = this.$store.state.selectedPostsList.length
+	import Shell from "./Shell.vue"
 
-				if (selectedPostCount > 0) {
-					return selectedPostCount
-				} else {
-					this.close()
-				}
-			}
-		},
-		methods: {
-			okHandler() {
-				API.post.deleteMany(this.$store.state.selectedPostsList.map(postId => { return { postId } }))
-				this.close()
-			},
+	import API from "../../api.js"
 
-			close() {
-				this.closeHandler(this._.vnode.key)
-				this.$store.commit('clearSelected')
-			},
-		}
+	const store = useStore()
+	const props = defineProps({ closeHandler: { type: Function, required: true } })
+
+	const selectedPostCount = computed(() => {
+		const selectedPostCount = store.state.selectedPostsList.length
+
+		return selectedPostCount > 0 ? selectedPostCount : props.closeHandler()
+	})
+
+	function okHandler() {
+		API.post.deleteMany(store.state.selectedPostsList.map(postId => ({ postId })))
+		close()
+	}
+
+	function close() {
+		store.commit("clearSelected")
+		props.closeHandler()
 	}
 </script>
 
