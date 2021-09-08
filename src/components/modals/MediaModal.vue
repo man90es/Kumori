@@ -1,43 +1,34 @@
 <template>
-	<Shell :header="data.title">
-		<div>
+	<Shell :header="title">
+		<div id="media-modal-body">
 			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
-			<img :class="{ready}" :src="src" @load="ready = true">
+			<img :class="{ ready }" :src="src" @load="ready = true">
 		</div>
 	</Shell>
 </template>
 
-<script>
-	import API from '../../api'
-	import Shell from './Shell.vue'
+<script setup>
+	import { ref, computed, defineProps } from "vue"
 
-	export default {
-		name: 'MediaModal',
-		props: [
-			'hash',
-			'mime'
-		],
-		components: {
-			Shell
-		},
-		data() {
-			return {
-				ready: false
-			}
-		},
-		computed: {
-			src() {
-				const mimeMap = {
-					'image/png': '.png',
-					'image/jpeg': '.jpg',
-					'image/gif': '.gif',
-					'image/webp': '.webp'
-				}
+	import Shell from "./Shell.vue"
 
-				return API.resPath + this.hash + mimeMap[this.mime]
-			}
-		},
-	}
+	import API from "../../api.js"
+
+	const ready = ref(false)
+	const { hash, mime } = defineProps({
+		hash:  { type: String, required: true },
+		mime:  { type: String, required: true },
+		title: { type: String, required: true },
+	})
+
+	const src = computed(() => {
+		return API.resPath + hash + ({
+			"image/png": ".png",
+			"image/jpeg": ".jpg",
+			"image/gif": ".gif",
+			"image/webp": ".webp"
+		})[mime]
+	})
 </script>
 
 <style scoped lang="scss">
@@ -50,11 +41,12 @@
 		}
 	}
 
-	div{
-		height: 100%;
+	#media-modal-body {
+		min-width: 10em;
+		min-height: 10em;
 	}
 
-	.placeholder{
+	.placeholder {
 		position: absolute;
 		height: 5rem;
 		top: calc(50% - 2.5rem);
@@ -66,7 +58,7 @@
 	}
 
 	img {
-		&:last-child:not(.ready){
+		&:not(.placeholder):not(.ready){
 			opacity: 0;
 		}
 
