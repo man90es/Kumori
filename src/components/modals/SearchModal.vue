@@ -1,6 +1,6 @@
 <template>
 	<Shell :header="$t('searchModal.header')">
-		<form @submit.prevent="submit()">
+		<form @submit.prevent="submit">
 			<div class="row">
 				<input type="text" id="searchQuery" v-model="query" :placeholder="$t('searchModal.query')" :title="$t('searchModal.query')">
 				<button><img class="icon" src="../../assets/icons/search.svg" :title="$t('searchModal.header')"></button>
@@ -17,33 +17,29 @@
 	</Shell>
 </template>
 
-<script>
-	import Shell from "./Shell"
-	import API from "../../api"
-	import { getProps } from "../../utils"
+<script setup>
+	import { ref } from "vue"
 
-	export default {
-		name: 'SearchModal',
-		components: {
-			Shell
-		},
-		data() {
-			return {
-				query: "",
-				boardName: "",
-				threadNumber: "",
-				after: null,
-				before: null,
+	import Shell from "./Shell.vue"
+
+	import API from "../../api.js"
+
+	const query = ref("")
+	const boardName = ref("")
+	const threadNumber = ref(null)
+	const after = ref(null)
+	const before = ref(null)
+
+	function submit() {
+		API.post.findMany({
+			query: query.value,
+			parameters: {
+				boardName: boardName.value,
+				threadNumber: threadNumber.value,
+				after: after.value,
+				before: before.value,
 			}
-		},
-		methods: {
-			submit() {
-				API.post.findMany({
-					query: this.query,
-					parameters: getProps(this, ["after", "before", "boardName", "threadNumber"])
-				})
-			},
-		},
+		})
 	}
 </script>
 
