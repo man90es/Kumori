@@ -9,7 +9,7 @@
 	"dependencies": {
 		"@babel/plugin-proposal-export-default-from": "^7.14.5",
 		"@bakaso/fkclient": "^1.1.2",
-		"core-js": "^3.17.2",
+		"core-js": "^3.17.3",
 		"memento-vuex": "^0.1.0",
 		"mitt": "^3.0.0",
 		"register-service-worker": "^1.6.2",
