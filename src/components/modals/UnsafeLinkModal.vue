@@ -5,53 +5,34 @@
 			<span>{{ $t("unsafeLinkModal.warning") }}</span>
 			<span class="row">
 				<button type="button" @click="okHandler">{{ $t("ok") }}</button>
-				<button type="button" @click="cancelHandler">{{ $t("cancel") }}</button>
+				<button type="button" @click="close">{{ $t("cancel") }}</button>
 			</span>
 		</div>
 	</Shell>
 </template>
 
-<script>
-	import Shell from './Shell.vue'
+<script setup>
+	import { defineProps } from "vue"
 
-	export default {
-		name: 'UnsafeLinkModal',
-		props: {
-			link: {
-				type: String,
-				required: true,
-			},
-			closeHandler: {
-				type: Function,
-				required: true,
-			},
-			setBackdrop: {
-				type: Function,
-				required: true,
-			},
-		},
-		components: {
-			Shell
-		},
-		methods: {
-			okHandler() {
-				window.open(this.link)
-				this.close()
-			},
+	import Shell from "./Shell.vue"
 
-			cancelHandler() {
-				this.close()
-			},
+	const { link, closeHandler, setBackdrop } = defineProps({
+		link:         { type: String,   required: true },
+		closeHandler: { type: Function, required: true },
+		setBackdrop:  { type: Function, required: true },
+	})
 
-			close() {
-				this.setBackdrop(false)
-				this.closeHandler()
-			},
-		},
-		created() {
-			this.setBackdrop(true)
-		}
+	function okHandler() {
+		window.open(link)
+		close()
 	}
+
+	function close() {
+		setBackdrop(false)
+		closeHandler()
+	}
+
+	setBackdrop(true)
 </script>
 
 <style scoped lang="scss">
