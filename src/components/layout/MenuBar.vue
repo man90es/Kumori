@@ -1,12 +1,12 @@
 <template>
-	<div id="menu-bar" :class="{ mobile, visible }">
+	<div id="menu-bar" :class="{ portrait, visible }">
 		<div>
 			<MenuButton icon="up" />
 			<MenuButton icon="search" />
 			<MenuButton icon="settings" />
 		</div>
 		<div>
-			<MenuButton v-if="mobile" icon="home" />
+			<MenuButton v-if="portrait" icon="home" />
 			<MenuButton v-if="$route.name !== 'bookmarks'" icon="chat" />
 			<MenuButton v-if="$route.name !== 'bookmarks'" icon="star" />
 			<MenuButton icon="down" />
@@ -19,8 +19,10 @@
 
 	import MenuButton from "../misc/MenuButton.vue"
 
+	import { useViewMode } from "../../hooks/viewMode.js"
+
+	const { portrait } = useViewMode()
 	const visible = ref(false)
-	const mobile = window.innerWidth < window.innerHeight
 
 	emitter.on("swipe-left", () => visible.value = true)
 	emitter.on("swipe-right", () => visible.value = false)
@@ -39,7 +41,7 @@
 			margin: var(--gap-size) 0;
 		}
 
-		&.mobile {
+		&.portrait {
 			position: fixed;
 			right: -3.5em;
 			transition-duration: .2s;

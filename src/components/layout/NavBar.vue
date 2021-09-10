@@ -1,5 +1,5 @@
 <template>
-	<nav v-if="!mobile">
+	<nav v-if="landscape">
 		<router-link to="/">{{ title }}</router-link>
 		<router-link :key="boardName" :to="{name: 'board', params: {boardName}}" v-for="boardName in $store.state.boardList">
 			/{{boardName}}<span v-if="!$store.state.compactBoardMenu"> — {{$store.state.boards[boardName].title}}</span>
@@ -8,7 +8,9 @@
 </template>
 
 <script setup>
-	const mobile = window.innerWidth < window.innerHeight
+	import { useViewMode } from "../../hooks/viewMode.js"
+
+	const { landscape } = useViewMode()
 	const title = process.env.VUE_APP_TITLE
 </script>
 
