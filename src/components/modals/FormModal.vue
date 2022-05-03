@@ -1,5 +1,5 @@
 <template>
-	<Shell :header="header">
+	<modal-shell :header="header">
 		<form @submit.prevent="initialCaptchaCheck">
 			<input hidden type="checkbox" id="sage" v-model="sage">
 			<label for="sage"><img class="icon" src="../../assets/icons/down.svg"></label>
@@ -29,11 +29,11 @@
 				<img class="icon" src="../../assets/icons/send.svg">
 			</button>
 		</form>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script>
-	import Shell from "./Shell"
+	import ModalShell from "./ModalShell.vue"
 	import API from "../../api"
 	import { getProps } from "../../utils"
 
@@ -46,7 +46,7 @@
 			'postNumber',
 		],
 		components: {
-			Shell
+			ModalShell
 		},
 		data() {
 			return {

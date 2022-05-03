@@ -1,16 +1,16 @@
 <template>
-	<Shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
+	<modal-shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
 		<form @submit.prevent="submit()" id="captcha-form">
 			<img width="192" height="64" :src="imageSrc" @click="refresh">
 			<input type="number" min="0" max="999999" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
 		</form>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script setup>
 	import { ref, defineProps } from "vue"
 
-	import Shell from "./Shell.vue"
+	import ModalShell from "./ModalShell.vue"
 
 	import API from "../../api.js"
 

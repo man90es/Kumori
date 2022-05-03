@@ -1,5 +1,5 @@
 <template>
-	<Shell :header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })" :closeHandler="close">
+	<modal-shell :header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })" :closeHandler="close">
 		<div>
 			<span>{{ $t("deletePostModal.warning1", selectedPostCount) }}</span>
 			<span>{{ $t("deletePostModal.warning2") }}</span>
@@ -8,14 +8,14 @@
 				<button type="button" @click="close">{{ $t("cancel") }}</button>
 			</span>
 		</div>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script setup>
 	import { computed, defineProps } from "vue"
 	import { useStore } from "vuex"
 
-	import Shell from "./Shell.vue"
+	import ModalShell from "./ModalShell.vue"
 
 	import API from "../../api.js"
 

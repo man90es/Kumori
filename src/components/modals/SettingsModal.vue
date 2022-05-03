@@ -1,59 +1,87 @@
 <template>
-	<Shell :header="$t('settingsModal.header')">
-		<div>
-			<span @click="() => $store.commit('toggleTheme')">
+	<modal-shell :header="$t('settingsModal.header')">
+		<div class="settings-grid">
+			<label>
 				{{ $t("settingsModal.lightTheme") }}
-				<ToggleSwitch :state="!!$store.state.theme" />
-			</span>
-			<span @click="() => $store.commit('toggleCompactBoardMenu')">
+			</label>
+			<toggle-switch :state="!!$store.state.theme" @click="themeChangeHandler" />
+
+			<label v-if="landscape">
 				{{ $t("settingsModal.compactBoardMenu") }}
-				<ToggleSwitch :state="$store.state.compactBoardMenu" />
-			</span>
-			<span>
+			</label>
+			<toggle-switch v-if="landscape" :state="$store.state.compactBoardMenu" @click="compactBoardMenuChangeHandler" />
+
+			<label>
 				{{ $t("settingsModal.repliesOnBoardPage") }}
-				<input type="number" min="0" max="5" v-model="repliesOnBoardPage" @input="() => $store.commit('setRepliesOnBoardPage', parseInt(repliesOnBoardPage))">
-			</span>
-			<span>
+			</label>
+			<select v-model="repliesOnBoardPage" @change="repliesOnBoardPageChangeHandler">
+				<option v-for="n in [0, 1, 2, 3, 4, 5]" :key="n" :value="n">
+					{{ n }}
+				</option>
+			</select>
+
+			<label>
 				{{ $t("settingsModal.language") }}
-				<select v-model="language" @change="languageChangeHandler">
-					<option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-						{{ $t(`settingsModal.language${capitalise(locale)}`) }}
-					</option>
-				</select>
-			</span>
+			</label>
+			<select v-model="language" @change="languageChangeHandler">
+				<option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+					{{ $t(`settingsModal.language${capitalise(locale)}`) }}
+				</option>
+			</select>
 		</div>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script setup>
-	import { ref, getCurrentInstance } from "vue"
+	import { ref } from "vue"
 	import { useStore } from "vuex"
 
-	import ToggleSwitch from "../misc/ToggleSwitch.vue"
-	import Shell from "./Shell.vue"
 	import { capitalise } from "../../utils"
+	import { useViewMode } from "../../hooks/viewMode.js"
+	import ModalShell from "./ModalShell.vue"
+	import ToggleSwitch from "../misc/ToggleSwitch.vue"
 
 	const store = useStore()
-	const component = getCurrentInstance()
+	const { landscape } = useViewMode()
 
 	const repliesOnBoardPage = ref(store.state.repliesOnBoardPage)
 	const language = ref(store.state.locale)
+
+	function themeChangeHandler() {
+		store.commit("toggleTheme")
+	}
+
+	function compactBoardMenuChangeHandler() {
+		store.commit("toggleCompactBoardMenu")
+	}
+
+	function repliesOnBoardPageChangeHandler() {
+		store.commit("setRepliesOnBoardPage", repliesOnBoardPage)
+	}
 
 	function languageChangeHandler() {
 		store.commit("setLocale", language)
 	}
 </script>
 
-<style scoped>
-	span {
-		display: flex;
-		width: 30rem;
-		height: 2rem;
-		justify-content: space-between;
-		cursor: pointer;
+<style lang="scss" scoped>
+	.settings-grid {
+		display: grid;
+		grid-template-columns: 1fr 0.5fr 1fr;
+		user-select: none;
+		align-items: center;
+
+		& > :not(label) {
+			grid-column: 3;
+			cursor: pointer;
+			height: 2em;
+			justify-self: right;
+		}
 	}
 
 	input[type="number"], select {
 		margin: 0.3em 0;
+		width: 10rem;
+		padding: 0;
 	}
 </style>

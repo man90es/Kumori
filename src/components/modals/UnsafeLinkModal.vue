@@ -1,5 +1,5 @@
 <template>
-	<Shell :header="$t('unsafeLinkModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
+	<modal-shell :header="$t('unsafeLinkModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
 		<div>
 			<a>{{link}}</a>
 			<span>{{ $t("unsafeLinkModal.warning") }}</span>
@@ -8,13 +8,13 @@
 				<button type="button" @click="close">{{ $t("cancel") }}</button>
 			</span>
 		</div>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script setup>
 	import { defineProps } from "vue"
 
-	import Shell from "./Shell.vue"
+	import ModalShell from "./ModalShell.vue"
 
 	const { link, closeHandler, setBackdrop } = defineProps({
 		link:         { type: String,   required: true },

@@ -1,16 +1,16 @@
 <template>
-	<Shell :header="title">
+	<modal-shell :header="title">
 		<div id="media-modal-body">
 			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
 			<img :class="{ ready }" :src="src" @load="ready = true">
 		</div>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script setup>
 	import { ref, computed, defineProps } from "vue"
 
-	import Shell from "./Shell.vue"
+	import ModalShell from "./ModalShell.vue"
 
 	import API from "../../api.js"
 

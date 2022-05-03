@@ -1,5 +1,5 @@
 <template>
-	<Shell :header="$t('searchModal.header')">
+	<modal-shell :header="$t('searchModal.header')">
 		<form @submit.prevent="submit">
 			<div class="row">
 				<input type="text" id="searchQuery" v-model="query" :placeholder="$t('searchModal.query')" :title="$t('searchModal.query')">
@@ -14,13 +14,13 @@
 				<input type="date" v-model="before" :title="$t('searchModal.before')">
 			</div>
 		</form>
-	</Shell>
+	</modal-shell>
 </template>
 
 <script setup>
 	import { ref } from "vue"
 
-	import Shell from "./Shell.vue"
+	import ModalShell from "./ModalShell.vue"
 
 	import API from "../../api.js"
 
