@@ -1,10 +1,10 @@
 <template>
 	<div id="bookmarks">
-		<NavBar />
-		<MainSection>
-			<Post :key="postId" :postId="postId" v-for="postId in $store.state.bookmarkedPostsList"/>
-		</MainSection>
-		<MenuBar />
+		<nav-bar />
+		<main-section>
+			<post-item :key="postId" :postId="postId" v-for="postId in $store.state.bookmarkedPostsList"/>
+		</main-section>
+		<menu-bar />
 	</div>
 </template>
 
@@ -12,7 +12,7 @@
 	import MainSection from "../components/layout/MainSection.vue"
 	import NavBar from "../components/layout/NavBar.vue"
 	import MenuBar from "../components/layout/MenuBar.vue"
-	import Post from "../components/misc/Post.vue"
+	import PostItem from "../components/misc/PostItem.vue"
 </script>
 
 <style scoped>

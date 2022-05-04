@@ -5,15 +5,15 @@
 			<a class="refLink" @click="handleRefLinkClick">
 				<span class="subject" v-if="post.subject">{{formattedSubject}}</span> #{{post.number}}
 			</a>
-			<button><img class="icon" src="../../assets/icons/menu.svg" @click="showMenu = !showMenu"></button>
-			<PostMenu v-if="showMenu" />
+			<button><img class="icon" src="../../assets/icons/menu.svg" @click="toggleMenu"></button>
+			<post-menu v-if="menuVisible" :postId="postId" @cancel="toggleMenu" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time>{{formatDate()}}</time>
 			<span v-if="$store.state.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
 		</div>
 		<div v-if="!hidden">
 			<div v-if="post.attachments" class="attachments">
-				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
+				<post-attachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
 
 			<p v-if="post.text" v-html="parsedText"></p>
@@ -21,26 +21,28 @@
 	</article>
 </template>
 
+<script setup>
+	import { ref } from "vue"
+
+	import PostAttachment from "./PostAttachment"
+	import PostMenu from "./PostMenu"
+
+	const menuVisible = ref(false)
+
+	function toggleMenu() {
+		menuVisible.value = !menuVisible.value
+	}
+</script>
+
 <script>
 	import API from '../../api'
-	import PostAttachment from './PostAttachment'
-	import PostMenu from './PostMenu'
+
 	import { truncateString, processMarkup } from '../../utils'
 
 	export default {
-		name: 'Post',
-		components: {
-			PostAttachment,
-			PostMenu
-		},
 		props: [
 			'postId'
 		],
-		data() {
-			return {
-				showMenu: false
-			}
-		},
 		computed: {
 			post() {
 				return this.$store.state.posts[this.postId]
@@ -57,10 +59,6 @@
 
 			hidden() {
 				return this.$store.state.hiddenPostsList.includes(this.postId)
-			},
-
-			bookmarked() {
-				return this.$store.state.bookmarkedPostsList.includes(this.postId)
 			},
 
 			selected() {
@@ -100,10 +98,6 @@
 				} else {
 					return date.toLocaleDateString(this.$i18n.locale, { year: "numeric", month: "long", day: "numeric" })
 				}
-			},
-
-			hideMenu() {
-				this.showMenu = false
 			},
 
 			handleReplyClick() {
