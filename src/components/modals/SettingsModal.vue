@@ -79,9 +79,13 @@
 		}
 	}
 
-	input[type="number"], select {
+	select {
+		background-color: var(--background-color);
+		border: none;
+		color: var(--text-color);
 		margin: 0.3em 0;
-		width: 10rem;
+		outline: none;
 		padding: 0;
+		width: 10rem;
 	}
 </style>
