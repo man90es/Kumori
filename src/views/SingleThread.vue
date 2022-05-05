@@ -1,10 +1,10 @@
 <template>
 	<div id="board">
-		<NavBar />
-		<MainSection>
-			<Thread :threadId="parseInt($route.params.threadId)" :pageSize="500" :tail="false" />
-		</MainSection>
-		<MenuBar />
+		<nav-bar />
+		<main-section>
+			<thread-item :threadId="parseInt($route.params.threadId)" :pageSize="500" :tail="false" />
+		</main-section>
+		<menu-bar />
 	</div>
 </template>
 
@@ -13,9 +13,9 @@
 	import { useRoute } from "vue-router"
 
 	import MainSection from "../components/layout/MainSection.vue"
-	import NavBar from "../components/layout/NavBar.vue"
 	import MenuBar from "../components/layout/MenuBar.vue"
-	import Thread from "../components/misc/Thread.vue"
+	import NavBar from "../components/layout/NavBar.vue"
+	import ThreadItem from "../components/misc/ThreadItem.vue"
 
 	import API from "../api.js"
 

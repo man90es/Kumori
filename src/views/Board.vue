@@ -1,10 +1,10 @@
 <template>
 	<div id="board">
-		<NavBar />
-		<MainSection>
-			<Thread :key="threadId" :threadId="threadId" :pageSize="$store.state.repliesOnBoardPage" v-for="threadId in threadList"/>
-		</MainSection>
-		<MenuBar />
+		<nav-bar />
+		<main-section>
+			<thread-item :key="threadId" :threadId="threadId" :pageSize="$store.state.repliesOnBoardPage" v-for="threadId in threadList"/>
+		</main-section>
+		<menu-bar />
 	</div>
 </template>
 
@@ -14,9 +14,9 @@
 	import { useRoute } from "vue-router"
 
 	import MainSection from "../components/layout/MainSection.vue"
-	import NavBar from "../components/layout/NavBar.vue"
 	import MenuBar from "../components/layout/MenuBar.vue"
-	import Thread from "../components/misc/Thread.vue"
+	import NavBar from "../components/layout/NavBar.vue"
+	import ThreadItem from "../components/misc/ThreadItem.vue"
 
 	import API from "../api.js"
 
