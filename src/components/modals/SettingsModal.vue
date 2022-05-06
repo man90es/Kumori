@@ -4,17 +4,17 @@
 			<label>
 				{{ $t("settingsModal.lightTheme") }}
 			</label>
-			<toggle-switch :state="!!$store.state.theme" @click="themeChangeHandler" />
+			<toggle-switch v-model="theme"/>
 
 			<label v-if="landscape">
 				{{ $t("settingsModal.compactBoardMenu") }}
 			</label>
-			<toggle-switch v-if="landscape" :state="$store.state.compactBoardMenu" @click="compactBoardMenuChangeHandler" />
+			<toggle-switch v-if="landscape" v-model="compactBoardMenu" />
 
 			<label>
 				{{ $t("settingsModal.repliesOnBoardPage") }}
 			</label>
-			<select v-model="repliesOnBoardPage" @change="repliesOnBoardPageChangeHandler">
+			<select v-model="repliesOnBoardPage">
 				<option v-for="n in [0, 1, 2, 3, 4, 5]" :key="n" :value="n">
 					{{ n }}
 				</option>
@@ -23,7 +23,7 @@
 			<label>
 				{{ $t("settingsModal.language") }}
 			</label>
-			<select v-model="language" @change="languageChangeHandler">
+			<select v-model="language">
 				<option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
 					{{ $t(`settingsModal.language${capitalise(locale)}`) }}
 				</option>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-	import { ref } from "vue"
+	import { ref, watch } from "vue"
 	import { useStore } from "vuex"
 
 	import { capitalise } from "../../utils"
@@ -44,24 +44,17 @@
 	const store = useStore()
 	const { landscape } = useViewMode()
 
+	const theme = ref(!!store.state.theme)
+	watch(() => theme.value, () => store.commit("toggleTheme"))
+
+	const compactBoardMenu = ref(store.state.compactBoardMenu)
+	watch(() => compactBoardMenu.value, () => store.commit("toggleCompactBoardMenu"))
+
 	const repliesOnBoardPage = ref(store.state.repliesOnBoardPage)
+	watch(() => repliesOnBoardPage.value, next => store.commit("setRepliesOnBoardPage", next))
+
 	const language = ref(store.state.locale)
-
-	function themeChangeHandler() {
-		store.commit("toggleTheme")
-	}
-
-	function compactBoardMenuChangeHandler() {
-		store.commit("toggleCompactBoardMenu")
-	}
-
-	function repliesOnBoardPageChangeHandler() {
-		store.commit("setRepliesOnBoardPage", repliesOnBoardPage)
-	}
-
-	function languageChangeHandler() {
-		store.commit("setLocale", language)
-	}
+	watch(() => language.value, next => store.commit("setLocale", next))
 </script>
 
 <style lang="scss" scoped>

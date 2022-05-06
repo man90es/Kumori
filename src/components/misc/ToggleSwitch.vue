@@ -1,15 +1,17 @@
 <template>
-	<img class="icon" :src="require(`../../assets/icons/toggle_${state ? 'on' : 'off'}.svg`)">
+	<img class="icon" :src="require(`../../assets/icons/toggle_${on ? 'on' : 'off'}.svg`)" @click="toggle">
 </template>
 
 <script setup>
-	import { defineProps } from "vue"
+	import { ref } from "vue"
 
-	const props = defineProps({ state: Boolean })
-</script>
+	const props = defineProps({ modelValue: Boolean })
+	const emit = defineEmits(["update:modelValue"])
 
-<style scoped>
-	.icon {
-		height: 100%;
+	const on = ref(props.modelValue)
+
+	function toggle() {
+		on.value = !on.value
+		emit("update:modelValue", on.value)
 	}
-</style>
+</script>
