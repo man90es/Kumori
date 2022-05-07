@@ -3,13 +3,14 @@ export default {
 	cancel: "Cancel",
 
 	settingsModal: {
-		header: "Settings",
-		lightTheme: "Light theme",
+		animations: "Animations",
 		compactBoardMenu: "Compact board menu",
-		repliesOnBoardPage: "Replies on board page",
+		header: "Settings",
 		language: "UI language",
 		languageEn: "English",
 		languageRu: "Русский",
+		lightTheme: "Light theme",
+		repliesOnBoardPage: "Replies on board page",
 	},
 
 	searchModal: {

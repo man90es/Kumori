@@ -3,11 +3,12 @@ export default {
 	cancel: "Отмена",
 
 	settingsModal: {
-		header: "Настройки",
-		lightTheme: "Светлая тема",
+		animations: "Анимации",
 		compactBoardMenu: "Компактное меню досок",
-		repliesOnBoardPage: "Ответов на странице доски",
+		header: "Настройки",
 		language: "Язык интерфейса",
+		lightTheme: "Светлая тема",
+		repliesOnBoardPage: "Ответов на странице доски",
 	},
 
 	searchModal: {

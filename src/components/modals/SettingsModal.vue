@@ -12,6 +12,11 @@
 			<toggle-switch v-if="landscape" v-model="compactBoardMenu" />
 
 			<label>
+				{{ $t("settingsModal.animations") }}
+			</label>
+			<toggle-switch v-model="animations" />
+
+			<label>
 				{{ $t("settingsModal.repliesOnBoardPage") }}
 			</label>
 			<select v-model="repliesOnBoardPage">
@@ -49,6 +54,9 @@
 
 	const compactBoardMenu = ref(store.state.compactBoardMenu)
 	watch(() => compactBoardMenu.value, () => store.commit("toggleCompactBoardMenu"))
+
+	const animations = ref(store.state.animations)
+	watch(() => animations.value, () => store.commit("toggleAnimations"))
 
 	const repliesOnBoardPage = ref(store.state.repliesOnBoardPage)
 	watch(() => repliesOnBoardPage.value, next => store.commit("setRepliesOnBoardPage", next))

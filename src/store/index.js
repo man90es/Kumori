@@ -30,23 +30,25 @@ const store = Vuex.createStore({
 		selectedPostsList: [],
 		bookmarkedPostsList: [],
 		trustedPostCount: 0,
-		theme: 0,
-		repliesOnBoardPage: 3,
-		debug: false,
+		animations: true,
 		compactBoardMenu: false,
+		debug: false,
 		locale: process.env.VUE_APP_LOCALE || "en",
+		repliesOnBoardPage: 3,
+		theme: 0,
 	},
 
 	plugins: [
 		Memento({
+			setLocale:              "locale",
 			setRepliesOnBoardPage:  "repliesOnBoardPage",
 			setTrustedPostCount:    "trustedPostCount",
-			setLocale:              "locale",
-			toggleCompactBoardMenu: "compactBoardMenu",
+			toggleAnimations:       "animations",
 			toggleBookmarked:       "bookmarkedPostsList",
+			toggleCompactBoardMenu: "compactBoardMenu",
+			toggleDebug:            "debug",
 			toggleHidden:           "hiddenPostsList",
 			toggleTheme:            "theme",
-			toggleDebug:            "debug",
 		}, "kumori-vuex")
 	],
 
@@ -137,6 +139,10 @@ const store = Vuex.createStore({
 
 		toggleTheme(state) {
 			state.theme = (state.theme + 1) % 2
+		},
+
+		toggleAnimations(state) {
+			state.animations = !state.animations
 		},
 
 		setRepliesOnBoardPage(state, payload) {
