@@ -8,7 +8,7 @@
 			<button><img class="icon" src="../../assets/icons/menu.svg" @click="toggleMenu"></button>
 			<post-menu v-if="menuVisible" :postId="postId" @cancel="toggleMenu" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
-			<time>{{formatDate()}}</time>
+			<time :title="formatDateFull()">{{formatDate()}}</time>
 			<span v-if="$store.state.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
 		</div>
 		<div v-if="!hidden">
@@ -100,6 +100,15 @@
 				}
 			},
 
+			formatDateFull() {
+				const d = new Date(this.post.created)
+
+				const date = d.getFullYear() + "-" + (d.getMonth() + 1).toString().padStart(2, 0) + "-" + d.getDate().toString().padStart(2, 0)
+				const time = d.getHours().toString().padStart(2, 0) + ":" + d.getMinutes().toString().padStart(2, 0)
+
+				return date + " " + time
+			},
+
 			handleReplyClick() {
 				emitter.emit('post-reply-button-click', {
 					threadId: this.post.threadId,
@@ -162,6 +171,7 @@
 			right: 0;
 			color: var(--text-secondary-color);
 			font-size: 0.9rem;
+			cursor: default;
 		}
 
 		.subject {
