@@ -40,8 +40,8 @@
 				document.documentElement.setAttribute("lang", locale.split("-")[0])
 			}
 
-			updateHTMLLocale(this.$store.state.locale)
-			this.$store.watch(state => state.locale, (newLocale) => {
+			updateHTMLLocale(this.$store.state.settings.locale)
+			this.$store.watch(state => state.settings.locale, (newLocale) => {
 				this.$i18n.locale = newLocale
 				updateHTMLLocale(newLocale)
 			})

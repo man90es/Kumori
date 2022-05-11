@@ -9,7 +9,7 @@
 			<post-menu v-if="menuVisible" :postId="postId" @cancel="toggleMenu" />
 			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
 			<time :title="formatDateFull()">{{formatDate()}}</time>
-			<span v-if="$store.state.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
+			<span v-if="$store.state.settings.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
 		</div>
 		<div v-if="!hidden">
 			<div v-if="post.attachments" class="attachments">

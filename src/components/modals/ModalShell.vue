@@ -36,7 +36,7 @@
 
 	const dragElement = ref(null)
 	const dragHandle = ref(null)
-	const transparent = ref(store.state.animations)
+	const transparent = ref(store.state.settings.animations)
 
 	onMounted(() => {
 		props.draggable && useDraggability(dragElement, dragHandle)

@@ -5,6 +5,7 @@ export default {
 	settingsModal: {
 		animations: "Animations",
 		compactBoardMenu: "Compact board menu",
+		debug: "Debug mode",
 		header: "Settings",
 		language: "UI language",
 		languageEn: "English",

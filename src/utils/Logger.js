@@ -20,7 +20,7 @@ export default class Logger {
 
 			switch (message[0]) {
 				case DEBUG:
-					if (!window.vm?.$store.state.debug) return
+					if (!window.vm?.$store.state.settings.debug) return
 					// eslint-disable-next-line no-console
 					return console.log(...message[1])
 

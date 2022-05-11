@@ -21,34 +21,32 @@ const store = Vuex.createStore({
 	state: {
 		boardList: [],
 		boards: {},
-		threadLists: {},
-		threads: {},
-		postLists: {},
-		posts: {},
+		bookmarkedPostsList: [],
 		feedLists: {},
 		hiddenPostsList: [],
+		postLists: {},
+		posts: {},
 		selectedPostsList: [],
-		bookmarkedPostsList: [],
+		threadLists: {},
+		threads: {},
 		trustedPostCount: 0,
-		animations: true,
-		compactBoardMenu: false,
-		debug: false,
-		locale: process.env.VUE_APP_LOCALE || "en",
-		repliesOnBoardPage: 3,
-		theme: 0,
+		settings: {
+			animations: true,
+			compactBoardMenu: false,
+			debug: false,
+			locale: process.env.VUE_APP_LOCALE || "en",
+			repliesOnBoardPage: 3,
+			theme: 0,
+		},
 	},
 
 	plugins: [
 		Memento({
-			setLocale:              "locale",
-			setRepliesOnBoardPage:  "repliesOnBoardPage",
-			setTrustedPostCount:    "trustedPostCount",
-			toggleAnimations:       "animations",
-			toggleBookmarked:       "bookmarkedPostsList",
-			toggleCompactBoardMenu: "compactBoardMenu",
-			toggleDebug:            "debug",
-			toggleHidden:           "hiddenPostsList",
-			toggleTheme:            "theme",
+			setTrustedPostCount: "trustedPostCount",
+			toggleBookmarked:    "bookmarkedPostsList",
+			toggleDebug:         "debug",
+			toggleHidden:        "hiddenPostsList",
+			updateSettings:      "settings",
 		}, "kumori-vuex")
 	],
 
@@ -65,7 +63,7 @@ const store = Vuex.createStore({
 			state.boards = { ...state.boards, ...payload }
 		},
 
-		updateThreadList(state, {boardName, payload, count, page}) {
+		updateThreadList(state, { boardName, payload, count, page }) {
 			if (state.threadLists[boardName] === undefined) {
 				state.threadLists[boardName] = []
 			}
@@ -83,7 +81,7 @@ const store = Vuex.createStore({
 			}
 		},
 
-		updatePostList(state, {threadId, payload, count, page}) {
+		updatePostList(state, { threadId, payload, count, page }) {
 			if (state.postLists[threadId] === undefined) {
 				state.postLists[threadId] = []
 			}
@@ -107,7 +105,7 @@ const store = Vuex.createStore({
 			}
 		},
 
-		updateFeed(state, {boardName, payload, count, page}) {
+		updateFeed(state, { boardName, payload, count, page }) {
 			if (state.feedLists[boardName] === undefined) {
 				state.feedLists[boardName] = []
 			}
@@ -137,28 +135,21 @@ const store = Vuex.createStore({
 			state.trustedPostCount = payload
 		},
 
-		toggleTheme(state) {
-			state.theme = (state.theme + 1) % 2
-		},
+		updateSettings(state, { option, nextValue }) {
+			switch (option) {
+				case "theme":
+					state.settings.theme = (state.settings.theme + 1) % 2
+					break;
 
-		toggleAnimations(state) {
-			state.animations = !state.animations
-		},
+				case "animations":
+				case "compactBoardMenu":
+				case "debug":
+					state.settings[option] = !state.settings[option]
+					break;
 
-		setRepliesOnBoardPage(state, payload) {
-			state.repliesOnBoardPage = payload
-		},
-
-		toggleDebug(state) {
-			state.debug = !state.debug
-		},
-
-		toggleCompactBoardMenu(state) {
-			state.compactBoardMenu = !state.compactBoardMenu
-		},
-
-		setLocale(state, locale) {
-			state.locale = locale
+				default:
+					state.settings[option] = nextValue
+			}
 		},
 	},
 })

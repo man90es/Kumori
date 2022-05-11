@@ -2,7 +2,7 @@
 	<nav v-if="landscape">
 		<router-link to="/">{{ title }}</router-link>
 		<router-link :key="boardName" :to="{name: 'board', params: {boardName}}" v-for="boardName in $store.state.boardList">
-			/{{boardName}}<span v-if="!$store.state.compactBoardMenu"> — {{$store.state.boards[boardName].title}}</span>
+			/{{boardName}}<span v-if="!$store.state.settings.compactBoardMenu"> — {{$store.state.boards[boardName].title}}</span>
 		</router-link>
 	</nav>
 </template>

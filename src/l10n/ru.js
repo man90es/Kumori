@@ -5,6 +5,7 @@ export default {
 	settingsModal: {
 		animations: "Анимации",
 		compactBoardMenu: "Компактное меню досок",
+		debug: "Режим отладки",
 		header: "Настройки",
 		language: "Язык интерфейса",
 		lightTheme: "Светлая тема",

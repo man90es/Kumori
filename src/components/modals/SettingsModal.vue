@@ -33,6 +33,11 @@
 					{{ $t(`settingsModal.language${capitalise(locale)}`) }}
 				</option>
 			</select>
+
+			<label>
+				{{ $t("settingsModal.debug") }}
+			</label>
+			<toggle-switch v-model="debug" />
 		</div>
 	</modal-shell>
 </template>
@@ -49,20 +54,23 @@
 	const store = useStore()
 	const { landscape } = useViewMode()
 
-	const theme = ref(!!store.state.theme)
-	watch(() => theme.value, () => store.commit("toggleTheme"))
+	const theme = ref(!!store.state.settings.theme)
+	watch(() => theme.value, () => store.commit("updateSettings", { option: "theme" }))
 
-	const compactBoardMenu = ref(store.state.compactBoardMenu)
-	watch(() => compactBoardMenu.value, () => store.commit("toggleCompactBoardMenu"))
+	const compactBoardMenu = ref(store.state.settings.compactBoardMenu)
+	watch(() => compactBoardMenu.value, () => store.commit("updateSettings", { option: "compactBoardMenu" }))
 
-	const animations = ref(store.state.animations)
-	watch(() => animations.value, () => store.commit("toggleAnimations"))
+	const animations = ref(store.state.settings.animations)
+	watch(() => animations.value, () => store.commit("updateSettings", { option: "animations" }))
 
-	const repliesOnBoardPage = ref(store.state.repliesOnBoardPage)
-	watch(() => repliesOnBoardPage.value, next => store.commit("setRepliesOnBoardPage", next))
+	const repliesOnBoardPage = ref(store.state.settings.repliesOnBoardPage)
+	watch(() => repliesOnBoardPage.value, nextValue => store.commit("updateSettings", { option: "repliesOnBoardPage", nextValue }))
 
-	const language = ref(store.state.locale)
-	watch(() => language.value, next => store.commit("setLocale", next))
+	const language = ref(store.state.settings.locale)
+	watch(() => language.value, nextValue => store.commit("updateSettings", { option: "locale", nextValue }))
+
+	const debug = ref(store.state.settings.debug)
+	watch(() => debug.value, () => store.commit("updateSettings", { option: "debug" }))
 </script>
 
 <style lang="scss" scoped>

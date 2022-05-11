@@ -31,5 +31,5 @@ export function useTheme() {
 		"--icon-invert":          "40%",
 	})
 
-	return computed(() => themes.get(store.state.theme))
+	return computed(() => themes.get(store.state.settings.theme))
 }

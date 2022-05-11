@@ -141,7 +141,7 @@
 		},
 		computed: {
 			header: function () {
-				return this.$store.state.debug
+				return this.$store.state.settings.debug
 					? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
 					: this.threadId
 						? this.$t("formModal.postHeader", getProps(this, ["threadNumber", "boardName"]))
