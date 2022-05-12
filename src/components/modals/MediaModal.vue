@@ -1,5 +1,5 @@
 <template>
-	<modal-shell :header="title">
+	<modal-shell :header="props.name">
 		<div id="media-modal-body">
 			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
 			<img :class="{ ready }" :src="src" @load="ready = true">
@@ -10,24 +10,29 @@
 <script setup>
 	import { ref, computed, defineProps } from "vue"
 
+	import API from "@/api.js"
 	import ModalShell from "./ModalShell.vue"
 
-	import API from "../../api.js"
-
 	const ready = ref(false)
-	const { hash, mime } = defineProps({
-		hash:  { type: String, required: true },
-		mime:  { type: String, required: true },
-		title: { type: String, required: true },
+	const props = defineProps({
+		hash: { type: String, required: true },
+		mime: { type: String, required: true },
+		name: { type: String, required: true },
 	})
 
 	const src = computed(() => {
-		return API.resPath + hash + ({
-			"image/png": ".png",
-			"image/jpeg": ".jpg",
-			"image/gif": ".gif",
-			"image/webp": ".webp"
-		})[mime]
+		let extension
+
+		switch (props.mime) {
+			case "image/jpeg":
+				extension = "jpg"
+				break
+
+			default:
+				extension = props.mime.split("/")[1]
+		}
+
+		return API.res.path + props.hash + "." + extension
 	})
 </script>
 

@@ -1,32 +1,23 @@
 <template>
-	<img :class="{nsfw}" :width="width" :height="height" v-lazy="`${thumbPath}${this.file.hash}.jpg`" @click="clickHandler">
+	<img :class="{nsfw}" :width="API.thumb.width" :height="API.thumb.height" v-lazy="thumbSrc" @click="clickHandler">
 </template>
 
-<script>
-	import API from '../../api'
+<script setup>
+	import { computed } from "vue"
+	import API from "../../api"
 
-	export default {
-		name: 'PostAttachment',
-		props: [
-			'file',
-		],
-		data() {
-			return {
-				width: `${this.file.thumbWidth || 256}px`,
-				height: `${this.file.thumbHeight || 200}px`,
-				thumbPath: API.thumbPath
-			}
-		},
-		computed: {
-			nsfw() {
-				return this.file.modifiers && this.file.modifiers.includes('NSFW')
-			}
-		},
-		methods: {
-			clickHandler() {
-				emitter.emit('post-attachment-preview-click', this.file)
-			}
-		}
+	const props = defineProps({ file: Object })
+
+	const thumbSrc = computed(() => (
+		`${API.thumb.path}${props.file.hash}.${API.thumb.format}`
+	))
+
+	const nsfw = computed(() => (
+		props.file.modifiers?.includes("NSFW")
+	))
+
+	function clickHandler() {
+		emitter.emit("post-attachment-preview-click", props.file)
 	}
 </script>
 

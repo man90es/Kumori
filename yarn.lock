@@ -918,10 +918,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@bakaso/fkclient@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@bakaso/fkclient/-/fkclient-1.1.2.tgz#a27ef9d2c8293fcf10ca042a73296ff33b15138f"
-  integrity sha512-RZYCu0BSw5TnCLWKcjJePpeAH+zrJ6C61i6mpKeHK80LafsjS1tXQV1sWAtbBZo+MQ1vgyaXzg/Wl2nYgPZAdA==
+"@bakaso/fkclient@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@bakaso/fkclient/-/fkclient-1.2.0.tgz#a8fb3f4e9297003fb1dcc5e4d128d2c52c07b17d"
+  integrity sha512-6AkB6ybe0yOao5X1gRKHp6qrGA7pS4+bnDC/GEF59WI6onjkQbnzITJFFnYb/gK6cJns3fTnSkBP0gs6TD/YOw==
 
 "@hapi/address@2.x.x":
   version "2.1.4"
