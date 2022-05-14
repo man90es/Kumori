@@ -170,13 +170,10 @@
 				message => "createPost" === message.what?.request,
 				(message) => {
 					this.reset()
-					this.$router.push({
-						name: "thread",
-						params: {
-							threadId: message.what?.threadId || message.data?.threadId,
-							boardName: message.what?.boardName,
-						},
-					})
+
+					const threadId = message.what?.threadId || message.data?.threadId
+					const boardName = this.$store.state.threads[threadId]?.boardName
+					this.$router.push({ name: "thread", params: { threadId, boardName } })
 				}
 			)
 		}
