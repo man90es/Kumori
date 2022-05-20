@@ -2,7 +2,9 @@
 	<modal-shell :header="props.name">
 		<div id="media-modal-body">
 			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
-			<img :class="{ ready }" :src="src" @load="ready = true">
+
+			<video v-if="is_video" :src="src" autoplay controls></video>
+			<img v-else :class="{ ready }" :src="src" @load="ready = true">
 		</div>
 	</modal-shell>
 </template>
@@ -13,12 +15,13 @@
 	import API from "@/api.js"
 	import ModalShell from "./ModalShell.vue"
 
-	const ready = ref(false)
 	const props = defineProps({
 		hash: { type: String, required: true },
 		mime: { type: String, required: true },
 		name: { type: String, required: true },
 	})
+	const is_video = computed(() => "video" === props.mime.split("/")[0])
+	const ready = ref(is_video.value)
 
 	const src = computed(() => {
 		let extension
