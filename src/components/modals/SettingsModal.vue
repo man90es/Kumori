@@ -17,6 +17,11 @@
 			<toggle-switch v-model="animations" />
 
 			<label>
+				{{ $t("settingsModal.noko") }}
+			</label>
+			<toggle-switch v-model="noko" />
+
+			<label>
 				{{ $t("settingsModal.repliesOnBoardPage") }}
 			</label>
 			<select v-model="repliesOnBoardPage">
@@ -63,6 +68,9 @@
 	const animations = ref(store.state.settings.animations)
 	watch(() => animations.value, () => store.commit("updateSettings", { option: "animations" }))
 
+	const noko = ref(store.state.settings.noko)
+	watch(() => noko.value, () => store.commit("updateSettings", { option: "noko" }))
+
 	const repliesOnBoardPage = ref(store.state.settings.repliesOnBoardPage)
 	watch(() => repliesOnBoardPage.value, nextValue => store.commit("updateSettings", { option: "repliesOnBoardPage", nextValue }))
 
@@ -75,13 +83,13 @@
 
 <style lang="scss" scoped>
 	.settings-grid {
-		display: grid;
-		grid-template-columns: 1fr 0.5fr 1fr;
-		user-select: none;
 		align-items: center;
+		display: grid;
+		grid-gap: 0 1em;
+		grid-template-columns: auto auto;
+		user-select: none;
 
 		& > :not(label) {
-			grid-column: 3;
 			cursor: pointer;
 			height: 2em;
 			justify-self: right;
@@ -95,6 +103,6 @@
 		margin: 0.3em 0;
 		outline: none;
 		padding: 0;
-		width: 10rem;
+		width: 10em;
 	}
 </style>

@@ -9,6 +9,7 @@ export default {
 		header: "Настройки",
 		language: "Язык интерфейса",
 		lightTheme: "Светлая тема",
+		noko: "Перенаправлять в тред после ответа",
 		repliesOnBoardPage: "Ответов на странице доски",
 	},
 

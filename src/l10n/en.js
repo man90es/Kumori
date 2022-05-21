@@ -11,6 +11,7 @@ export default {
 		languageEn: "English",
 		languageRu: "Русский",
 		lightTheme: "Light theme",
+		noko: "Redirect to thread after replying",
 		repliesOnBoardPage: "Replies on board page",
 	},
 

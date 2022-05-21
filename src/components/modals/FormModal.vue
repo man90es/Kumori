@@ -171,9 +171,11 @@
 				(message) => {
 					this.reset()
 
-					const threadId = message.what?.threadId || message.data?.threadId
-					const boardName = this.$store.state.threads[threadId]?.boardName
-					this.$router.push({ name: "thread", params: { threadId, boardName } })
+					if (this.$store.state.settings.noko) {
+						const threadId = message.what?.threadId || message.data?.threadId
+						const boardName = this.$store.state.threads[threadId]?.boardName
+						this.$router.push({ name: "thread", params: { threadId, boardName } })
+					}
 				}
 			)
 		}

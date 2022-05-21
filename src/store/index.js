@@ -35,6 +35,7 @@ const store = Vuex.createStore({
 			compactBoardMenu: false,
 			debug: false,
 			locale: process.env.VUE_APP_LOCALE || "en",
+			noko: true,
 			repliesOnBoardPage: 3,
 			theme: 0,
 		},
@@ -144,6 +145,7 @@ const store = Vuex.createStore({
 				case "animations":
 				case "compactBoardMenu":
 				case "debug":
+				case "noko":
 					state.settings[option] = !state.settings[option]
 					break;
 
