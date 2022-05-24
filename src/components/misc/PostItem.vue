@@ -178,8 +178,9 @@
 			color: var(--text-secondary-color);
 		}
 
-		.attachments * {
-			margin-right: var(--gap-size);
+		.attachments {
+			display: flex;
+			gap: var(--gap-size);
 		}
 
 		p {
