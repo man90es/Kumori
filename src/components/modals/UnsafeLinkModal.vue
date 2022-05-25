@@ -14,7 +14,7 @@
 <script setup>
 	import { defineProps } from "vue"
 
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 
 	const { link, closeHandler, setBackdrop } = defineProps({
 		link:         { type: String,   required: true },

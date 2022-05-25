@@ -13,7 +13,7 @@
 	import { ref, computed, defineProps } from "vue"
 
 	import API from "@/api.js"
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 
 	const props = defineProps({
 		hash: { type: String, required: true },

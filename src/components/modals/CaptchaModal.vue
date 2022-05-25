@@ -10,7 +10,7 @@
 <script setup>
 	import { ref, defineProps } from "vue"
 
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 
 	import API from "../../api.js"
 

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 	import API from "../../api"
 	import { getProps } from "../../utils"
 

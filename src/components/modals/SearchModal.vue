@@ -20,7 +20,7 @@
 <script setup>
 	import { ref } from "vue"
 
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 
 	import API from "../../api.js"
 

@@ -15,7 +15,7 @@
 	import { computed, defineProps } from "vue"
 	import { useStore } from "vuex"
 
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 
 	import API from "../../api.js"
 

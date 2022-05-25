@@ -53,7 +53,7 @@
 
 	import { capitalise } from "../../utils"
 	import { useViewMode } from "../../hooks/viewMode.js"
-	import ModalShell from "./ModalShell.vue"
+	import ModalShell from "../misc/ModalShell.vue"
 	import ToggleSwitch from "../misc/ToggleSwitch.vue"
 
 	const store = useStore()
