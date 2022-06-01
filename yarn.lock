@@ -6502,10 +6502,10 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue3-lazyload@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/vue3-lazyload/-/vue3-lazyload-0.3.0.tgz#e3fcbcfd93555d9b3e7ebb2f7e0b58c82f2869a8"
-  integrity sha512-peYm1KrXDCBze6JbS80BdRPeTA1dvBaxXUvnKkbetzfwNzR+k0u3lzcj9cuYwzp+mJopXzl9I7y12Pc1wL1duQ==
+vue3-lazyload@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/vue3-lazyload/-/vue3-lazyload-0.3.3.tgz#b924f97681ba5672c05ca95e90e1eb551602a27b"
+  integrity sha512-Yfz8YjGYK4Ehh4oEmJMxx4zzzGBpgT7mZdbo5idGl8SHTH8sc1IjxP4a2ci57qJ60eYgHsgjRexOBHDd7k3n/A==
   dependencies:
     vue-demi "^0.12.5"
 
