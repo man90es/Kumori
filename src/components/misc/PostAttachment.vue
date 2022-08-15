@@ -1,27 +1,32 @@
 <template>
 	<div>
-		<img class="thumbnail" :class="{ nsfw }" :width="API.thumb.width" :height="API.thumb.height" v-lazy="lazyOptions" @click="clickHandler">
-		<img v-if="isVideo" class="video-marker" src="../../assets/icons/play_circle.svg">
+		<img
+			class="thumbnail"
+			:class="{ nsfw }"
+			:width="API.thumb.width"
+			:height="API.thumb.height"
+			v-lazy="lazyOptions"
+			@click="clickHandler"
+		/>
+		<img v-if="isVideo" class="video-marker" src="@/assets/icons/play_circle.svg" />
 	</div>
 </template>
 
 <script setup>
 	import { computed, ref } from "vue"
-	import API from "../../api"
+	import API from "@/api"
 
 	const props = defineProps({ file: Object })
 	const nsfw = ref(false)
 
 	const lazyOptions = computed(() => ({
 		lifecycle: {
-			loaded: () => nsfw.value = props.file.modifiers?.includes("NSFW")
+			loaded: () => (nsfw.value = props.file.modifiers?.includes("NSFW")),
 		},
 		src: `${API.thumb.path}${props.file.hash}.${API.thumb.format}`,
 	}))
 
-	const isVideo = computed(() => (
-		"video" == props.file.mime.split("/")[0]
-	))
+	const isVideo = computed(() => "video" == props.file.mime.split("/")[0])
 
 	function clickHandler() {
 		emitter.emit("post-attachment-preview-click", props.file)

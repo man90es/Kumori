@@ -1,5 +1,8 @@
 <template>
-	<modal-shell :header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })" :closeHandler="close">
+	<modal-shell
+		:header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })"
+		:closeHandler="close"
+	>
 		<div>
 			<span>{{ $t("deletePostModal.warning1", selectedPostCount) }}</span>
 			<span>{{ $t("deletePostModal.warning2") }}</span>
@@ -12,12 +15,10 @@
 </template>
 
 <script setup>
-	import { computed, defineProps } from "vue"
+	import { computed } from "vue"
 	import { useStore } from "vuex"
-
-	import ModalShell from "../misc/ModalShell.vue"
-
-	import API from "../../api.js"
+	import API from "@/api"
+	import ModalShell from "@/components/misc/ModalShell.vue"
 
 	const store = useStore()
 	const props = defineProps({ closeHandler: { type: Function, required: true } })
@@ -29,7 +30,7 @@
 	})
 
 	function okHandler() {
-		API.post.deleteMany(store.state.selectedPostsList.map(postId => ({ postId })))
+		API.post.deleteMany(store.state.selectedPostsList.map((postId) => ({ postId })))
 		close()
 	}
 

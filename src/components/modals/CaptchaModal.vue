@@ -1,18 +1,23 @@
 <template>
 	<modal-shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
 		<form @submit.prevent="submit()" id="captcha-form">
-			<img width="192" height="64" :src="imageSrc" @click="refresh">
-			<input type="number" min="0" max="999999" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
+			<img width="192" height="64" :src="imageSrc" @click="refresh" />
+			<input
+				type="number"
+				min="0"
+				max="999999"
+				autocomplete="off"
+				:placeholder="$t('captchaModal.code')"
+				v-model="code"
+			/>
 		</form>
 	</modal-shell>
 </template>
 
 <script setup>
-	import { ref, defineProps } from "vue"
-
-	import ModalShell from "../misc/ModalShell.vue"
-
-	import API from "../../api.js"
+	import { ref } from "vue"
+	import API from "@/api.js"
+	import ModalShell from "@/components/misc/ModalShell.vue"
 
 	const { closeHandler, setBackdrop } = defineProps({
 		closeHandler: {
@@ -40,8 +45,9 @@
 		closeHandler()
 	}
 
-	API.addListener( // Handle replies to captcha submission
-		message => "checkCaptcha" === message.what?.request,
+	API.addListener(
+		// Handle replies to captcha submission
+		(message) => "checkCaptcha" === message.what?.request,
 		(message) => {
 			if (message.data.trustedPostCount > 0) {
 				emitter.emit("captcha-solved", {})
