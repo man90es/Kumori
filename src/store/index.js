@@ -44,10 +44,10 @@ const store = Vuex.createStore({
 	plugins: [
 		Memento({
 			setTrustedPostCount: "trustedPostCount",
-			toggleBookmarked:    "bookmarkedPostsList",
-			toggleDebug:         "debug",
-			toggleHidden:        "hiddenPostsList",
-			updateSettings:      "settings",
+			toggleBookmarked: "bookmarkedPostsList",
+			toggleDebug: "debug",
+			toggleHidden: "hiddenPostsList",
+			updateSettings: "settings",
 		}, "kumori-vuex")
 	],
 
@@ -104,6 +104,35 @@ const store = Vuex.createStore({
 			for (let post of payload) {
 				state.posts[post?.id] = post
 			}
+		},
+
+		pushPost(state, post) {
+			state.posts[post.id] = post
+
+			if (state.postLists[post.threadId] === undefined) {
+				return
+			}
+
+			state.threads[post.threadId].posts += 1
+			state.postLists[post.threadId].push(post.id)
+		},
+
+		pushThread(state, thread) {
+			state.posts[thread.head.id] = thread.head
+			state.postLists[thread.id] = [thread.head.id]
+			state.threads[thread.id] = thread
+
+			if (state.threadLists[thread.boardName] === undefined) {
+				return
+			}
+
+			state.threadLists[thread.boardName].unshift(thread.id)
+		},
+
+		pushBoard(state, board) {
+			state.threadLists[boardName] = []
+			state.boards[board.name] = board
+			state.boardList.push(board.name)
 		},
 
 		updateFeed(state, { boardName, payload, count, page }) {
@@ -229,6 +258,28 @@ API.addListener(
 	(message) => {
 		store.commit("updatePosts", [message.data])
 	}
+)
+
+API.addListener(
+	message => "created" === message.event && "post" === message.type,
+	(message) => {
+		switch (message.type) {
+			case "post":
+				store.commit("pushPost", message.data)
+				break
+
+			case "thread":
+				store.commit("pushThread", message.data)
+				break
+
+			case "board":
+				store.commit("pushBoard", message.data)
+				break
+
+			default:
+				break
+		}
+	},
 )
 
 export default store
