@@ -1,21 +1,26 @@
 <template>
 	<article v-if="![postId, post].includes(undefined)" :class="{ selected }">
 		<div class="postDetails">
-			<img v-if="post.modifiers.includes('sage')" class="sage icon" src="../../assets/icons/down.svg">
+			<img v-if="post.modifiers.includes('sage')" class="sage icon" src="@/assets/icons/down.svg" />
 			<a class="refLink" @click="handleRefLinkClick">
-				<span class="subject" v-if="post.subject">{{formattedSubject}}</span> #{{post.number}}
+				<span class="subject" v-if="post.subject">{{ formattedSubject }}</span> #{{ post.number }}
 			</a>
-			<button><img class="icon" src="../../assets/icons/menu.svg" @click="toggleMenu"></button>
-			<post-menu v-if="menuVisible" :postId="postId" @cancel="toggleMenu" />
-			<button><img class="icon" src="../../assets/icons/reply.svg" @click="handleReplyClick"></button>
-			<time :title="formatDateFull()">{{formatDate()}}</time>
-			<span v-if="$store.state.settings.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
+			<button>
+				<img class="icon" src="@/assets/icons/menu.svg" @click="toggleMenu" />
+			</button>
+			<PostMenu v-if="menuVisible" :postId="postId" @cancel="toggleMenu" />
+			<button>
+				<img class="icon" src="@/assets/icons/reply.svg" @click="handleReplyClick" />
+			</button>
+			<time :title="formatDateFull()">{{ formatDate() }}</time>
+			<span v-if="$store.state.settings.debug">
+				b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}
+			</span>
 		</div>
 		<div v-if="!hidden">
 			<div v-if="post.attachments" class="attachments">
 				<post-attachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
-
 			<p v-if="post.text" v-html="parsedText"></p>
 		</div>
 	</article>
@@ -23,9 +28,8 @@
 
 <script setup>
 	import { ref } from "vue"
-
-	import PostAttachment from "./PostAttachment"
-	import PostMenu from "./PostMenu"
+	import PostAttachment from "@/components/misc/PostAttachment"
+	import PostMenu from "@/components/misc/PostMenu"
 
 	const menuVisible = ref(false)
 
@@ -35,14 +39,11 @@
 </script>
 
 <script>
-	import API from '../../api'
-
-	import { truncateString, processMarkup } from '../../utils'
+	import { truncateString, processMarkup } from "@/utils"
+	import API from "@/api"
 
 	export default {
-		props: [
-			'postId'
-		],
+		props: ["postId"],
 		computed: {
 			post() {
 				return this.$store.state.posts[this.postId]
@@ -67,7 +68,7 @@
 
 			thread() {
 				return this.$store.state.threads[this.post.threadId]
-			}
+			},
 		},
 		methods: {
 			formatDate() {
@@ -75,71 +76,83 @@
 				const diff = new Date() - date
 
 				if (diff < 6048e5) {
-					if (diff < 4e4){
-						return this.$t("post.recently")
+					if (diff < 4e4) {
+						return "recently"
 					}
 
 					const minutes = Math.round(diff / 6e4)
-					if (minutes < 50){
-						return this.$t("post.minutesAgo", minutes, { count: minutes })
+					if (minutes < 50) {
+						const plural = "1" !== minutes.toString().at(-1)
+						return minutes + (plural ? " minutes ago" : " minute ago")
 					}
 
 					const hours = Math.round(diff / 3.6e6)
-					if (hours < 20){
-						return this.$t("post.hoursAgo", hours, { count: hours })
+					if (hours < 20) {
+						const plural = "1" !== hours.toString().at(-1)
+						return hours + (plural ? " hours ago" : " hour ago")
 					}
 
 					const days = Math.round(diff / 8.64e7)
-					if (days == 1){
-						return this.$t("post.yesterday")
+					if (days == 1) {
+						return "yesterday"
 					}
 
-					return this.$t("post.daysAgo", days, { count: days })
+					const plural = "1" !== days.toString().at(-1)
+					return days + (plural ? " days ago" : " day ago")
 				} else {
-					return date.toLocaleDateString(this.$i18n.locale, { year: "numeric", month: "long", day: "numeric" })
+					return date.toLocaleDateString(this.$i18n.locale, {
+						year: "numeric",
+						month: "long",
+						day: "numeric",
+					})
 				}
 			},
 
 			formatDateFull() {
 				const d = new Date(this.post.created)
 
-				const date = d.getFullYear() + "-" + (d.getMonth() + 1).toString().padStart(2, 0) + "-" + d.getDate().toString().padStart(2, 0)
+				const date =
+					d.getFullYear() +
+					"-" +
+					(d.getMonth() + 1).toString().padStart(2, 0) +
+					"-" +
+					d.getDate().toString().padStart(2, 0)
 				const time = d.getHours().toString().padStart(2, 0) + ":" + d.getMinutes().toString().padStart(2, 0)
 
 				return date + " " + time
 			},
 
 			handleReplyClick() {
-				emitter.emit('post-reply-button-click', {
+				window.emitter.emit("post-reply-button-click", {
 					threadId: this.post.threadId,
 					boardName: this.thread.boardName,
 					threadNumber: this.thread.head.number,
-					postNumber: this.post.number
+					postNumber: this.post.number,
 				})
 			},
 
 			handleRefLinkClick() {
 				this.$router.push({
-					name: 'thread',
+					name: "thread",
 					params: {
 						boardName: this.thread.boardName,
-						threadId: this.post.threadId
-					}
+						threadId: this.post.threadId,
+					},
 				})
-			}
+			},
 		},
 		watch: {
 			post(newValue, oldValue) {
 				if (undefined === this.thread && undefined === oldValue && undefined !== newValue) {
 					API.thread.request({ threadId: this.post.threadId })
 				}
-			}
+			},
 		},
 		created() {
 			if (undefined === this.post && undefined !== this.postId) {
 				API.post.request({ postId: this.postId })
 			}
-		}
+		},
 	}
 </script>
 

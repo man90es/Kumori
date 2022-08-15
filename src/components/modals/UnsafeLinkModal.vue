@@ -1,36 +1,41 @@
 <template>
-	<modal-shell :header="$t('unsafeLinkModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
+	<ModalShell
+		:closeable="false"
+		:closeHandler="close"
+		:draggable="false"
+		header="Are you sure you want to open this link?"
+	>
 		<div>
 			<a>{{ link }}</a>
-			<span>{{ $t("unsafeLinkModal.warning") }}</span>
+			<span>It may be not safe</span>
 			<span class="row">
-				<button type="button" @click="okHandler">{{ $t("ok") }}</button>
-				<button type="button" @click="close">{{ $t("cancel") }}</button>
+				<button type="button" @click="okHandler">Ok</button>
+				<button type="button" @click="close">Cancel</button>
 			</span>
 		</div>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>
 	import ModalShell from "@/components/misc/ModalShell"
 
-	const { link, closeHandler, setBackdrop } = defineProps({
+	const props = defineProps({
 		link: { type: String, required: true },
 		closeHandler: { type: Function, required: true },
 		setBackdrop: { type: Function, required: true },
 	})
 
 	function okHandler() {
-		window.open(link)
+		window.open(props.link)
 		close()
 	}
 
 	function close() {
-		setBackdrop(false)
-		closeHandler()
+		props.setBackdrop(false)
+		props.closeHandler()
 	}
 
-	setBackdrop(true)
+	props.setBackdrop(true)
 </script>
 
 <style scoped lang="scss">

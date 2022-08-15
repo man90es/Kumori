@@ -1,13 +1,13 @@
 <template>
 	<div v-if="thread">
-		<post-item :postId="thread.head.id" />
-		<router-link
+		<PostItem :postId="thread.head.id" />
+		<RouterLink
 			v-if="$route.name == 'board' && omittedPosts && pageSize"
 			:to="{ name: 'thread', params: { threadId } }"
 		>
-			{{ $t("post.omittedCount", { count: omittedPosts }) }}
-		</router-link>
-		<post-item :key="postId" :postId="postId" v-for="postId in tail" />
+			Omitted posts: {{ omittedPosts }}
+		</RouterLink>
+		<PostItem :key="postId" :postId="postId" v-for="postId in tail" />
 	</div>
 </template>
 

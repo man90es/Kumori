@@ -1,7 +1,7 @@
-import Vuex from "vuex"
+import { createStore } from "vuex"
+import { getProps } from "@/utils"
+import API from "@/api"
 import Memento from "memento-vuex"
-import API from "../api"
-import { getProps } from "../utils"
 
 function toggleListEntry(state, listName, entry) {
 	let i = state[listName].indexOf(entry)
@@ -17,7 +17,7 @@ function clearList(state, listName) {
 	state[listName] = []
 }
 
-const store = Vuex.createStore({
+const store = createStore({
 	state: {
 		boardList: [],
 		boards: {},
@@ -34,7 +34,6 @@ const store = Vuex.createStore({
 			animations: true,
 			compactBoardMenu: false,
 			debug: false,
-			locale: process.env.VUE_APP_LOCALE || "en",
 			noko: true,
 			repliesOnBoardPage: 3,
 			theme: 0,
@@ -130,7 +129,7 @@ const store = Vuex.createStore({
 		},
 
 		pushBoard(state, board) {
-			state.threadLists[boardName] = []
+			state.threadLists[board.name] = []
 			state.boards[board.name] = board
 			state.boardList.push(board.name)
 		},
@@ -169,14 +168,14 @@ const store = Vuex.createStore({
 			switch (option) {
 				case "theme":
 					state.settings.theme = (state.settings.theme + 1) % 2
-					break;
+					break
 
 				case "animations":
 				case "compactBoardMenu":
 				case "debug":
 				case "noko":
 					state.settings[option] = !state.settings[option]
-					break;
+					break
 
 				default:
 					state.settings[option] = nextValue

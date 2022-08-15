@@ -1,31 +1,27 @@
 <template>
-	<modal-shell
-		:header="$t('deletePostModal.header', selectedPostCount, { count: selectedPostCount })"
-		:closeHandler="close"
-	>
+	<ModalShell :closeHandler="close" :header="header">
 		<div>
-			<span>{{ $t("deletePostModal.warning1", selectedPostCount) }}</span>
-			<span>{{ $t("deletePostModal.warning2") }}</span>
+			<span>{{ warning }}</span>
+			<span>Deletion of an OP deletes the whole thread.</span>
 			<span class="row">
-				<button type="button" @click="okHandler">{{ $t("ok") }}</button>
-				<button type="button" @click="close">{{ $t("cancel") }}</button>
+				<button type="button" @click="okHandler">Ok</button>
+				<button type="button" @click="close">Cancel</button>
 			</span>
 		</div>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>
 	import { computed } from "vue"
 	import { useStore } from "vuex"
 	import API from "@/api"
-	import ModalShell from "@/components/misc/ModalShell.vue"
+	import ModalShell from "@/components/misc/ModalShell"
 
 	const store = useStore()
 	const props = defineProps({ closeHandler: { type: Function, required: true } })
 
 	const selectedPostCount = computed(() => {
 		const selectedPostCount = store.state.selectedPostsList.length
-
 		return selectedPostCount > 0 ? selectedPostCount : props.closeHandler()
 	})
 
@@ -38,6 +34,16 @@
 		store.commit("clearSelected")
 		props.closeHandler()
 	}
+
+	const header = computed(
+		() => `Delete ${selectedPostCount.value} selected post${selectedPostCount.value > 1 ? "s" : ""}?`
+	)
+	const warning = computed(
+		() =>
+			`This action will fail if you don't have enough rights to delete ${
+				selectedPostCount.value > 1 ? "these posts" : "this post"
+			}.`
+	)
 </script>
 
 <style scoped lang="scss">

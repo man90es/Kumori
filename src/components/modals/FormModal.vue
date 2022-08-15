@@ -1,57 +1,59 @@
 <template>
-	<modal-shell :header="header">
+	<ModalShell :header="header">
 		<form @submit.prevent="initialCaptchaCheck">
-			<input hidden type="checkbox" id="sage" v-model="sage">
-			<label for="sage"><img class="icon" src="../../assets/icons/down.svg"></label>
-			<input hidden type="checkbox" id="signed" v-model="signed">
-			<label for="signed"><img class="icon" src="../../assets/icons/trip_origin.svg"></label>
-			<input hidden type="checkbox" id="op" v-model="op">
-			<label for="op"><img class="icon" src="../../assets/icons/person_pin.svg"></label>
-			<input type="text" v-model="subject">
+			<input hidden type="checkbox" id="sage" v-model="sage" />
+			<label for="sage"><img class="icon" src="../../assets/icons/down.svg" /></label>
+			<input hidden type="checkbox" id="signed" v-model="signed" />
+			<label for="signed"><img class="icon" src="../../assets/icons/trip_origin.svg" /></label>
+			<input hidden type="checkbox" id="op" v-model="op" />
+			<label for="op"><img class="icon" src="../../assets/icons/person_pin.svg" /></label>
+			<input type="text" v-model="subject" />
 
 			<textarea v-model="text"></textarea>
 
 			<div id="attachmentsForm">
 				<button type="button" id="attachFile" @click="attachHandler" v-if="files.length < fileLimit">
-					<img class="icon" src="../../assets/icons/attach_file.svg">
+					<img class="icon" src="../../assets/icons/attach_file.svg" />
 				</button>
 
-				<div class="thumb" :key="i" v-for="(file, i) in files" :style="{backgroundImage: `url(${thumbs[i]})`}">
+				<div
+					class="thumb"
+					:key="i"
+					v-for="(file, i) in files"
+					:style="{ backgroundImage: `url(${thumbs[i]})` }"
+				>
 					<button class="nsfwToggle" type="button" @click="toggleAttachmentNSFW(i)">
-						<img class="icon" v-if="attachmentNSFW[i]" src="../../assets/icons/nsfw.svg">
-						<img class="icon" v-else src="../../assets/icons/sfw.svg">
+						<img class="icon" v-if="attachmentNSFW[i]" src="../../assets/icons/nsfw.svg" />
+						<img class="icon" v-else src="../../assets/icons/sfw.svg" />
 					</button>
-					<button class="deleteAttachment" type="button" @click="deleteAttachment(i)"><img class="icon" src="../../assets/icons/close.svg"></button>
+					<button class="deleteAttachment" type="button" @click="deleteAttachment(i)">
+						<img class="icon" src="../../assets/icons/close.svg" />
+					</button>
 				</div>
 			</div>
 
 			<button id="submit">
-				<img class="icon" src="../../assets/icons/send.svg">
+				<img class="icon" src="../../assets/icons/send.svg" />
 			</button>
 		</form>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script>
-	import ModalShell from "../misc/ModalShell.vue"
-	import API from "../../api"
-	import { getProps } from "../../utils"
+	import { getProps } from "@/utils"
+	import API from "@/api"
+	import ModalShell from "@/components/misc/ModalShell"
 
 	export default {
-		name: 'FormModal',
-		props: [
-			'threadId',
-			'boardName',
-			'threadNumber',
-			'postNumber',
-		],
+		name: "FormModal",
+		props: ["threadId", "boardName", "threadNumber", "postNumber"],
 		components: {
-			ModalShell
+			ModalShell,
 		},
 		data() {
 			return {
-				subject: '',
-				text: '',
+				subject: "",
+				text: "",
 				sage: false,
 				signed: false,
 				op: false,
@@ -63,9 +65,9 @@
 			}
 		},
 		watch: {
-			postNumber: function(newPostNumber) {
+			postNumber: function (newPostNumber) {
 				this.insertPostLink(newPostNumber)
-			}
+			},
 		},
 		methods: {
 			initialCaptchaCheck() {
@@ -78,10 +80,10 @@
 			},
 
 			attachHandler() {
-				let fileInput = document.createElement('input')
-				fileInput.type = 'file'
-				fileInput.style = 'display:none'
-				fileInput.addEventListener('change', (event) => {
+				let fileInput = document.createElement("input")
+				fileInput.type = "file"
+				fileInput.style = "display:none"
+				fileInput.addEventListener("change", (event) => {
 					this.files.push(fileInput)
 					this.attachmentNSFW.push(false)
 					this.attachmentChangeHandler(event)
@@ -93,7 +95,7 @@
 			attachmentChangeHandler(event) {
 				let file = event.target.files[0]
 
-				if (file.type.match('image.*')) {
+				if (file.type.match("image.*")) {
 					let reader = new FileReader()
 
 					reader.onload = (event) => {
@@ -127,13 +129,13 @@
 							file: fileInput.files[0],
 							spoiler: this.attachmentNSFW[i],
 						}
-					})
+					}),
 				})
 			},
 
 			reset() {
-				this.text = ''
-				this.subject = ''
+				this.text = ""
+				this.subject = ""
 				this.files = []
 				this.attachmentNSFW = []
 				this.thumbs = []
@@ -144,30 +146,30 @@
 				return this.$store.state.settings.debug
 					? `b:"${this.boardName}" tid:${this.threadId} tn:${this.threadNumber}`
 					: this.threadId
-						? this.$t("formModal.postHeader", getProps(this, ["threadNumber", "boardName"]))
-						: this.$t("formModal.threadHeader", getProps(this, ["boardName"]))
-			}
+					? `Reply to thread #${this.threadNumber} on board /${this.boardName}`
+					: `New thread on board /${this.boardName}`
+			},
 		},
 		created() {
 			this.insertPostLink(this.postNumber)
-			emitter.on('captcha-solved', this.submit)
+			window.emitter.on("captcha-solved", this.submit)
 
 			// Handle reply to captcha submission
 			API.addListener(
-				message => 'checkCaptcha' === message.what?.request,
+				(message) => "checkCaptcha" === message.what?.request,
 				(message) => {
 					if (message.data.trustedPostCount > 0) {
 						this.submit()
 					} else {
 						this.waitingToSubmit = true
-						emitter.emit('need-captcha', {})
+						window.emitter.emit("need-captcha", {})
 					}
 				}
 			)
 
 			// Handle reply to post submission
 			API.addListener(
-				message => "createPost" === message.what?.request,
+				(message) => "createPost" === message.what?.request,
 				(message) => {
 					this.reset()
 
@@ -178,7 +180,7 @@
 					}
 				}
 			)
-		}
+		},
 	}
 </script>
 
@@ -220,7 +222,8 @@
 		margin-bottom: 0;
 	}
 
-	#attachmentsForm, .thumb {
+	#attachmentsForm,
+	.thumb {
 		grid-column: 1/5;
 		width: 100%;
 		height: 100%;
@@ -238,17 +241,20 @@
 		opacity: 1;
 	}
 
-	#submit, #attachFile {
+	#submit,
+	#attachFile {
 		background-color: var(--background-color);
 		width: 100%;
 	}
 
-	#submit .icon, #attachFile .icon, #attachmentsForm .icon {
+	#submit .icon,
+	#attachFile .icon,
+	#attachmentsForm .icon {
 		opacity: 1;
 		height: 50%;
 	}
 
-	.thumb{
+	.thumb {
 		height: 3.5rem;
 		width: 3.5rem;
 		background-size: contain;

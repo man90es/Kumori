@@ -1,28 +1,28 @@
 <template>
-	<modal-shell :header="$t('searchModal.header')">
+	<ModalShell header="Search">
 		<form @submit.prevent="submit">
 			<div class="row">
-				<input type="text" id="searchQuery" v-model="query" :placeholder="$t('searchModal.query')" :title="$t('searchModal.query')">
-				<button><img class="icon" src="../../assets/icons/search.svg" :title="$t('searchModal.header')"></button>
+				<input id="searchQuery" placeholder="Query" title="Query" type="text" v-model="query" />
+				<button>
+					<img class="icon" src="../../assets/icons/search.svg" :title="$t('searchModal.header')" />
+				</button>
 			</div>
 			<div class="row">
-				<input type="text" v-model="boardName" :placeholder="$t('searchModal.boardName')" :title="$t('searchModal.boardName')">
-				<input type="number" min="1" v-model="threadNumber" :placeholder="$t('searchModal.threadNumber')" :title="$t('searchModal.threadNumber')">
+				<input placeholder="Board name" title="Board name" type="text" v-model="boardName" />
+				<input min="1" placeholder="Thread number" title="Thread number" type="number" v-model="threadNumber" />
 			</div>
 			<div class="row">
-				<input type="date" v-model="after" :title="$t('searchModal.after')">
-				<input type="date" v-model="before" :title="$t('searchModal.before')">
+				<input type="date" v-model="after" title="After" />
+				<input type="date" v-model="before" title="Before" />
 			</div>
 		</form>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>
 	import { ref } from "vue"
-
-	import ModalShell from "../misc/ModalShell.vue"
-
-	import API from "../../api.js"
+	import API from "@/api"
+	import ModalShell from "@/components/misc/ModalShell"
 
 	const query = ref("")
 	const boardName = ref("")
@@ -38,7 +38,7 @@
 				threadNumber: threadNumber.value,
 				after: after.value,
 				before: before.value,
-			}
+			},
 		})
 	}
 </script>

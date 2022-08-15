@@ -1,12 +1,12 @@
 <template>
-	<modal-shell :header="props.name">
+	<ModalShell :header="props.name">
 		<div id="media-modal-body">
 			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg" />
 
 			<video v-if="is_video" :src="src" autoplay controls></video>
 			<img v-else :class="{ ready }" :src="src" @load="ready = true" />
 		</div>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>

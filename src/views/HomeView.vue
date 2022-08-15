@@ -1,10 +1,10 @@
 <template>
 	<div id="home">
 		<div :style="backgroundStyle"></div>
-		<img src="logo.svg">
+		<img src="logo.svg" />
 		<ul>
 			<li v-for="boardName in $store.state.boardList" :key="boardName">
-				<router-link :to="{name: 'board', params: {boardName}}">/{{boardName}}</router-link>
+				<RouterLink :to="{ name: 'board', params: { boardName } }">/{{ boardName }}</RouterLink>
 			</li>
 		</ul>
 	</div>
@@ -14,7 +14,8 @@
 	import { computed } from "vue"
 
 	const backgroundStyle = computed(() => {
-		return `background-image:url(https://picsum.photos/${Math.round(window.screen.width / 2)}/${Math.round(window.screen.height / 2)})`
+		const bgSize = [window.screen.width, window.screen.height].map((s) => Math.round(s / 2))
+		return `background-image:url(https://picsum.photos/${bgSize[0]}/${bgSize[1]})`
 	})
 </script>
 
@@ -36,7 +37,7 @@
 			background-position: center;
 			background-size: cover;
 			filter: url("#sharpBlur");
-			opacity: .4;
+			opacity: 0.4;
 		}
 	}
 
@@ -46,7 +47,7 @@
 		border-radius: 50%;
 		padding: 1.5rem 1rem;
 		background-color: #fff1;
-		transition: padding .2s, background-color .2s;
+		transition: padding 0.2s, background-color 0.2s;
 
 		&:hover {
 			padding: 2.5rem 2rem;
@@ -72,10 +73,10 @@
 	}
 
 	a {
-		padding: .25em 0;
+		padding: 0.25em 0;
 		color: #a8afbc;
 		display: block;
-		transition: background-color .2s;
+		transition: background-color 0.2s;
 
 		&:hover {
 			background-color: #fff1;

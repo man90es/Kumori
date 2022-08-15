@@ -24,7 +24,7 @@
 	function dispatchEvent() {
 		switch (props.icon) {
 			case "chat":
-				return emitter.emit("menu-chat-button-click", {
+				return window.emitter.emit("menu-chat-button-click", {
 					boardName: route.params.boardName,
 					threadId: parseInt(route.params.threadId),
 					threadNumber:
@@ -46,7 +46,7 @@
 				return scrollToBottom()
 
 			default:
-				return emitter.emit(`menu-${props.icon}-button-click`, {})
+				return window.emitter.emit(`menu-${props.icon}-button-click`, {})
 		}
 	}
 </script>

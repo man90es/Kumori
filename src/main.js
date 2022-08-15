@@ -1,7 +1,6 @@
 import "./registerServiceWorker"
 import { createApp } from "vue"
 import App from "./App.vue"
-import l10n from "./l10n"
 import mitt from "mitt"
 import router from "./router"
 import store from "./store"
@@ -11,7 +10,6 @@ import VueLazyLoad from "vue3-lazyload"
 window.emitter = mitt()
 
 window.vm = createApp(App)
-	.use(l10n(store.state.settings.locale))
 	.use(router)
 	.use(store)
 	.use(Vue3TouchEvents)

@@ -29,7 +29,7 @@
 	const isVideo = computed(() => "video" == props.file.mime.split("/")[0])
 
 	function clickHandler() {
-		emitter.emit("post-attachment-preview-click", props.file)
+		window.emitter.emit("post-attachment-preview-click", props.file)
 	}
 </script>
 
