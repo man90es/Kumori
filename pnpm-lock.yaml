@@ -3,23 +3,23 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': ^7.18.10
   '@babel/eslint-parser': ^7.18.9
-  '@bakaso/fkclient': 1.2.0
-  '@vue/cli-plugin-babel': 5.0.8
-  '@vue/cli-plugin-eslint': 5.0.8
-  '@vue/cli-plugin-pwa': 5.0.8
-  '@vue/cli-plugin-router': 5.0.8
-  '@vue/cli-plugin-vuex': 5.0.8
-  '@vue/cli-service': 5.0.8
-  '@vue/compiler-sfc': 3.2.37
-  core-js: 3.24.1
+  '@bakaso/fkclient': ^1.2.0
+  '@vue/cli-plugin-babel': ^5.0.8
+  '@vue/cli-plugin-eslint': ^5.0.8
+  '@vue/cli-plugin-pwa': ^5.0.8
+  '@vue/cli-plugin-router': ^5.0.8
+  '@vue/cli-plugin-vuex': ^5.0.8
+  '@vue/cli-service': ^5.0.8
+  '@vue/compiler-sfc': ^3.2.37
+  core-js: ^3.24.1
   eslint: ^8.22.0
-  eslint-plugin-vue: 9.3.0
+  eslint-plugin-vue: ^9.3.0
   memento-vuex: ^0.2.0
   mitt: ^3.0.0
   register-service-worker: ^1.7.2
-  sass: 1.54.4
+  sass: ^1.54.4
   sass-loader: ^13.0.2
-  vue: 3.2.37
+  vue: ^3.2.37
   vue-draggability: ^0.1.0
   vue-i18n: ^9.2.2
   vue-router: ^4.1.3
