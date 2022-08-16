@@ -1,5 +1,5 @@
 <template>
-	<img class="icon" :src="require(`../../assets/icons/toggle_${on ? 'on' : 'off'}.svg`)" @click="toggle">
+	<img class="icon" :src="require(`@/assets/icons/toggle_${on ? 'on' : 'off'}.svg`)" @click="toggle" />
 </template>
 
 <script setup>

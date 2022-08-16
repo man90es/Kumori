@@ -16,16 +16,14 @@
 
 <script setup>
 	import { ref } from "vue"
-
-	import MenuButton from "../misc/MenuButton.vue"
-
-	import { useViewMode } from "../../hooks/viewMode.js"
+	import { useViewMode } from "@/hooks/viewMode.js"
+	import MenuButton from "@/components/misc/MenuButton.vue"
 
 	const { portrait } = useViewMode()
 	const visible = ref(false)
 
-	emitter.on("swipe-left", () => visible.value = true)
-	emitter.on("swipe-right", () => visible.value = false)
+	window.emitter.on("swipe-left", () => (visible.value = true))
+	window.emitter.on("swipe-right", () => (visible.value = false))
 </script>
 
 <style lang="scss">
@@ -44,7 +42,7 @@
 		&.portrait {
 			position: fixed;
 			right: -3.5em;
-			transition-duration: .2s;
+			transition-duration: 0.2s;
 
 			&.visible {
 				right: var(--gap-size);

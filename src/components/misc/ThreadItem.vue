@@ -1,21 +1,23 @@
 <template>
 	<div v-if="thread">
-		<post-item :postId="thread.head.id" />
-		<router-link v-if="$route.name == 'board' && omittedPosts && pageSize" :to="{ name: 'thread', params: { threadId } }">
-			{{ $t("post.omittedCount", { count: omittedPosts }) }}
-		</router-link>
-		<post-item :key="postId" :postId="postId" v-for="postId in tail" />
+		<PostItem :postId="thread.head.id" />
+		<RouterLink
+			v-if="$route.name == 'board' && omittedPosts && pageSize"
+			:to="{ name: 'thread', params: { threadId } }"
+		>
+			Omitted posts: {{ omittedPosts }}
+		</RouterLink>
+		<PostItem :key="postId" :postId="postId" v-for="postId in tail" />
 	</div>
 </template>
 
 <script setup>
 	import { computed, ref, watch } from "vue"
+	import { Logger } from "@/utils"
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"
-
-	import { Logger } from "../../utils"
-	import API from "../../api"
-	import PostItem from "./PostItem.vue"
+	import API from "@/api"
+	import PostItem from "@/components/misc/PostItem.vue"
 
 	const props = defineProps({ threadId: Number, pageSize: Number })
 	const route = useRoute()
@@ -23,28 +25,33 @@
 
 	const deferredPostRequest = ref(false)
 	const thread = computed(() => store.state.threads[props.threadId])
-	const tail = computed(() => (
-		props.pageSize == 0
+	const pageSize = computed(() => Math.min(props.pageSize, thread.value?.posts))
+	const tail = computed(() =>
+		0 === props.pageSize
 			? []
-			: (store.state.postLists[props.threadId] || []).slice(Math.max(thread.value.posts - props.pageSize, 1)).filter(Boolean)
-	))
-	const omittedPosts = computed(() => (
-		"board" === route.name
-			? Math.max(thread.value.posts - 1 - props.pageSize, 0)
-			: 0
-	))
+			: (store.state.postLists[props.threadId] || [])
+					.slice(-pageSize.value)
+					.filter((pId) => thread.value.head.id !== pId)
+	)
+	const omittedPosts = computed(() =>
+		"board" === route.name ? Math.max(thread.value.posts - 1 - pageSize.value, 0) : 0
+	)
 
 	function requestPostList() {
 		switch (route.name) {
 			case "board":
-				if (props.pageSize > 0 && thread.value.posts > 1 && tail.value.length < Math.min(thread.value.posts - 1, props.pageSize)) {
-					API.post.requestMany({ threadId: props.threadId, count: props.pageSize, page: "tail"})
+				if (
+					pageSize.value > 0 &&
+					thread.value.posts > 1 &&
+					tail.value.length < Math.min(thread.value.posts - 1, pageSize.value)
+				) {
+					API.post.requestMany({ threadId: props.threadId, count: pageSize.value, page: "tail" })
 				}
 
 				break
 			case "thread":
 				if (thread.value.posts > 1) {
-					API.post.requestMany({ threadId: props.threadId, count: props.pageSize })
+					API.post.requestMany({ threadId: props.threadId, count: pageSize.value })
 				}
 
 				break
@@ -52,22 +59,28 @@
 	}
 
 	// Request additional tail posts when user changes the number of posts in tail
-	watch(() => props.pageSize, (next, last) => {
-		if (next > last) {
-			requestPostList()
+	watch(
+		() => pageSize.value,
+		(next, last) => {
+			if (next > last) {
+				requestPostList()
+			}
 		}
-	})
+	)
 
-	watch(() => thread.value, (next, last) => {
-		if (deferredPostRequest.value && undefined === last && undefined !== next) {
-			deferredPostRequest.value = false
-			requestPostList()
+	watch(
+		() => thread.value,
+		(next, last) => {
+			if (deferredPostRequest.value && undefined === last && undefined !== next) {
+				deferredPostRequest.value = false
+				requestPostList()
+			}
 		}
-	})
+	)
 
 	try {
 		requestPostList()
-	} catch(error) {
+	} catch (error) {
 		deferredPostRequest.value = true
 		Logger.debug("Thread is not ready for post request")
 	}

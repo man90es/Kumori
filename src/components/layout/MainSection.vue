@@ -2,23 +2,24 @@
 	<main>
 		<header v-if="board">
 			<div>
-				<router-link :to="{ name: 'board' }">
-					<div class="title" v-if="['board', 'thread'].includes($route.name)">{{ $t("pageHeader.boardTitle", { boardName: board.name, boardTitle: board.title }) }}</div>
-					<div class="title" v-if="$route.name == 'feed'">{{ $t("pageHeader.feedTitle", { boardName: board.name, boardTitle: board.title }) }}</div>
-					<div>{{ $t("pageHeader.boardDescription", { boardDescription: board.subtitle }) }}</div>
-				</router-link>
+				<RouterLink :to="{ name: 'board' }">
+					<div class="title" v-if="['board', 'thread'].includes($route.name)">
+						/{{ board.name }}/ — {{ board.title }}
+					</div>
+					<div class="title" v-if="$route.name == 'feed'">/{{ board.name }}/'s feed — {{ board.title }}</div>
+					<div>{{ board.subtitle }}</div>
+				</RouterLink>
 			</div>
-
 			<div>
-				<router-link class="feedLink" v-if="$route.name === 'board'" :to="{ name: 'feed' }">
-					<img class="icon" src="../../assets/icons/view_list.svg">
-				</router-link>
+				<RouterLink class="feedLink" v-if="$route.name === 'board'" :to="{ name: 'feed' }">
+					<img class="icon" src="@/assets/icons/view_list.svg" />
+				</RouterLink>
 			</div>
 		</header>
 		<header v-else-if="$route.name === 'bookmarks'">
 			<div>
-				<div class="title">{{ $t("pageHeader.bookmarksTitle") }}</div>
-				<div>{{ $t("pageHeader.bookmarksDescription") }}</div>
+				<div class="title">Bookmarks</div>
+				<div>Posts you marked with a star</div>
 			</div>
 		</header>
 
@@ -64,5 +65,4 @@
 			height: 2em;
 		}
 	}
-
 </style>

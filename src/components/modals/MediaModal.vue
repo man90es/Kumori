@@ -1,19 +1,18 @@
 <template>
-	<modal-shell :header="props.name">
+	<ModalShell :header="props.name">
 		<div id="media-modal-body">
-			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg">
+			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg" />
 
 			<video v-if="is_video" :src="src" autoplay controls></video>
-			<img v-else :class="{ ready }" :src="src" @load="ready = true">
+			<img v-else :class="{ ready }" :src="src" @load="ready = true" />
 		</div>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>
-	import { ref, computed, defineProps } from "vue"
-
-	import API from "@/api.js"
-	import ModalShell from "../misc/ModalShell.vue"
+	import { ref, computed } from "vue"
+	import API from "@/api"
+	import ModalShell from "@/components/misc/ModalShell"
 
 	const props = defineProps({
 		hash: { type: String, required: true },
@@ -42,10 +41,10 @@
 <style scoped lang="scss">
 	@keyframes spin {
 		0% {
-			transform:rotate(0deg) scale(-1, 1);
+			transform: rotate(0deg) scale(-1, 1);
 		}
 		100% {
-			transform:rotate(360deg) scale(-1, 1);
+			transform: rotate(360deg) scale(-1, 1);
 		}
 	}
 
@@ -66,11 +65,11 @@
 	}
 
 	img {
-		&:not(.placeholder):not(.ready){
+		&:not(.placeholder):not(.ready) {
 			opacity: 0;
 		}
 
-		&.ready{
+		&.ready {
 			max-width: 80vw;
 			max-height: 80vh;
 			width: auto;

@@ -1,84 +1,76 @@
 <template>
-	<modal-shell :header="$t('settingsModal.header')">
+	<ModalShell header="Settings">
 		<div class="settings-grid">
-			<label>
-				{{ $t("settingsModal.lightTheme") }}
-			</label>
-			<toggle-switch v-model="theme"/>
+			<label>Light theme</label>
+			<toggle-switch v-model="theme" />
 
-			<label v-if="landscape">
-				{{ $t("settingsModal.compactBoardMenu") }}
-			</label>
+			<label v-if="landscape">Compact board menu</label>
 			<toggle-switch v-if="landscape" v-model="compactBoardMenu" />
 
-			<label>
-				{{ $t("settingsModal.animations") }}
-			</label>
+			<label>Animations</label>
 			<toggle-switch v-model="animations" />
 
-			<label>
-				{{ $t("settingsModal.noko") }}
-			</label>
+			<label>Redirect to thread after replying</label>
 			<toggle-switch v-model="noko" />
 
-			<label>
-				{{ $t("settingsModal.repliesOnBoardPage") }}
-			</label>
+			<label>Replies on board page</label>
 			<select v-model="repliesOnBoardPage">
 				<option v-for="n in [0, 1, 2, 3, 4, 5]" :key="n" :value="n">
 					{{ n }}
 				</option>
 			</select>
 
-			<label>
-				{{ $t("settingsModal.language") }}
-			</label>
-			<select v-model="language">
-				<option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-					{{ $t(`settingsModal.language${capitalise(locale)}`) }}
-				</option>
-			</select>
-
-			<label>
-				{{ $t("settingsModal.debug") }}
-			</label>
+			<label>Debug mode</label>
 			<toggle-switch v-model="debug" />
 		</div>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>
 	import { ref, watch } from "vue"
 	import { useStore } from "vuex"
-
-	import { capitalise } from "../../utils"
-	import { useViewMode } from "../../hooks/viewMode.js"
-	import ModalShell from "../misc/ModalShell.vue"
-	import ToggleSwitch from "../misc/ToggleSwitch.vue"
+	import { useViewMode } from "@/hooks/viewMode.js"
+	import ModalShell from "@/components/misc/ModalShell.vue"
+	import ToggleSwitch from "@/components/misc/ToggleSwitch.vue"
 
 	const store = useStore()
 	const { landscape } = useViewMode()
 
 	const theme = ref(!!store.state.settings.theme)
-	watch(() => theme.value, () => store.commit("updateSettings", { option: "theme" }))
+	watch(
+		() => theme.value,
+		() => store.commit("updateSettings", { option: "theme" })
+	)
 
 	const compactBoardMenu = ref(store.state.settings.compactBoardMenu)
-	watch(() => compactBoardMenu.value, () => store.commit("updateSettings", { option: "compactBoardMenu" }))
+	watch(
+		() => compactBoardMenu.value,
+		() => store.commit("updateSettings", { option: "compactBoardMenu" })
+	)
 
 	const animations = ref(store.state.settings.animations)
-	watch(() => animations.value, () => store.commit("updateSettings", { option: "animations" }))
+	watch(
+		() => animations.value,
+		() => store.commit("updateSettings", { option: "animations" })
+	)
 
 	const noko = ref(store.state.settings.noko)
-	watch(() => noko.value, () => store.commit("updateSettings", { option: "noko" }))
+	watch(
+		() => noko.value,
+		() => store.commit("updateSettings", { option: "noko" })
+	)
 
 	const repliesOnBoardPage = ref(store.state.settings.repliesOnBoardPage)
-	watch(() => repliesOnBoardPage.value, nextValue => store.commit("updateSettings", { option: "repliesOnBoardPage", nextValue }))
-
-	const language = ref(store.state.settings.locale)
-	watch(() => language.value, nextValue => store.commit("updateSettings", { option: "locale", nextValue }))
+	watch(
+		() => repliesOnBoardPage.value,
+		(nextValue) => store.commit("updateSettings", { option: "repliesOnBoardPage", nextValue })
+	)
 
 	const debug = ref(store.state.settings.debug)
-	watch(() => debug.value, () => store.commit("updateSettings", { option: "debug" }))
+	watch(
+		() => debug.value,
+		() => store.commit("updateSettings", { option: "debug" })
+	)
 </script>
 
 <style lang="scss" scoped>

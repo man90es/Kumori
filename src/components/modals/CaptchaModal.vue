@@ -1,20 +1,18 @@
 <template>
-	<modal-shell :header="$t('captchaModal.header')" :closeable="false" :draggable="false" :closeHandler="close">
+	<ModalShell header="Humanity check" :closeable="false" :draggable="false" :closeHandler="close">
 		<form @submit.prevent="submit()" id="captcha-form">
-			<img width="192" height="64" :src="imageSrc" @click="refresh">
-			<input type="number" min="0" max="999999" autocomplete="off" :placeholder="$t('captchaModal.code')" v-model="code">
+			<img width="192" height="64" :src="imageSrc" @click="refresh" />
+			<input autocomplete="off" max="999999" min="0" placeholder="Captcha" type="number" v-model="code" />
 		</form>
-	</modal-shell>
+	</ModalShell>
 </template>
 
 <script setup>
-	import { ref, defineProps } from "vue"
+	import { ref } from "vue"
+	import API from "@/api"
+	import ModalShell from "@/components/misc/ModalShell"
 
-	import ModalShell from "../misc/ModalShell.vue"
-
-	import API from "../../api.js"
-
-	const { closeHandler, setBackdrop } = defineProps({
+	const props = defineProps({
 		closeHandler: {
 			type: Function,
 			required: true,
@@ -36,15 +34,16 @@
 	}
 
 	function close() {
-		setBackdrop(false)
-		closeHandler()
+		props.setBackdrop(false)
+		props.closeHandler()
 	}
 
-	API.addListener( // Handle replies to captcha submission
-		message => "checkCaptcha" === message.what?.request,
+	API.addListener(
+		// Handle replies to captcha submission
+		(message) => "checkCaptcha" === message.what?.request,
 		(message) => {
 			if (message.data.trustedPostCount > 0) {
-				emitter.emit("captcha-solved", {})
+				window.emitter.emit("captcha-solved", {})
 				return close()
 			}
 
@@ -52,7 +51,7 @@
 		}
 	)
 
-	setBackdrop(true)
+	props.setBackdrop(true)
 	refresh()
 </script>
 

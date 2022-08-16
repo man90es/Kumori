@@ -1,24 +1,27 @@
 <template>
 	<div id="board">
-		<nav-bar />
-		<main-section>
-			<thread-item :key="threadId" :threadId="threadId" :pageSize="$store.state.settings.repliesOnBoardPage" v-for="threadId in threadList"/>
-		</main-section>
-		<menu-bar />
+		<NavBar />
+		<MainSection>
+			<ThreadItem
+				:key="threadId"
+				:pageSize="$store.state.settings.repliesOnBoardPage"
+				:threadId="threadId"
+				v-for="threadId in threadList"
+			/>
+		</MainSection>
+		<MenuBar />
 	</div>
 </template>
 
 <script setup>
 	import { computed, watch } from "vue"
-	import { useStore } from "vuex"
 	import { useRoute } from "vue-router"
-
-	import MainSection from "../components/layout/MainSection.vue"
-	import MenuBar from "../components/layout/MenuBar.vue"
-	import NavBar from "../components/layout/NavBar.vue"
-	import ThreadItem from "../components/misc/ThreadItem.vue"
-
-	import API from "../api.js"
+	import { useStore } from "vuex"
+	import API from "@/api"
+	import MainSection from "@/components/layout/MainSection"
+	import MenuBar from "@/components/layout/MenuBar"
+	import NavBar from "@/components/layout/NavBar"
+	import ThreadItem from "@/components/misc/ThreadItem"
 
 	const store = useStore()
 	const route = useRoute()
@@ -36,7 +39,7 @@
 </script>
 
 <style>
-	#board{
+	#board {
 		display: flex;
 		justify-content: center;
 		width: 100vw;
