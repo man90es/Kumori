@@ -1,12 +1,12 @@
 <template>
 	<div :class="{ backdrop }" id="ModalsLayer" v-if="modalsMeta.length > 0 && $route.name !== 'home'">
 		<component
-			v-for="meta in modalsMeta"
-			:is="meta.modal"
-			v-bind="meta.data"
-			:key="meta.key"
 			:closeHandler="() => close(meta.modal)"
+			:is="meta.modal"
+			:key="meta.key"
 			:setBackdrop="setBackdrop"
+			v-bind="meta.data"
+			v-for="meta in modalsMeta"
 		/>
 	</div>
 </template>
@@ -20,6 +20,7 @@
 	import SearchModal from "@/components/modals/SearchModal"
 	import SettingsModal from "@/components/modals/SettingsModal"
 	import UnsafeLinkModal from "@/components/modals/UnsafeLinkModal"
+	import UserModal from "@/components/modals/UserModal"
 
 	const modalsMeta = ref([])
 	const backdrop = ref(false)
@@ -39,43 +40,45 @@
 	}
 
 	function openOrPassData(modal, data) {
-		if (!isOpen(modal)) return open(modal, data)
+		if (!isOpen(modal)) {
+			return open(modal, data)
+		}
 
 		const i = modalsMeta.value.findIndex((meta) => meta.modal === modal)
 		modalsMeta.value[i].data = data
 	}
 
 	function openOrClose(modal, data = {}) {
-		if (!isOpen(modal)) return open(modal, data)
-
-		close(modal)
+		return isOpen(modal) ? close(modal) : open(modal, data)
 	}
 
 	function setBackdrop(state) {
 		backdrop.value = state
 	}
 
+	window.emitter.on("log-off", () => close(UserModal))
 	window.emitter.on("menu-chat-button-click", (data) => openOrClose(FormModal, data))
-	window.emitter.on("post-reply-button-click", (data) => openOrPassData(FormModal, data))
+	window.emitter.on("menu-person-button-click", (data) => openOrClose(UserModal, data))
 	window.emitter.on("menu-search-button-click", (data) => openOrClose(SearchModal, data))
 	window.emitter.on("menu-settings-button-click", (data) => openOrClose(SettingsModal, data))
-	window.emitter.on("post-attachment-preview-click", (data) => openOrPassData(MediaModal, data))
-	window.emitter.on("unsafe-link-click", (data) => openOrPassData(UnsafeLinkModal, data))
-	window.emitter.on("post-delete-button-click", (data) => openOrPassData(DeletePostModal, data))
 	window.emitter.on("need-captcha", (data) => open(CaptchaModal, data))
+	window.emitter.on("post-attachment-preview-click", (data) => openOrPassData(MediaModal, data))
+	window.emitter.on("post-delete-button-click", (data) => openOrPassData(DeletePostModal, data))
+	window.emitter.on("post-reply-button-click", (data) => openOrPassData(FormModal, data))
+	window.emitter.on("unsafe-link-click", (data) => openOrPassData(UnsafeLinkModal, data))
 </script>
 
 <style scoped lang="scss">
 	#ModalsLayer {
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		position: fixed;
-		justify-content: center;
 		align-items: center;
 		display: flex;
+		height: 100vh;
+		justify-content: center;
+		left: 0;
 		pointer-events: none;
+		position: fixed;
+		top: 0;
+		width: 100vw;
 
 		&.backdrop {
 			background-color: #0005;

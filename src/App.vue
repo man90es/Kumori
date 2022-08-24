@@ -14,11 +14,14 @@
 </template>
 
 <script setup>
-	import { usePageEndReachedEventEmitter } from "@/hooks/pageEndReachedEventEmitter.js"
-	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler.js"
-	import { useTheme } from "@/hooks/theme.js"
-	import API from "@/api.js"
+	import { useAuthHandler } from "@/hooks/authHandler"
+	import { usePageEndReachedEventEmitter } from "@/hooks/pageEndReachedEventEmitter"
+	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler"
+	import { useTheme } from "@/hooks/theme"
+	import API from "@/api"
 	import ModalsLayer from "@/components/layers/ModalsLayer"
+
+	useAuthHandler()
 
 	const theme = useTheme()
 	usePostLinkEventHandler()

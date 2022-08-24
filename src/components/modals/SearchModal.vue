@@ -4,7 +4,7 @@
 			<div class="row">
 				<input id="searchQuery" placeholder="Query" title="Query" type="text" v-model="query" />
 				<button>
-					<img class="icon" src="../../assets/icons/search.svg" :title="$t('searchModal.header')" />
+					<img class="icon" src="@/assets/icons/search.svg" title="Search" />
 				</button>
 			</div>
 			<div class="row">

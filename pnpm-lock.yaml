@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': ^7.18.10
   '@babel/eslint-parser': ^7.18.9
-  '@bakaso/fkclient': ^1.2.0
+  '@bakaso/fkclient': ^1.3.0
   '@vue/cli-plugin-babel': ^5.0.8
   '@vue/cli-plugin-eslint': ^5.0.8
   '@vue/cli-plugin-pwa': ^5.0.8
@@ -18,6 +18,8 @@ specifiers:
   eslint-plugin-vue: ^9.3.0
   memento-vuex: ^0.2.0
   mitt: ^3.0.0
+  pinia: ^2.0.20
+  pinia-plugin-persistedstate: ^2.1.1
   register-service-worker: ^1.7.2
   sass: ^1.54.4
   sass-loader: ^13.0.2
@@ -33,7 +35,7 @@ specifiers:
 devDependencies:
   '@babel/core': 7.18.10
   '@babel/eslint-parser': 7.18.9_7ura6loqb5b2nxcv4w7uypye6y
-  '@bakaso/fkclient': 1.2.0
+  '@bakaso/fkclient': 1.3.0
   '@vue/cli-plugin-babel': 5.0.8_2siogx5p3s7hfpnhjofuerri2e
   '@vue/cli-plugin-eslint': 5.0.8_urz2trtcc2ysk5u3uj2spbmozi
   '@vue/cli-plugin-pwa': 5.0.8_@vue+cli-service@5.0.8
@@ -48,6 +50,8 @@ devDependencies:
   eslint-plugin-vue: 9.3.0_eslint@8.22.0
   memento-vuex: 0.2.0
   mitt: 3.0.0
+  pinia: 2.0.20_j6bzmzd4ujpabbp5objtwxyjp4
+  pinia-plugin-persistedstate: 2.1.1_pinia@2.0.20
   register-service-worker: 1.7.2
   sass: 1.54.4
   sass-loader: 13.0.2_sass@1.54.4+webpack@5.74.0
@@ -1297,8 +1301,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@bakaso/fkclient/1.2.0:
-    resolution: {integrity: sha512-6AkB6ybe0yOao5X1gRKHp6qrGA7pS4+bnDC/GEF59WI6onjkQbnzITJFFnYb/gK6cJns3fTnSkBP0gs6TD/YOw==}
+  /@bakaso/fkclient/1.3.0:
+    resolution: {integrity: sha512-2Ck2hCYdk4JhsxTXp947wvmrSj3yOCwujxPMPDX6zbeCs26HJzlkyCupXuV4clj28PmGIh7lC8NrpxzTjaN56Q==}
     dev: true
 
   /@eslint/eslintrc/1.3.0:
@@ -5762,6 +5766,35 @@ packages:
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+    dev: true
+
+  /pinia-plugin-persistedstate/2.1.1_pinia@2.0.20:
+    resolution: {integrity: sha512-HUgsU5IRtM75eAQiIqzT3p1oPEuYH1/B2ipTMU++yE+FV0LkHaBswdKXs0RMWYCmugO8s62oxLTh/N1dLNp+5A==}
+    peerDependencies:
+      pinia: ^2.0.0
+    peerDependenciesMeta:
+      pinia:
+        optional: true
+    dependencies:
+      pinia: 2.0.20_j6bzmzd4ujpabbp5objtwxyjp4
+    dev: true
+
+  /pinia/2.0.20_j6bzmzd4ujpabbp5objtwxyjp4:
+    resolution: {integrity: sha512-fdHHumXW/0U5HhxmY1emo3I4z85p8NJPdbtFQSlmJXFe3ktuF0pYNVgVtk2q+j2zCtTufY763xzaEMx0t6T59g==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.2.1
+      typescript: 4.7.4
+      vue: 3.2.37
+      vue-demi: 0.12.5_vue@3.2.37
     dev: true
 
   /pkg-dir/4.2.0:

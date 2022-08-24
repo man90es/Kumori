@@ -2,16 +2,16 @@
 	<ModalShell header="Settings">
 		<div class="settings-grid">
 			<label>Light theme</label>
-			<toggle-switch v-model="theme" />
+			<toggleSwitch v-model="theme" />
 
 			<label v-if="landscape">Compact board menu</label>
-			<toggle-switch v-if="landscape" v-model="compactBoardMenu" />
+			<toggleSwitch v-if="landscape" v-model="compactBoardMenu" />
 
 			<label>Animations</label>
-			<toggle-switch v-model="animations" />
+			<toggleSwitch v-model="animations" />
 
 			<label>Redirect to thread after replying</label>
-			<toggle-switch v-model="noko" />
+			<toggleSwitch v-model="noko" />
 
 			<label>Replies on board page</label>
 			<select v-model="repliesOnBoardPage">
@@ -21,7 +21,7 @@
 			</select>
 
 			<label>Debug mode</label>
-			<toggle-switch v-model="debug" />
+			<toggleSwitch v-model="debug" />
 		</div>
 	</ModalShell>
 </template>
@@ -29,9 +29,9 @@
 <script setup>
 	import { ref, watch } from "vue"
 	import { useStore } from "vuex"
-	import { useViewMode } from "@/hooks/viewMode.js"
-	import ModalShell from "@/components/misc/ModalShell.vue"
-	import ToggleSwitch from "@/components/misc/ToggleSwitch.vue"
+	import { useViewMode } from "@/hooks/viewMode"
+	import ModalShell from "@/components/misc/ModalShell"
+	import ToggleSwitch from "@/components/misc/ToggleSwitch"
 
 	const store = useStore()
 	const { landscape } = useViewMode()

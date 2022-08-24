@@ -4,6 +4,7 @@
 			<MenuButton icon="up" />
 			<MenuButton icon="search" />
 			<MenuButton icon="settings" />
+			<MenuButton v-if="loggedOn" icon="person" />
 		</div>
 		<div>
 			<MenuButton v-if="portrait" icon="home" />
@@ -15,12 +16,16 @@
 </template>
 
 <script setup>
-	import { ref } from "vue"
-	import { useViewMode } from "@/hooks/viewMode.js"
-	import MenuButton from "@/components/misc/MenuButton.vue"
+	import { computed, ref } from "vue"
+	import { useUserStore } from "@/stores/user"
+	import { useViewMode } from "@/hooks/viewMode"
+	import MenuButton from "@/components/misc/MenuButton"
 
 	const { portrait } = useViewMode()
 	const visible = ref(false)
+
+	const user = useUserStore()
+	const loggedOn = computed(() => Boolean(user.id))
 
 	window.emitter.on("swipe-left", () => (visible.value = true))
 	window.emitter.on("swipe-right", () => (visible.value = false))
