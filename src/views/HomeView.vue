@@ -1,17 +1,12 @@
 <template>
 	<div id="home">
 		<div id="background-layer" :style="backgroundStyle" />
-		<img v-if="0 === loginPhase" src="logo.svg" @click="() => ++loginPhase" />
+		<img v-if="loggedOn || 0 === loginPhase" src="logo.svg" @click="() => loggedOn || ++loginPhase" />
 		<form v-else-if="1 === loginPhase">
-			<input
-				:disabled="formValues.invite.length"
-				placeholder="Username"
-				type="text"
-				v-model="formValues.username"
-			/>
+			<input :disabled="formValues.invite.length" placeholder="Username" type="text" v-model="formValues.name" />
 			or
 			<input
-				:disabled="formValues.username.length"
+				:disabled="formValues.name.length"
 				placeholder="Invite code"
 				type="text"
 				v-model="formValues.invite"
@@ -19,7 +14,7 @@
 			<button type="button" @click="submit">Submit</button>
 		</form>
 		<form v-else-if="2 === loginPhase">
-			<input placeholder="Username" type="text" v-model="formValues.username" />
+			<input placeholder="Username" type="text" v-model="formValues.name" />
 			<input type="text" placeholder="Email" v-model="formValues.email" />
 			<input type="password" placeholder="Password" v-model="formValues.password" />
 			<button type="button" @click="register">Create account</button>
@@ -27,7 +22,7 @@
 		</form>
 		<form v-else-if="3 === loginPhase">
 			<input type="password" placeholder="Password" v-model="formValues.password" />
-			<button type="button" @click="login">Log in</button>
+			<button type="button" @click="login">Log on</button>
 			<button type="button" @click="() => (loginPhase = 1)">Back</button>
 		</form>
 		<ul>
@@ -40,37 +35,42 @@
 
 <script setup>
 	import { computed, ref, reactive } from "vue"
+	import { useUserStore } from "@/stores/user"
+	import api from "@/api"
+
+	const user = useUserStore()
+	const loggedOn = computed(() => Boolean(user.id))
 
 	const loginPhase = ref(0)
 	const formValues = reactive({
 		email: "",
 		invite: "",
 		password: "",
-		username: "",
+		name: "",
 	})
 
 	function submit() {
-		loginPhase.value = formValues.invite ? 2 : formValues.username ? 3 : 1
+		loginPhase.value = formValues.invite ? 2 : formValues.name ? 3 : 1
 	}
 
 	function register() {
-		const data = [formValues.invite, formValues.username, formValues.email, formValues.password]
+		const data = [formValues.invite, formValues.name, formValues.email, formValues.password]
 
 		if (4 > data.filter(Boolean).length) {
 			return
 		}
 
-		console.log(...data)
+		api.auth.register(formValues)
 	}
 
 	function login() {
-		const data = [formValues.username, formValues.password]
+		const data = [formValues.name, formValues.password]
 
 		if (2 > data.filter(Boolean).length) {
 			return
 		}
 
-		console.log(...data)
+		api.auth.logOn(formValues)
 	}
 
 	const backgroundStyle = computed(() => {
