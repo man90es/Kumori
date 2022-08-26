@@ -1,6 +1,6 @@
 <template>
 	<div v-if="thread">
-		<PostItem :postId="thread.head.id" />
+		<PostItem :postId="thread.head.id" :pinned="null !== thread.pinned" />
 		<RouterLink
 			v-if="$route.name == 'board' && omittedPosts && pageSize"
 			:to="{ name: 'thread', params: { threadId } }"

@@ -1,7 +1,8 @@
 <template>
 	<article v-if="![postId, post].includes(undefined)" :class="{ selected: isSelected }">
 		<div class="postDetails">
-			<img v-if="post.modifiers.includes('sage')" class="sage icon" src="@/assets/icons/down.svg" />
+			<img v-if="props.pinned" class="icon pre-icon" src="@/assets/icons/push_pin.svg" />
+			<img v-if="post.modifiers.includes('sage')" class="icon pre-icon" src="@/assets/icons/down.svg" />
 			<a class="refLink" @click="handleRefLinkClick">
 				<span class="subject" v-if="post.subject">{{ formattedSubject }}</span> #{{ post.number }}
 			</a>
@@ -36,6 +37,10 @@
 	import PostMenu from "@/components/misc/PostMenu"
 
 	const props = defineProps({
+		pinned: {
+			default: false,
+			type: Boolean,
+		},
 		postId: {
 			required: true,
 			type: Number,
@@ -134,7 +139,7 @@
 			margin: 0;
 		}
 
-		.sage.icon {
+		.icon.pre-icon {
 			vertical-align: middle;
 			height: 1.3em;
 		}
