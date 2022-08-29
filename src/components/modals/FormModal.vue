@@ -45,6 +45,7 @@
 	import { computed, reactive, ref, onMounted, watch } from "vue"
 	import { generateThumbnail } from "@/utils"
 	import { useRouter } from "vue-router"
+	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
 	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
@@ -145,8 +146,10 @@
 		})
 	}
 
+	const settings = useSettingsStore()
+
 	const headerText = computed(() =>
-		store.state.settings.debug
+		settings.debug
 			? `b:"${props.boardName}" tid:${props.threadId} tn:${props.threadNumber}`
 			: props.threadId
 			? `Reply to thread #${props.threadNumber} on board /${props.boardName}`
@@ -176,7 +179,7 @@
 			(message) => {
 				reset()
 
-				if (store.state.settings.noko) {
+				if (settings.noko) {
 					const threadId = message.what?.threadId || message.data?.threadId
 					const boardName = store.state.threads[threadId]?.boardName
 					router.push({ name: "thread", params: { threadId, boardName } })

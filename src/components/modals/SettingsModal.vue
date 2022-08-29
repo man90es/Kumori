@@ -1,90 +1,97 @@
 <template>
 	<ModalShell header="Settings">
 		<div class="settings-grid">
-			<label>Light theme</label>
-			<toggleSwitch v-model="theme" />
-
-			<label v-if="landscape">Compact board menu</label>
-			<toggleSwitch v-if="landscape" v-model="compactBoardMenu" />
-
-			<label>Animations</label>
-			<toggleSwitch v-model="animations" />
-
-			<label>Redirect to thread after replying</label>
-			<toggleSwitch v-model="noko" />
-
-			<label>Replies on board page</label>
-			<select v-model="repliesOnBoardPage">
-				<option v-for="n in [0, 1, 2, 3, 4, 5]" :key="n" :value="n">
-					{{ n }}
-				</option>
-			</select>
-
-			<label>Debug mode</label>
-			<toggleSwitch v-model="debug" />
+			<label v-for="item of items" :key="item.key">
+				<span>{{ item.label }}</span>
+				<ToggleSwitch
+					:modelValue="settings[item.key]"
+					@update:modelValue="(v) => updateItem(item.key, item.type(v))"
+					v-if="'checkbox' === item.inputType"
+				/>
+				<select
+					:value="settings[item.key]"
+					@change="({ target: t }) => updateItem(item.key, item.type(t.value))"
+					v-else-if="'select' === item.inputType"
+				>
+					<option v-for="option of item.options" :key="option" :value="option">
+						{{ option }}
+					</option>
+				</select>
+			</label>
 		</div>
 	</ModalShell>
 </template>
 
 <script setup>
-	import { ref, watch } from "vue"
-	import { useStore } from "vuex"
-	import { useViewMode } from "@/hooks/viewMode"
+	import { useSettingsStore } from "@/stores/settings"
 	import ModalShell from "@/components/misc/ModalShell"
 	import ToggleSwitch from "@/components/misc/ToggleSwitch"
 
-	const store = useStore()
-	const { landscape } = useViewMode()
+	const settings = useSettingsStore()
 
-	const theme = ref(!!store.state.settings.theme)
-	watch(
-		() => theme.value,
-		() => store.commit("updateSettings", { option: "theme" })
-	)
+	const items = [
+		{
+			inputType: "select",
+			key: "theme",
+			label: "Theme",
+			options: ["Dark", "Light"],
+			type: String,
+		},
+		{
+			inputType: "checkbox",
+			key: "compactBoardMenu",
+			label: "Compact board menu",
+			type: Boolean,
+		},
+		{
+			inputType: "checkbox",
+			key: "animations",
+			label: "Animations",
+			type: Boolean,
+		},
+		{
+			inputType: "checkbox",
+			key: "noko",
+			label: "Redirect to thread after replying",
+			type: Boolean,
+		},
+		{
+			inputType: "select",
+			key: "repliesOnBoardPage",
+			label: "Replies on board page",
+			options: [0, 1, 2, 3, 4, 5],
+			type: Number,
+		},
+		{
+			inputType: "checkbox",
+			key: "debug",
+			label: "Debug mode",
+			type: Boolean,
+		},
+	]
 
-	const compactBoardMenu = ref(store.state.settings.compactBoardMenu)
-	watch(
-		() => compactBoardMenu.value,
-		() => store.commit("updateSettings", { option: "compactBoardMenu" })
-	)
-
-	const animations = ref(store.state.settings.animations)
-	watch(
-		() => animations.value,
-		() => store.commit("updateSettings", { option: "animations" })
-	)
-
-	const noko = ref(store.state.settings.noko)
-	watch(
-		() => noko.value,
-		() => store.commit("updateSettings", { option: "noko" })
-	)
-
-	const repliesOnBoardPage = ref(store.state.settings.repliesOnBoardPage)
-	watch(
-		() => repliesOnBoardPage.value,
-		(nextValue) => store.commit("updateSettings", { option: "repliesOnBoardPage", nextValue })
-	)
-
-	const debug = ref(store.state.settings.debug)
-	watch(
-		() => debug.value,
-		() => store.commit("updateSettings", { option: "debug" })
-	)
+	function updateItem(key, value) {
+		settings.$patch({ [key]: value })
+	}
 </script>
 
 <style lang="scss" scoped>
 	.settings-grid {
 		align-items: center;
 		display: grid;
-		grid-gap: 0 1em;
-		grid-template-columns: auto auto;
 		user-select: none;
 
-		& > :not(label) {
-			cursor: pointer;
-			height: 2em;
-			justify-self: right;
+		label {
+			align-items: center;
+			display: flex;
+			gap: 1em;
+			justify-content: space-between;
+
+			& > :not(span) {
+				cursor: pointer;
+				height: 2em;
+				justify-self: right;
+			}
 		}
 	}
 

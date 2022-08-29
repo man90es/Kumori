@@ -7,13 +7,16 @@
 			v-for="boardName in $store.state.boardList"
 		>
 			/{{ boardName }}
-			<span v-if="!$store.state.settings.compactBoardMenu"> — {{ $store.state.boards[boardName].title }}</span>
+			<span v-if="!settings.compactBoardMenu"> — {{ $store.state.boards[boardName].title }}</span>
 		</RouterLink>
 	</nav>
 </template>
 
 <script setup>
-	import { useViewMode } from "../../hooks/viewMode.js"
+	import { useSettingsStore } from "@/stores/settings"
+	import { useViewMode } from "@/hooks/viewMode"
+
+	const settings = useSettingsStore()
 
 	const { landscape } = useViewMode()
 	const title = process.env.VUE_APP_TITLE

@@ -1,11 +1,8 @@
 import { computed } from "vue"
-import { useStore } from "vuex"
+import { useSettingsStore } from "@/stores/settings"
 
-export function useTheme() {
-	const store = useStore()
-	const themes = new Map()
-
-	themes.set(0, { // Default dark
+const themes = new Map([
+	["Dark", { // Default dark
 		"--text-color": "#bbc",
 		"--text-secondary-color": "#99a",
 		"--text-green-color": "#98c379",
@@ -16,9 +13,8 @@ export function useTheme() {
 		"--link-hover-color": "#108fbf",
 		"--gap-size": "0.5rem",
 		"--icon-invert": "70%",
-	})
-
-	themes.set(1, { // Light
+	}],
+	["Light", { // Light
 		"--text-color": "#37474f",
 		"--text-secondary-color": "#666",
 		"--text-green-color": "#789922",
@@ -29,7 +25,11 @@ export function useTheme() {
 		"--link-hover-color": "#096be8",
 		"--gap-size": "0.5rem",
 		"--icon-invert": "40%",
-	})
+	}]
+])
 
-	return computed(() => themes.get(store.state.settings.theme))
+export function useTheme() {
+	const settings = useSettingsStore()
+
+	return computed(() => themes.get(settings.theme) || {})
 }

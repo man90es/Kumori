@@ -30,14 +30,6 @@ const store = createStore({
 		threadLists: {},
 		threads: {},
 		trustedPostCount: 0,
-		settings: {
-			animations: true,
-			compactBoardMenu: false,
-			debug: false,
-			noko: true,
-			repliesOnBoardPage: 3,
-			theme: 0,
-		},
 	},
 
 	plugins: [
@@ -46,7 +38,6 @@ const store = createStore({
 			toggleBookmarked: "bookmarkedPostsList",
 			toggleDebug: "debug",
 			toggleHidden: "hiddenPostsList",
-			updateSettings: "settings",
 		}, "kumori-vuex")
 	],
 
@@ -162,24 +153,6 @@ const store = createStore({
 
 		setTrustedPostCount(state, payload) {
 			state.trustedPostCount = payload
-		},
-
-		updateSettings(state, { option, nextValue }) {
-			switch (option) {
-				case "theme":
-					state.settings.theme = (state.settings.theme + 1) % 2
-					break
-
-				case "animations":
-				case "compactBoardMenu":
-				case "debug":
-				case "noko":
-					state.settings[option] = !state.settings[option]
-					break
-
-				default:
-					state.settings[option] = nextValue
-			}
 		},
 	},
 })

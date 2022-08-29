@@ -13,7 +13,6 @@
 
 <script setup>
 	import { computed, ref, watch } from "vue"
-	import { Logger } from "@/utils"
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"
 	import API from "@/api"
@@ -81,8 +80,8 @@
 	try {
 		requestPostList()
 	} catch (error) {
+		console.debug("Thread is not ready for post request")
 		deferredPostRequest.value = true
-		Logger.debug("Thread is not ready for post request")
 	}
 </script>
 

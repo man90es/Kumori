@@ -4,7 +4,7 @@
 		<MainSection>
 			<ThreadItem
 				:key="threadId"
-				:pageSize="$store.state.settings.repliesOnBoardPage"
+				:pageSize="settings.repliesOnBoardPage"
 				:threadId="threadId"
 				v-for="threadId in threadList"
 			/>
@@ -16,6 +16,7 @@
 <script setup>
 	import { computed, watch } from "vue"
 	import { useRoute } from "vue-router"
+	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
 	import API from "@/api"
 	import MainSection from "@/components/layout/MainSection"
@@ -23,8 +24,9 @@
 	import NavBar from "@/components/layout/NavBar"
 	import ThreadItem from "@/components/misc/ThreadItem"
 
-	const store = useStore()
 	const route = useRoute()
+	const settings = useSettingsStore()
+	const store = useStore()
 	const threadsPerPage = 10
 
 	const threadList = computed(() => {

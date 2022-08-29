@@ -13,9 +13,7 @@
 <script setup>
 	import { ref, onMounted } from "vue"
 	import { useDraggability } from "vue-draggability"
-	import { useStore } from "vuex"
-
-	const store = useStore()
+	import { useSettingsStore } from "@/stores/settings"
 
 	const props = defineProps({
 		header: {
@@ -38,7 +36,9 @@
 
 	const dragElement = ref(null)
 	const dragHandle = ref(null)
-	const transparent = ref(store.state.settings.animations)
+
+	const settings = useSettingsStore()
+	const transparent = ref(settings.animations)
 
 	onMounted(() => {
 		props.draggable && useDraggability(dragElement, dragHandle)

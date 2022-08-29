@@ -14,9 +14,7 @@
 				<img class="icon" src="@/assets/icons/reply.svg" @click="handleReplyClick" />
 			</button>
 			<time :title="preciseDate">{{ prettyDate }}</time>
-			<span v-if="$store.state.settings.debug">
-				b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}
-			</span>
+			<span v-if="settings.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
 		</div>
 		<div v-if="!isHidden">
 			<div v-if="post.attachments" class="attachments">
@@ -31,6 +29,7 @@
 	import { computed, ref, onMounted, watch } from "vue"
 	import { truncateString, processMarkup, getPrettyTimeDelta } from "@/utils"
 	import { useRouter } from "vue-router"
+	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
 	import API from "@/api"
 	import PostAttachment from "@/components/misc/PostAttachment"
@@ -47,8 +46,9 @@
 		},
 	})
 
-	const store = useStore()
 	const router = useRouter()
+	const settings = useSettingsStore()
+	const store = useStore()
 
 	const menuVisible = ref(false)
 	function toggleMenu() {
