@@ -126,13 +126,13 @@ const store = createStore({
 		},
 
 		updateFeed(state, { boardName, payload, count, page }) {
-			if (state.feedLists[boardName] === undefined) {
-				state.feedLists[boardName] = []
+			const newFeedList = state.feedLists[boardName] || []
+
+			for (let i = 0; i < payload.length; ++i) {
+				newFeedList[page * count + i] = payload[i]
 			}
 
-			for (let i = 0; i < count; i++) {
-				state.feedLists[boardName][page * count + i] = payload[i]
-			}
+			state.feedLists[boardName] = newFeedList
 		},
 
 		toggleHidden(state, postId) {

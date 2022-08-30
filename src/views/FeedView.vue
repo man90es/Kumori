@@ -2,7 +2,11 @@
 	<div id="feed">
 		<NavBar />
 		<MainSection>
-			<PostItem :key="postId" :postId="postId" v-for="postId in feedList" />
+			<PostItem
+				:key="postId"
+				:postId="postId"
+				v-for="postId in feedList"
+			/>
 		</MainSection>
 		<MenuBar />
 	</div>
@@ -22,11 +26,15 @@
 	const route = useRoute()
 	const postsPerPage = 10
 
-	const feedList = computed(() => {
-		return store.state.feedLists[route.params.boardName]
+	const feedList = computed(
+		() => store.state.feedLists[route.params.boardName]
+	)
+
+	API.post.requestMany({
+		boardName: route.params.boardName,
+		count: postsPerPage,
 	})
 
-	API.post.requestMany({ boardName: route.params.boardName, count: postsPerPage })
 	window.emitter.on("page-end-reached", () => {
 		if (route.name !== "feed") {
 			return
