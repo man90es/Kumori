@@ -1,31 +1,29 @@
 <template>
 	<div>
 		<img
-			class="thumbnail"
-			:class="{ nsfw }"
-			:width="API.thumb.width"
+			:class="{ nsfw: isNSFW }"
 			:height="API.thumb.height"
-			v-lazy="lazyOptions"
+			:src="`${API.thumb.path}${file.hash}.${API.thumb.format}`"
+			:width="API.thumb.width"
 			@click="clickHandler"
+			class="thumbnail"
+			loading="lazy"
 		/>
-		<img v-if="isVideo" class="video-marker" src="@/assets/icons/play_circle.svg" />
+		<img
+			class="video-marker"
+			src="@/assets/icons/play_circle.svg"
+			v-if="isVideo"
+		/>
 	</div>
 </template>
 
 <script setup>
-	import { computed, ref } from "vue"
+	import { computed } from "vue"
 	import API from "@/api"
 
 	const props = defineProps({ file: Object })
-	const nsfw = ref(false)
 
-	const lazyOptions = computed(() => ({
-		lifecycle: {
-			loaded: () => (nsfw.value = props.file.modifiers?.includes("NSFW")),
-		},
-		src: `${API.thumb.path}${props.file.hash}.${API.thumb.format}`,
-	}))
-
+	const isNSFW = computed(() => props.file.modifiers?.includes("NSFW"))
 	const isVideo = computed(() => "video" == props.file.mime.split("/")[0])
 
 	function clickHandler() {
