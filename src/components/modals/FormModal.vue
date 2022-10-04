@@ -21,7 +21,7 @@
 				</button>
 				<div
 					:key="i"
-					:style="{ backgroundImage: `url(${thumbs[i]})` }"
+					:style="{ backgroundImage: thumbs[i] ? `url(${thumbs[i]})` : 'none' }"
 					class="thumb"
 					v-for="(file, i) in form.files"
 				>

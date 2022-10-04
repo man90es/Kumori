@@ -1,9 +1,8 @@
 <template>
 	<ModalShell :header="props.name">
 		<div id="media-modal-body">
-			<img v-if="!ready" class="icon placeholder" src="../../assets/icons/load.svg" />
-
-			<video v-if="is_video" :src="src" autoplay controls></video>
+			<img v-if="!ready" class="icon placeholder" src="@/assets/icons/load.svg" />
+			<video v-if="is_video" :src="src" autoplay controls />
 			<img v-else :class="{ ready }" :src="src" @load="ready = true" />
 		</div>
 	</ModalShell>
@@ -22,20 +21,15 @@
 	const is_video = computed(() => "video" === props.mime.split("/")[0])
 	const ready = ref(is_video.value)
 
-	const src = computed(() => {
-		let extension
-
-		switch (props.mime) {
-			case "image/jpeg":
-				extension = "jpg"
-				break
-
-			default:
-				extension = props.mime.split("/")[1]
-		}
-
-		return API.res.path + props.hash + "." + extension
-	})
+	const src = computed(() => (
+		[
+			API.res.path,
+			props.hash,
+			{
+				"image/jpeg": ".jpg",
+			}[props.mime] || "." + props.mime.split("/")[1],
+		].join("")
+	))
 </script>
 
 <style scoped lang="scss">
