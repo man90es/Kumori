@@ -16,7 +16,7 @@
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"
 	import API from "@/api"
-	import PostItem from "@/components/misc/PostItem.vue"
+	import PostItem from "@/components/misc/PostItem"
 
 	const props = defineProps({ threadId: Number, pageSize: Number })
 	const route = useRoute()
@@ -25,17 +25,20 @@
 	const deferredPostRequest = ref(false)
 	const thread = computed(() => store.state.threads[props.threadId])
 	const pageSize = computed(() => Math.min(props.pageSize, thread.value?.posts))
-	const tail = computed(() =>
+	const tail = computed(() => (
 		0 === props.pageSize
 			? []
 			: (store.state.postLists[props.threadId] || [])
 					.slice(-pageSize.value)
 					.filter((pId) => thread.value.head.id !== pId)
-	)
-	const omittedPosts = computed(() =>
-		"board" === route.name ? Math.max(thread.value.posts - 1 - pageSize.value, 0) : 0
-	)
+	))
+	const omittedPosts = computed(() => (
+		"board" === route.name
+			? Math.max(thread.value.posts - 1 - pageSize.value, 0)
+			: 0
+	))
 
+	// TODO: Fix this function being called twice on page load
 	function requestPostList() {
 		switch (route.name) {
 			case "board":
@@ -58,24 +61,20 @@
 	}
 
 	// Request additional tail posts when user changes the number of posts in tail
-	watch(
-		() => pageSize.value,
-		(next, last) => {
-			if (next > last) {
-				requestPostList()
-			}
+	watch(() => pageSize.value, (next, last) => {
+		if ("board" !== route.name || next <= last) {
+			return
 		}
-	)
 
-	watch(
-		() => thread.value,
-		(next, last) => {
-			if (deferredPostRequest.value && undefined === last && undefined !== next) {
-				deferredPostRequest.value = false
-				requestPostList()
-			}
+		requestPostList()
+	})
+
+	watch(() => thread.value, (next, last) => {
+		if (deferredPostRequest.value && undefined === last && undefined !== next) {
+			deferredPostRequest.value = false
+			requestPostList()
 		}
-	)
+	})
 
 	try {
 		requestPostList()
