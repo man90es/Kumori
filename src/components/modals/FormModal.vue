@@ -69,19 +69,23 @@
 	const store = useStore()
 
 	const initialFormState = {
-		attachmentNSFW: [],
-		files: [],
 		op: false,
 		sage: false,
 		signed: false,
 		subject: "",
 		text: "",
 	}
-	const form = reactive(initialFormState)
+	const form = reactive({
+		...initialFormState,
+		attachmentNSFW: [],
+		files: [],
+	})
 	function reset() {
-		Object.entries(initialFormState).map(([key, value]) => {
-			form[key] = value
-		})
+		Object.entries(initialFormState)
+			.forEach(([key, value]) => form[key] = value)
+
+		form.attachmentNSFW.length = 0
+		form.files.length = 0
 	}
 
 	const thumbs = ref([])
@@ -160,32 +164,26 @@
 		insertPostLink(props.postNumber)
 		window.emitter.on("captcha-solved", submit)
 
-		// Handle reply to captcha submission
-		API.addListener(
-			(message) => "checkCaptcha" === message.what?.request,
-			(message) => {
-				if (message.data.trustedPostCount > 0) {
-					submit()
-				} else {
-					waitingToSubmit.value = true
-					window.emitter.emit("need-captcha", {})
-				}
+		// Handle server response to captcha submission
+		API.addListener(({ what }) => "checkCaptcha" === what?.request, ({ data }) => {
+			if (data.trustedPostCount > 0) {
+				submit()
+			} else {
+				waitingToSubmit.value = true
+				window.emitter.emit("need-captcha", {})
 			}
-		)
+		})
 
-		// Handle reply to post submission
-		API.addListener(
-			(message) => "createPost" === message.what?.request,
-			(message) => {
-				reset()
+		// Handle server response to post submission
+		API.addListener(({ what }) => "createPost" === what?.request, ({ what, data }) => {
+			reset()
 
-				if (settings.noko) {
-					const threadId = message.what?.threadId || message.data?.threadId
-					const boardName = store.state.threads[threadId]?.boardName
-					router.push({ name: "thread", params: { threadId, boardName } })
-				}
+			if (settings.noko) {
+				const threadId = what?.threadId || data?.threadId
+				const boardName = store.state.threads[threadId]?.boardName
+				router.push({ name: "thread", params: { threadId, boardName } })
 			}
-		)
+		})
 	})
 </script>
 
