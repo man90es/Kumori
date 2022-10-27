@@ -13,7 +13,8 @@
 </template>
 
 <script setup>
-	import { computed } from "vue"
+	import { computed, watch } from "vue"
+	import { useAtBottom } from "@/hooks/atBottom"
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"
 	import API from "@/api"
@@ -26,16 +27,21 @@
 	const route = useRoute()
 	const postsPerPage = 10
 
-	const feedList = computed(
-		() => store.state.feedLists[route.params.boardName]
-	)
+	const feedList = computed(() => (
+		store.state.feedLists[route.params.boardName]
+	))
 
 	API.post.requestMany({
 		boardName: route.params.boardName,
 		count: postsPerPage,
 	})
 
-	window.emitter.on("page-end-reached", () => {
+	const atBottom = useAtBottom()
+	watch(() => atBottom.value, (newValue) => {
+		if (!newValue) {
+			return
+		}
+
 		if (route.name !== "feed") {
 			return
 		}

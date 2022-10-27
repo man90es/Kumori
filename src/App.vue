@@ -15,7 +15,6 @@
 
 <script setup>
 	import { useAuthHandler } from "@/hooks/authHandler"
-	import { usePageEndReachedEventEmitter } from "@/hooks/pageEndReachedEventEmitter"
 	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler"
 	import { useTheme } from "@/hooks/theme"
 	import API from "@/api"
@@ -25,7 +24,6 @@
 
 	const theme = useTheme()
 	usePostLinkEventHandler()
-	usePageEndReachedEventEmitter()
 
 	API.board.requestMany()
 
