@@ -1,5 +1,5 @@
 <template>
-	<article v-if="![postId, post].includes(undefined)" :class="{ selected: isSelected }">
+	<article v-if="![postId, post].includes()" :class="{ selected: isSelected }">
 		<div class="postDetails">
 			<img v-if="props.pinned" class="icon pre-icon" src="@/assets/icons/push_pin.svg" />
 			<img v-if="post.modifiers?.includes('sage')" class="icon pre-icon" src="@/assets/icons/down.svg" />
@@ -18,7 +18,7 @@
 		</div>
 		<div v-if="!isHidden">
 			<div v-if="post.attachments" class="attachments">
-				<post-attachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
+				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
 			<p v-if="post.text" v-html="parsedText" />
 		</div>
@@ -27,7 +27,7 @@
 
 <script setup>
 	import { computed, ref, onMounted, watch } from "vue"
-	import { truncateString, processMarkup, getPrettyTimeDelta } from "@/utils"
+	import { truncateString, renderMarkup, getPrettyTimeDelta } from "@/utils"
 	import { useRouter } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
@@ -56,7 +56,7 @@
 	}
 
 	const post = computed(() => store.state.posts[props.postId])
-	const parsedText = computed(() => processMarkup(post.value.text))
+	const parsedText = computed(() => renderMarkup(post.value.text || ""))
 	const formattedSubject = computed(() => truncateString(post.value.subject, 55))
 	const isHidden = computed(() => store.state.hiddenPostsList.includes(props.postId))
 	const isSelected = computed(() => store.state.selectedPostsList.includes(props.postId))
