@@ -36,7 +36,6 @@ const store = createStore({
 		Memento({
 			setTrustedPostCount: "trustedPostCount",
 			toggleBookmarked: "bookmarkedPostsList",
-			toggleDebug: "debug",
 			toggleHidden: "hiddenPostsList",
 		}, "kumori-vuex")
 	],
