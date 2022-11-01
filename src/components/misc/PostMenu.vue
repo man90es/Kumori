@@ -1,36 +1,34 @@
 <template>
 	<div class="postMenu" @click="emit('cancel')">
-		<div @click="hidePost">{{ isPostHidden ? "Show" : "Hide" }}</div>
-		<div @click="bookmarkPost">{{ isPostBookmarked ? "Remove from bookmarks" : "Bookmark" }}</div>
-		<div @click="deletePost">{{ isPostSelected ? "Do not delete" : "Delete" }}</div>
+		<div @click="hidePost">{{ marks.hidden ? "Show" : "Hide" }}</div>
+		<div @click="bookmarkPost">{{ marks.bookmarked ? "Remove from bookmarks" : "Bookmark" }}</div>
+		<div @click="deletePost">{{ marks.selected ? "Do not delete" : "Delete" }}</div>
 		<div>Cancel</div>
 	</div>
 </template>
 
 <script setup>
 	import { computed } from "vue"
-	import { useStore } from "vuex"
+	import { usePostMarksStore } from "@/stores/postMarks"
 
 	const emit = defineEmits(["cancel"])
 	const props = defineProps({ postId: Number })
-	const store = useStore()
+	const store = usePostMarksStore()
 
 	function hidePost() {
-		store.commit("toggleHidden", props.postId)
+		store.toggleHide(props.postId)
 	}
 
 	function bookmarkPost() {
-		store.commit("toggleBookmarked", props.postId)
+		store.toggleBookmark(props.postId)
 	}
 
 	function deletePost() {
-		store.commit("toggleSelected", props.postId)
+		store.toggleSelect(props.postId)
 		window.emitter.emit("post-delete-button-click")
 	}
 
-	const isPostHidden = computed(() => store.state.hiddenPostsList.includes(props.postId))
-	const isPostBookmarked = computed(() => store.state.bookmarkedPostsList.includes(props.postId))
-	const isPostSelected = computed(() => store.state.selectedPostsList.includes(props.postId))
+	const marks = computed(() => store.postMarks(props.postId))
 </script>
 
 <style scoped lang="scss">

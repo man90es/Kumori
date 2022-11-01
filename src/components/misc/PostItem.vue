@@ -1,5 +1,5 @@
 <template>
-	<article v-if="![postId, post].includes()" :class="{ selected: isSelected }">
+	<article v-if="![postId, post].includes()" :class="{ selected: marks.selected }">
 		<div class="postDetails">
 			<img v-if="props.pinned" class="icon pre-icon" src="@/assets/icons/push_pin.svg" />
 			<img v-if="post.modifiers?.includes('sage')" class="icon pre-icon" src="@/assets/icons/down.svg" />
@@ -16,7 +16,7 @@
 			<time :title="preciseDate">{{ prettyDate }}</time>
 			<span v-if="settings.debug">b:"{{ thread?.boardName }}" tid:{{ post.threadId }} pid:{{ postId }}</span>
 		</div>
-		<div v-if="!isHidden">
+		<div v-if="!marks.hidden">
 			<div v-if="post.attachments" class="attachments">
 				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
@@ -28,6 +28,7 @@
 <script setup>
 	import { computed, ref, onMounted, watch } from "vue"
 	import { truncateString, renderMarkup, getPrettyTimeDelta } from "@/utils"
+	import { usePostMarksStore } from "@/stores/postMarks"
 	import { useRouter } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
@@ -46,6 +47,7 @@
 		},
 	})
 
+	const postMarksStore = usePostMarksStore()
 	const router = useRouter()
 	const settings = useSettingsStore()
 	const store = useStore()
@@ -58,11 +60,14 @@
 	const post = computed(() => store.state.posts[props.postId])
 	const parsedText = computed(() => renderMarkup(post.value.text || ""))
 	const formattedSubject = computed(() => truncateString(post.value.subject, 55))
-	const isHidden = computed(() => store.state.hiddenPostsList.includes(props.postId))
-	const isSelected = computed(() => store.state.selectedPostsList.includes(props.postId))
 	const thread = computed(() => store.state.threads[post.value.threadId])
 	const prettyDate = computed(() => getPrettyTimeDelta(new Date(post.value.created)))
 	const preciseDate = computed(() => new Date(post.value.created).toLocaleString("en-GB"))
+	const marks = computed(() => {
+		const result = postMarksStore.postMarks(props.postId)
+		console.log(result)
+		return result
+	})
 
 	function handleReplyClick() {
 		window.emitter.emit("post-reply-button-click", {

@@ -3,16 +3,6 @@ import { getProps } from "@/utils"
 import API from "@/api"
 import Memento from "memento-vuex"
 
-function toggleListEntry(state, listName, entry) {
-	let i = state[listName].indexOf(entry)
-
-	if (i >= 0) {
-		state[listName].splice(i, 1)
-	} else {
-		state[listName].push(entry)
-	}
-}
-
 function clearList(state, listName) {
 	state[listName] = []
 }
@@ -21,12 +11,9 @@ const store = createStore({
 	state: {
 		boardList: [],
 		boards: {},
-		bookmarkedPostsList: [],
 		feedLists: {},
-		hiddenPostsList: [],
 		postLists: {},
 		posts: {},
-		selectedPostsList: [],
 		threadLists: {},
 		threads: {},
 		trustedPostCount: 0,
@@ -35,8 +22,6 @@ const store = createStore({
 	plugins: [
 		Memento({
 			setTrustedPostCount: "trustedPostCount",
-			toggleBookmarked: "bookmarkedPostsList",
-			toggleHidden: "hiddenPostsList",
 		}, "kumori-vuex")
 	],
 
@@ -132,18 +117,6 @@ const store = createStore({
 			}
 
 			state.feedLists[boardName] = newFeedList
-		},
-
-		toggleHidden(state, postId) {
-			toggleListEntry(state, 'hiddenPostsList', postId)
-		},
-
-		toggleBookmarked(state, postId) {
-			toggleListEntry(state, 'bookmarkedPostsList', postId)
-		},
-
-		toggleSelected(state, postId) {
-			toggleListEntry(state, 'selectedPostsList', postId)
 		},
 
 		clearSelected(state) {
