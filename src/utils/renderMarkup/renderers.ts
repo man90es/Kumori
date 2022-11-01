@@ -1,4 +1,4 @@
-import { escapeCode, escapeURI } from "./escape"
+import { escapeCode } from "./escape"
 
 export function getCodeRenderer(tagString: string) { // escape a few chars to avoid further replacements
 	return (_: string, matches: string[]) => {

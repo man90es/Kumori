@@ -25,10 +25,6 @@ export function escapeRX(exp: string): string {
 	return exp.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&")
 }
 
-export function escapeURI(uri: string): string {
-	return uri.replace(/[*_[\]%~/:.#]/g, m => escapeMap[m])
-}
-
 export function escapeCode(code: string): string {
 	return code.replace(/[*_[\]%~/:.#]/g, m => escapeMap[m])
 }
