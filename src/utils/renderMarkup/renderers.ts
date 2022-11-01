@@ -18,17 +18,16 @@ export function getPostLinkRenderer() {
 		const boardName = boardFromMatch ? boardFromMatch.replace(/\//g, "") : ""
 
 		capture = capture.replace(/&gt;/g, ">")
-		return `
-			<a
-				class="postLink"
-				onmouseover="emitter.emit('post-link-hovered', this)"
-				onclick="emitter.emit('post-link-clicked', this)"
-				data-board="${boardName}"
-				data-number="${postFromMatch}"
-			>
-				${capture}
-			</a>
-		`
+
+		const a = document.createElement("a")
+		a.className = "postLink"
+		a.dataset.boardName = boardName
+		a.dataset.number = postFromMatch
+		a.innerText = capture
+		a.setAttribute("onclick", "emitter.emit('post-link-clicked', this)")
+		a.setAttribute("onmouseover", "emitter.emit('post-link-hovered', this)")
+
+		return a.outerHTML
 	}
 }
 
@@ -37,19 +36,16 @@ export function getLinkRenderer() {
 		let uri = matches[0]
 		const title = matches[1] || uri
 
+		// Add https schema prefix if schema is not specified
 		if (!/^(https?|s?ftp):\/\//.test(uri)) {
 			uri = `https://${uri}`
 		}
 
-		uri = escapeURI(uri)
+		const a = document.createElement("a")
+		a.innerText = title
+		a.setAttribute("onclick", `emitter.emit('unsafe-link-click', { link: "${uri}" })`)
+		a.title = uri
 
-		return `
-			<a
-				onclick="emitter.emit('unsafe-link-click', { link: '${uri}' })"
-				title="${uri}"
-			>
-				${title}
-			</a>
-		`
+		return a.outerHTML
 	}
 }

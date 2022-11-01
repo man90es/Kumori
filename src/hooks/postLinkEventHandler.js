@@ -12,21 +12,27 @@ export function usePostLinkEventHandler() {
 	}
 
 	window.emitter.on("post-link-hovered", (link) => {
-		if (link.dataset.requested !== undefined) return
-		if (link.dataset.boardName === undefined) link.dataset.boardName = route.params.boardName
-		const postNumber = parseInt(link.dataset.number)
+		if (link.dataset.requested !== undefined) {
+			return
+		}
+
+		const boardName = link.dataset.boardName || route.params.boardName
+		const postNumber = Number(link.dataset.number)
 
 		if (undefined === findPost(postNumber)) {
-			API.post.request({ boardName: link.dataset.boardName, postNumber })
+			// TODO: Display a floating post
+			API.post.request({ boardName, postNumber })
 		}
 
 		link.dataset.requested = true
 	})
 
 	window.emitter.on("post-link-clicked", (link) => {
+		const boardName = link.dataset.boardName || route.params.boardName
+
 		router.push({
 			name: "thread", params: {
-				boardName: link.dataset.boardName,
+				boardName,
 				threadId: findPost(parseInt(link.dataset.number)).threadId
 			}
 		})

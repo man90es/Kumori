@@ -63,11 +63,7 @@
 	const thread = computed(() => store.state.threads[post.value.threadId])
 	const prettyDate = computed(() => getPrettyTimeDelta(new Date(post.value.created)))
 	const preciseDate = computed(() => new Date(post.value.created).toLocaleString("en-GB"))
-	const marks = computed(() => {
-		const result = postMarksStore.postMarks(props.postId)
-		console.log(result)
-		return result
-	})
+	const marks = computed(() => postMarksStore.postMarks(props.postId))
 
 	function handleReplyClick() {
 		window.emitter.emit("post-reply-button-click", {
