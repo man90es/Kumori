@@ -3,10 +3,6 @@ import { getProps } from "@/utils"
 import API from "@/api"
 import Memento from "memento-vuex"
 
-function clearList(state, listName) {
-	state[listName] = []
-}
-
 const store = createStore({
 	state: {
 		boardList: [],
@@ -117,10 +113,6 @@ const store = createStore({
 			}
 
 			state.feedLists[boardName] = newFeedList
-		},
-
-		clearSelected(state) {
-			clearList(state, 'selectedPostsList')
 		},
 
 		setTrustedPostCount(state, payload) {

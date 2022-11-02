@@ -13,37 +13,34 @@
 
 <script setup>
 	import { computed } from "vue"
-	import { useStore } from "vuex"
+	import { usePostMarksStore } from "@/stores/postMarks"
 	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
 
-	const store = useStore()
+	const store = usePostMarksStore()
 	const props = defineProps({ closeHandler: { type: Function, required: true } })
 
 	const selectedPostCount = computed(() => {
-		const selectedPostCount = store.state.selectedPostsList.length
+		const selectedPostCount = store.selected.size
 		return selectedPostCount > 0 ? selectedPostCount : props.closeHandler()
 	})
 
 	function okHandler() {
-		API.post.deleteMany(store.state.selectedPostsList.map((postId) => ({ postId })))
+		API.post.deleteMany([...store.selected].map(postId => ({ postId })))
 		close()
 	}
 
 	function close() {
-		store.commit("clearSelected")
+		store.clearSelected()
 		props.closeHandler()
 	}
 
-	const header = computed(
-		() => `Delete ${selectedPostCount.value} selected post${selectedPostCount.value > 1 ? "s" : ""}?`
-	)
-	const warning = computed(
-		() =>
-			`This action will fail if you don't have enough rights to delete ${
-				selectedPostCount.value > 1 ? "these posts" : "this post"
-			}.`
-	)
+	const header = computed(() => (
+		`Delete ${selectedPostCount.value} selected post${selectedPostCount.value > 1 ? "s" : ""}?`
+	))
+	const warning = computed(() => (
+		`This action will fail if you don't have enough rights to delete ${selectedPostCount.value > 1 ? "these posts" : "this post"}.`
+	))
 </script>
 
 <style scoped lang="scss">

@@ -1,7 +1,13 @@
 import { defineStore } from "pinia"
 
+type State = {
+	bookmarked: Set<number>
+	hidden: Set<number>
+	selected: Set<number>
+}
+
 export const usePostMarksStore = defineStore("post-marks", {
-	state: () => ({
+	state: (): State => ({
 		bookmarked: new Set(),
 		hidden: new Set(),
 		selected: new Set(),
@@ -21,6 +27,9 @@ export const usePostMarksStore = defineStore("post-marks", {
 			this.selected.has(id)
 				? this.selected.delete(id)
 				: this.selected.add(id)
+		},
+		clearSelected() {
+			this.selected = new Set()
 		},
 	},
 	getters: {
