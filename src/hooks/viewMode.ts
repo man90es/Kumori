@@ -1,16 +1,18 @@
-import { ref } from "vue"
+import { computed, readonly, ref } from "vue"
 
 export function useViewMode() {
 	const portrait = ref(false)
-	const landscape = ref(true)
+	const landscape = computed(() => !portrait.value)
 
 	function calculateViewMode() {
 		portrait.value = window.innerWidth < window.innerHeight
-		landscape.value = !portrait.value
 	}
 
 	calculateViewMode()
 	window.addEventListener("resize", calculateViewMode)
 
-	return { portrait, landscape }
+	return {
+		landscape,
+		portrait: readonly(portrait),
+	}
 }
