@@ -2,7 +2,7 @@
 	<div id="menu-bar" :class="{ portrait, visible }">
 		<div>
 			<MenuButton icon="up" />
-			<MenuButton icon="search" />
+			<!-- <MenuButton icon="search" /> -->
 			<MenuButton icon="settings" />
 			<MenuButton v-if="loggedOn" icon="person" />
 		</div>
