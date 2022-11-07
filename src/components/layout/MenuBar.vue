@@ -1,16 +1,16 @@
 <template>
 	<div id="menu-bar" :class="{ portrait, visible }">
 		<div>
-			<MenuButton icon="up" />
+			<MenuButton icon="up" title="Scroll to top" />
 			<!-- <MenuButton icon="search" /> -->
-			<MenuButton icon="settings" />
-			<MenuButton v-if="loggedOn" icon="person" />
+			<MenuButton icon="settings" title="Settings" />
+			<MenuButton v-if="loggedOn" icon="person" title="My info" />
 		</div>
 		<div>
-			<MenuButton v-if="portrait" icon="home" />
-			<MenuButton v-if="$route.name !== 'bookmarks'" icon="chat" />
-			<MenuButton v-if="$route.name !== 'bookmarks'" icon="star" />
-			<MenuButton icon="down" />
+			<MenuButton v-if="portrait" icon="home" title="Home" />
+			<MenuButton v-if="$route.name !== 'bookmarks'" icon="chat" title="New post" />
+			<MenuButton v-if="$route.name !== 'bookmarks'" icon="star" title="Bookmarks" />
+			<MenuButton icon="down" title="Scroll to bottom" />
 		</div>
 	</div>
 </template>
