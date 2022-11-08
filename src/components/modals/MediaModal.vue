@@ -21,25 +21,19 @@
 	const is_video = computed(() => "video" === props.mime.split("/")[0])
 	const ready = ref(is_video.value)
 
-	const src = computed(() => (
-		[
-			API.res.path,
-			props.hash,
-			{
-				"image/jpeg": ".jpg",
-			}[props.mime] || "." + props.mime.split("/")[1],
-		].join("")
-	))
+	const src = computed(() => [
+		API.res.path,
+		props.hash,
+		{
+			"image/jpeg": ".jpg",
+		}[props.mime] || "." + props.mime.split("/")[1],
+	].join(""))
 </script>
 
 <style scoped lang="scss">
 	@keyframes spin {
-		0% {
-			transform: rotate(0deg) scale(-1, 1);
-		}
-		100% {
-			transform: rotate(360deg) scale(-1, 1);
-		}
+		0% { transform: rotate(0deg) scale(-1, 1) }
+		100% { transform: rotate(360deg) scale(-1, 1) }
 	}
 
 	#media-modal-body {
@@ -59,15 +53,13 @@
 	}
 
 	img {
+		max-width: 80vw;
+		max-height: 80vh;
+		width: auto;
+		height: auto;
+
 		&:not(.placeholder):not(.ready) {
 			opacity: 0;
-		}
-
-		&.ready {
-			max-width: 80vw;
-			max-height: 80vh;
-			width: auto;
-			height: auto;
 		}
 	}
 </style>
