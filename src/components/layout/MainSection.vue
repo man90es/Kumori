@@ -3,15 +3,15 @@
 		<header v-if="board">
 			<div>
 				<RouterLink :to="{ name: 'board' }">
-					<div class="title" v-if="['board', 'thread'].includes($route.name)">
+					<div class="title" v-if="['board', 'thread'].includes(route.name)">
 						/{{ board.name }}/ — {{ board.title }}
 					</div>
-					<div class="title" v-if="$route.name == 'feed'">/{{ board.name }}/'s feed — {{ board.title }}</div>
+					<div class="title" v-if="route.name == 'feed'">/{{ board.name }}/ feed — {{ board.title }}</div>
 					<div>{{ board.subtitle }}</div>
 				</RouterLink>
 			</div>
 			<div>
-				<RouterLink class="feedLink" v-if="$route.name === 'board'" :to="{ name: 'feed' }">
+				<RouterLink class="feedLink" v-if="route.name === 'board'" :to="{ name: 'feed' }">
 					<img class="icon" src="@/assets/icons/view_list.svg" />
 				</RouterLink>
 			</div>
@@ -22,7 +22,6 @@
 				<div>Posts you marked with a star</div>
 			</div>
 		</header>
-
 		<slot />
 	</main>
 </template>
