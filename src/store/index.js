@@ -87,6 +87,7 @@ const store = createStore({
 			state.postLists[post.threadId].push(post.id)
 		},
 
+		// TODO: Non-pinned threads should go below pinned ones
 		pushThread(state, thread) {
 			state.posts[thread.head.id] = thread.head
 			state.postLists[thread.id] = [thread.head.id]
@@ -197,24 +198,15 @@ API.addListener(
 )
 
 API.addListener(
-	message => "created" === message.event && "post" === message.type,
-	(message) => {
-		switch (message.type) {
-			case "post":
-				store.commit("pushPost", message.data)
-				break
+	({ event }) => "created" === event,
+	({ type, data }) => {
+		const action = ({
+			board: "pushBoard",
+			post: "pushPost",
+			thread: "pushThread",
+		})[type]
 
-			case "thread":
-				store.commit("pushThread", message.data)
-				break
-
-			case "board":
-				store.commit("pushBoard", message.data)
-				break
-
-			default:
-				break
-		}
+		action && store.commit(action, data)
 	},
 )
 
