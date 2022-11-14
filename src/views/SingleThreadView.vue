@@ -2,13 +2,14 @@
 	<div id="board">
 		<NavBar />
 		<MainSection>
-			<ThreadItem :threadId="parseInt($route.params.threadId)" :pageSize="500" :tail="false" />
+			<ThreadItem v-if="threadReady" :threadId="threadId" :pageSize="500" :tail="false" />
 		</MainSection>
 		<MenuBar />
 	</div>
 </template>
 
 <script setup>
+	import { computed } from "vue"
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"
 	import API from "@/api"
@@ -19,9 +20,10 @@
 
 	const store = useStore()
 	const route = useRoute()
-	const threadId = parseInt(route.params.threadId)
 
-	if (undefined === store.state.threads[threadId]) {
+	const threadId = parseInt(route.params.threadId)
+	const threadReady = computed(() => Boolean(store.state.threads[threadId]))
+	if (!threadReady.value) {
 		API.thread.request({ threadId })
 	}
 </script>

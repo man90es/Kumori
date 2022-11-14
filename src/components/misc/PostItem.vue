@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-	import { computed, ref, onMounted, watch } from "vue"
+	import { computed, ref, watch } from "vue"
 	import { truncateString, renderMarkup, getPrettyTimeDelta } from "@/utils"
 	import { usePostMarksStore } from "@/stores/postMarks"
 	import { useRouter } from "vue-router"
@@ -93,7 +93,9 @@
 		}
 	)
 
-	onMounted(() => undefined === post.value && API.post.request({ postId: props.postId }))
+	if (undefined === post.value) {
+		API.post.request({ postId: props.postId })
+	}
 </script>
 
 <style scoped lang="scss">
