@@ -122,25 +122,25 @@ const store = createStore({
 	},
 })
 
-API.addListener(
-	message => "boards" === message.what?.request,
-	(message) => {
-		store.commit("updateBoardList", Object.keys(message.data))
-		store.commit("updateBoards", message.data)
+API.addInMessageListener(
+	({ what }) => "boards" === what.request,
+	({ data }) => {
+		store.commit("updateBoardList", Object.keys(data))
+		store.commit("updateBoards", data)
 	}
 )
 
-API.addListener(
-	message => "threads" === message.what?.request,
-	(message) => {
+API.addInMessageListener(
+	({ what }) => "threads" === what.request,
+	({ what, data }) => {
 		store.commit("updateThreadList", {
-			...getProps(message.what, ["boardName", "count", "page"]),
-			payload: message.data.map(thread => thread.id),
+			...getProps(what, ["boardName", "count", "page"]),
+			payload: data.map(thread => thread.id),
 		})
 
-		store.commit("updateThreads", message.data)
+		store.commit("updateThreads", data)
 
-		for (let thread of message.data) {
+		for (let thread of data) {
 			store.commit("updatePostList", {
 				threadId: thread.id,
 				payload: [thread.head.id],
@@ -153,51 +153,51 @@ API.addListener(
 	}
 )
 
-API.addListener(
-	message => "thread" === message.what?.request,
-	(message) => {
-		store.commit("updateThreads", [message.data])
+API.addInMessageListener(
+	({ what }) => "thread" === what.request,
+	({ data }) => {
+		store.commit("updateThreads", [data])
 
 		store.commit("updatePostList", {
-			threadId: message.data.id,
-			payload: [message.data.head.id],
+			threadId: data.id,
+			payload: [data.head.id],
 			count: 1,
 			page: 0,
 		})
 
-		store.commit('updatePosts', [message.data.head])
+		store.commit("updatePosts", [data.head])
 	}
 )
 
-API.addListener(
-	message => "posts" === message.what?.request,
-	(message) => {
-		if (message.what?.boardName) {
+API.addInMessageListener(
+	({ what }) => "posts" === what.request,
+	({ what, data }) => {
+		if (what.boardName) {
 			// Feed
 			store.commit("updateFeed", {
-				...getProps(message.what, ["boardName", "count", "page"]),
-				payload: message.data.map(post => post.id),
+				...getProps(what, ["boardName", "count", "page"]),
+				payload: data.map(post => post.id),
 			})
 		} else {
 			// Thread
 			store.commit("updatePostList", {
-				...getProps(message.what, ["threadId", "count", "page"]),
-				payload: message.data.map(post => post.id),
+				...getProps(what, ["threadId", "count", "page"]),
+				payload: data.map(post => post.id),
 			})
 		}
 
-		store.commit("updatePosts", message.data)
+		store.commit("updatePosts", data)
 	}
 )
 
-API.addListener(
-	message => "post" === message.what?.request,
-	(message) => {
-		store.commit("updatePosts", [message.data])
+API.addInMessageListener(
+	({ what }) => "post" === what.request,
+	({ data }) => {
+		store.commit("updatePosts", [data])
 	}
 )
 
-API.addListener(
+API.addInMessageListener(
 	({ event }) => "created" === event,
 	({ type, data }) => {
 		const action = ({

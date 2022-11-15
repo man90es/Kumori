@@ -12,18 +12,18 @@ export function useAuthHandler(): void {
 
 	initialised = true
 
-	api.addListener(
-		(msg) => "what" in msg && /logon|register/i.test(msg.what.request!),
-		(msg) => {
-			store.$patch(msg.data)
+	api.addInMessageListener(
+		({ what }) => /logon|register/i.test(what.request!),
+		({ data }) => {
+			store.$patch(data)
 			window.emitter.emit("log-on")
 		}
 	)
 
-	api.addListener(
-		(msg) => "what" in msg && /logoff/i.test(msg.what.request!),
-		(msg) => {
-			if (msg.data.success) {
+	api.addInMessageListener(
+		({ what }) => /logoff/i.test(what.request!),
+		({ data }) => {
+			if (data.success) {
 				store.$reset()
 				window.emitter.emit("log-off")
 			}

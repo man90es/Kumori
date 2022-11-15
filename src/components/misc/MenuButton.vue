@@ -17,9 +17,7 @@
 
 	const images = require.context("@/assets/icons", false, /\.svg$/)
 	const { scrollToTop, scrollToBottom } = useScroll()
-	const src = computed(() => {
-		return images(`./${props.icon}.svg`)
-	})
+	const src = computed(() => images(`./${props.icon}.svg`))
 
 	function dispatchEvent() {
 		switch (props.icon) {

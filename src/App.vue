@@ -15,12 +15,14 @@
 
 <script setup>
 	import { useAuthHandler } from "@/hooks/authHandler"
+	import { useDisplayErrorToasts } from "@/hooks/displayErrorToasts"
 	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler"
 	import { useTheme } from "@/hooks/theme"
 	import API from "@/api"
 	import ModalsLayer from "@/components/layers/ModalsLayer"
 
 	useAuthHandler()
+	useDisplayErrorToasts()
 
 	const theme = useTheme()
 	usePostLinkEventHandler()

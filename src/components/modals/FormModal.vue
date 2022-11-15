@@ -96,17 +96,14 @@
 		undefined !== postNumber && (form.text += `>>${postNumber}\r`)
 	}
 
-	watch(
-		() => props.postNumber,
-		(postNumber) => insertPostLink(postNumber)
-	)
+	watch(() => props.postNumber, n => insertPostLink(n))
 
 	function initialCaptchaCheck() {
 		API.captcha.validate({ code: 0 })
 	}
 
-	function attachmentChangeHandler({ target }) {
-		generateThumbnail(target.files[0]).then((t) => thumbs.value.push(t))
+	function attachmentChangeHandler({ target: { files } }) {
+		generateThumbnail(files[0]).then((t) => thumbs.value.push(t))
 	}
 
 	function attachHandler() {
@@ -152,10 +149,9 @@
 
 	const settings = useSettingsStore()
 
-	const headerText = computed(() =>
-		settings.debug
-			? `b:"${props.boardName}" tid:${props.threadId} tn:${props.threadNumber}`
-			: props.threadId
+	const headerText = computed(() => settings.debug
+		? `b:"${props.boardName}" tid:${props.threadId} tn:${props.threadNumber}`
+		: props.threadId
 			? `Reply to thread #${props.threadNumber} on board /${props.boardName}`
 			: `New thread on board /${props.boardName}`
 	)
@@ -165,25 +161,35 @@
 		window.emitter.on("captcha-solved", submit)
 
 		// Handle server response to captcha submission
-		API.addListener(({ what }) => "checkCaptcha" === what?.request, ({ data }) => {
-			if (data.trustedPostCount > 0) {
-				submit()
-			} else {
-				waitingToSubmit.value = true
-				window.emitter.emit("need-captcha", {})
+		API.addInMessageListener(
+			({ what }) => "checkCaptcha" === what.request,
+			({ data }) => {
+				if (data.trustedPostCount > 0) {
+					submit()
+				} else {
+					waitingToSubmit.value = true
+					window.emitter.emit("need-captcha", {})
+				}
 			}
-		})
+		)
 
 		// Handle server response to post submission
-		API.addListener(({ what }) => "createPost" === what?.request, ({ what, data }) => {
-			reset()
+		API.addInMessageListener(
+			({ what }) => "createPost" === what?.request,
+			({ what, data, error }) => {
+				if (error) {
+					return
+				}
 
-			if (settings.noko) {
-				const threadId = what?.threadId || data?.threadId
-				const boardName = store.state.threads[threadId]?.boardName
-				router.push({ name: "thread", params: { threadId, boardName } })
+				reset()
+
+				if (settings.noko) {
+					const threadId = what.threadId || data.threadId
+					const boardName = store.state.threads[threadId]?.boardName
+					router.push({ name: "thread", params: { threadId, boardName } })
+				}
 			}
-		})
+		)
 	})
 </script>
 

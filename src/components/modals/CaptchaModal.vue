@@ -38,11 +38,11 @@
 		props.closeHandler()
 	}
 
-	API.addListener(
-		// Handle replies to captcha submission
-		(message) => "checkCaptcha" === message.what?.request,
-		(message) => {
-			if (message.data.trustedPostCount > 0) {
+	// Handle replies to captcha submission
+	API.addInMessageListener(
+		({ what }) => "checkCaptcha" === what.request,
+		({ data }) => {
+			if (data.trustedPostCount > 0) {
 				window.emitter.emit("captcha-solved", {})
 				return close()
 			}
