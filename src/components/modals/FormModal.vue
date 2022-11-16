@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-	import { computed, reactive, ref, onMounted, watch } from "vue"
+	import { computed, reactive, ref, onMounted, watch, onUnmounted } from "vue"
 	import { generateThumbnail } from "@/utils"
 	import { useRouter } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
@@ -159,10 +159,14 @@
 	onMounted(() => {
 		insertPostLink(props.postNumber)
 		window.emitter.on("captcha-solved", submit)
+	})
 
+	const checkCaptchaCatcher = ({ what }) => "checkCaptcha" === what.request
+	const createPostCatcher = ({ what }) => "createPost" === what?.request
+
+	onMounted(() => {
 		// Handle server response to captcha submission
-		API.addInMessageListener(
-			({ what }) => "checkCaptcha" === what.request,
+		API.addInMessageListener(checkCaptchaCatcher,
 			({ data }) => {
 				if (data.trustedPostCount > 0) {
 					submit()
@@ -174,8 +178,7 @@
 		)
 
 		// Handle server response to post submission
-		API.addInMessageListener(
-			({ what }) => "createPost" === what?.request,
+		API.addInMessageListener(createPostCatcher,
 			({ what, data, error }) => {
 				if (error) {
 					return
@@ -190,6 +193,11 @@
 				}
 			}
 		)
+	})
+
+	onUnmounted(() => {
+		API.removeInMessageListener(checkCaptchaCatcher)
+		API.removeInMessageListener(createPostCatcher)
 	})
 </script>
 
