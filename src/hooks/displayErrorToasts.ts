@@ -7,7 +7,8 @@ export function useDisplayErrorToasts() {
 	API.addInMessageListener(
 		({ error }) => Boolean(error),
 		({ error }) => {
-			toast.error(error!.description || `Error ${error!.message} occured` || "Unexpected error occured")
+			const text = error!.description || `Error ${error!.message} occured` || "Unexpected error occured"
+			toast.error(text, { position: "top-right" })
 		}
 	)
 }
