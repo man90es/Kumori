@@ -9,8 +9,8 @@
 			<a>{{ link }}</a>
 			<span>It may be not safe</span>
 			<span class="row">
-				<button type="button" @click="okHandler">Ok</button>
 				<button type="button" @click="close">Cancel</button>
+				<button type="button" @click="okHandler">Ok</button>
 			</span>
 		</div>
 	</ModalShell>
