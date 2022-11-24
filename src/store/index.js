@@ -133,6 +133,10 @@ API.addInMessageListener(
 API.addInMessageListener(
 	({ what }) => "threads" === what.request,
 	({ what, data }) => {
+		if (undefined === data) {
+			return
+		}
+
 		store.commit("updateThreadList", {
 			...getProps(what, ["boardName", "count", "page"]),
 			payload: data.map(thread => thread.id),
