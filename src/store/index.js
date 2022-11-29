@@ -123,7 +123,7 @@ const store = createStore({
 })
 
 API.addInMessageListener(
-	({ what }) => "boards" === what.request,
+	({ what }) => "boards" === what?.request,
 	({ data }) => {
 		store.commit("updateBoardList", Object.keys(data))
 		store.commit("updateBoards", data)
@@ -131,7 +131,7 @@ API.addInMessageListener(
 )
 
 API.addInMessageListener(
-	({ what }) => "threads" === what.request,
+	({ what }) => "threads" === what?.request,
 	({ what, data }) => {
 		if (undefined === data) {
 			return
@@ -158,7 +158,7 @@ API.addInMessageListener(
 )
 
 API.addInMessageListener(
-	({ what }) => "thread" === what.request,
+	({ what }) => "thread" === what?.request,
 	({ data }) => {
 		store.commit("updateThreads", [data])
 
@@ -174,7 +174,7 @@ API.addInMessageListener(
 )
 
 API.addInMessageListener(
-	({ what }) => "posts" === what.request,
+	({ what }) => "posts" === what?.request,
 	({ what, data }) => {
 		if (what.boardName) {
 			// Feed
@@ -195,7 +195,7 @@ API.addInMessageListener(
 )
 
 API.addInMessageListener(
-	({ what }) => "post" === what.request,
+	({ what }) => "post" === what?.request,
 	({ data }) => {
 		store.commit("updatePosts", [data])
 	}

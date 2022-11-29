@@ -161,7 +161,7 @@
 		window.emitter.on("captcha-solved", submit)
 	})
 
-	const checkCaptchaCatcher = ({ what }) => "checkCaptcha" === what.request
+	const checkCaptchaCatcher = ({ what }) => "checkCaptcha" === what?.request
 	const createPostCatcher = ({ what }) => "createPost" === what?.request
 
 	onMounted(() => {
@@ -187,7 +187,7 @@
 				reset()
 
 				if (settings.noko) {
-					const threadId = what.threadId || data.threadId
+					const threadId = what?.threadId || data.threadId
 					const boardName = store.state.threads[threadId]?.boardName
 					router.push({ name: "thread", params: { threadId, boardName } })
 				}
