@@ -47,6 +47,7 @@
 	import { useRouter } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
+	import { useToast } from "vue-toast-notification"
 	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
 
@@ -67,6 +68,7 @@
 
 	const router = useRouter()
 	const store = useStore()
+	const toast = useToast()
 
 	const initialFormState = {
 		op: false,
@@ -180,6 +182,8 @@
 		// Handle server response to post submission
 		API.addInMessageListener(createPostCatcher,
 			({ what, data, error }) => {
+				toast.success(`${what.threadId ? "Post" : "Thread"} created`, { position: "top-right" })
+
 				if (error) {
 					return
 				}
