@@ -17,14 +17,14 @@
 				:threadId="threadId"
 				v-for="threadId in threadList"
 			/>
-			<!-- TODO: Pagination or infinite scrolling -->
 		</MainSection>
 		<MenuBar />
 	</div>
 </template>
 
 <script setup>
-	import { computed, watchEffect } from "vue"
+	import { computed, watch, watchEffect } from "vue"
+	import { useAtBottom } from "@/hooks/atBottom"
 	import { useRoute } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
@@ -33,6 +33,8 @@
 	import MenuBar from "@/components/layout/MenuBar"
 	import NavBar from "@/components/layout/NavBar"
 	import ThreadItem from "@/components/misc/ThreadItem"
+
+	const pageSize = 10 // Batch size for threads request
 
 	const route = useRoute()
 	const settings = useSettingsStore()
@@ -47,7 +49,21 @@
 	watchEffect(() => {
 		"board" === route.name && API.thread.requestMany({
 			boardName: route.params.boardName,
-			count: 10, // TODO: Unhardcode this threads per page value
+			count: pageSize,
+			page: 0,
+		})
+	})
+
+	const atBottom = useAtBottom()
+	watch(() => atBottom.value, (newValue) => {
+		if (!newValue) {
+			return
+		}
+
+		"board" === route.name && API.thread.requestMany({
+			boardName: route.params.boardName,
+			count: 10,
+			page: store.state.threadLists[route.params.boardName]?.length / pageSize,
 		})
 	})
 </script>

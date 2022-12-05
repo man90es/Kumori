@@ -40,8 +40,10 @@ const store = createStore({
 			}
 
 			for (let i = page * count; i < (page + 1) * count; i++) {
-				if (payload[i]) {
-					state.threadLists[boardName][i] = payload[i]
+				const payloadI = i - page * count
+
+				if (payload[payloadI]) {
+					state.threadLists[boardName][i] = payload[payloadI]
 				}
 			}
 		},
