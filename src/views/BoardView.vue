@@ -2,7 +2,7 @@
 	<div id="board">
 		<NavBar />
 		<MainSection>
-			<div v-if="0 === threadList.length" id="empty-banner" @click="openPostingForm">
+			<div v-if="0 === meta.threadList.length" id="empty-banner" @click="openPostingForm">
 				<!--
 					TODO: This block always pops while the page is loading
 					Maybe there should be some boolean variable that tells
@@ -15,7 +15,7 @@
 				:key="threadId"
 				:pageSize="settings.repliesOnBoardPage"
 				:threadId="threadId"
-				v-for="threadId in threadList"
+				v-for="threadId in meta.threadList"
 			/>
 		</MainSection>
 		<MenuBar />
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-	import { computed, watch, watchEffect } from "vue"
+	import { computed, onMounted, watch } from "vue"
 	import { useAtBottom } from "@/hooks/atBottom"
 	import { useRoute } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
@@ -34,38 +34,51 @@
 	import NavBar from "@/components/layout/NavBar"
 	import ThreadItem from "@/components/misc/ThreadItem"
 
-	const pageSize = 10 // Batch size for threads request
-
 	const route = useRoute()
 	const settings = useSettingsStore()
 	const store = useStore()
 
-	const threadList = computed(() => store.state.threadLists[route.params.boardName] || [])
+	const meta = computed(() => ({
+		...(store.state.boards[route.params.boardName] || {}),
+		threadList: store.state.threadLists[route.params.boardName] || []
+	}))
 
 	function openPostingForm() {
 		window.emitter.emit("menu-chat-button-click", { boardName: route.params.boardName })
 	}
 
-	watchEffect(() => {
-		"board" === route.name && API.thread.requestMany({
-			boardName: route.params.boardName,
-			count: pageSize,
-			page: 0,
-		})
-	})
+	function requestThreads() {
+		const pageSize = 10
+		const totalPages = Math.ceil(meta.value.threadCount / pageSize)
+		const requestedPages = Math.ceil(meta.value.threadList.length / pageSize)
 
-	const atBottom = useAtBottom()
-	watch(() => atBottom.value, (newValue) => {
-		if (!newValue) {
+		// Return if user navigated to another page type
+		// but this component hasn't dissolved yet
+		if ("board" !== route.name) {
 			return
 		}
 
-		"board" === route.name && API.thread.requestMany({
+		// Return if all threads fetched already
+		if (totalPages <= requestedPages) {
+			return
+		}
+
+		API.thread.requestMany({
 			boardName: route.params.boardName,
-			count: 10,
-			page: store.state.threadLists[route.params.boardName]?.length / pageSize,
+			count: pageSize,
+			page: requestedPages,
 		})
-	})
+	}
+
+	// Request threads when the page is opened
+	onMounted(requestThreads)
+
+	// Request threads when user navigates to another board
+	watch(() => route.params.boardName, requestThreads)
+
+	// Request threads when user reaches the bottom of the page
+	const atBottom = useAtBottom()
+	watch(() => atBottom.value, reached => reached && requestThreads())
 </script>
 
 <style scoped>
