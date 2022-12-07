@@ -16,7 +16,6 @@ specifiers:
   core-js: ^3.24.1
   eslint: ^8.22.0
   eslint-plugin-vue: ^9.3.0
-  memento-vuex: ^0.2.0
   mitt: ^3.0.0
   pinia: ^2.0.20
   pinia-plugin-persistedstate: ^2.1.1
@@ -48,7 +47,6 @@ devDependencies:
   core-js: 3.24.1
   eslint: 8.22.0
   eslint-plugin-vue: 9.3.0_eslint@8.22.0
-  memento-vuex: 0.2.0
   mitt: 3.0.0
   pinia: 2.0.20_j6bzmzd4ujpabbp5objtwxyjp4
   pinia-plugin-persistedstate: 2.1.1_pinia@2.0.20
@@ -5269,10 +5267,6 @@ packages:
   /media-typer/0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
-    dev: true
-
-  /memento-vuex/0.2.0:
-    resolution: {integrity: sha512-jwWWH4EEIKs+glVHrqrYFwgHTXnpbs1kpQs5229thy/5Iw5ASyWkPSZGCZ/YSdejxga5KBOfm6xesfO1rKfbQQ==}
     dev: true
 
   /memfs/3.4.7:

@@ -1,7 +1,6 @@
 import { createStore } from "vuex"
 import { getProps } from "@/utils"
 import API from "@/api"
-import Memento from "memento-vuex"
 
 const store = createStore({
 	state: {
@@ -12,15 +11,7 @@ const store = createStore({
 		posts: {},
 		threadLists: {},
 		threads: {},
-		trustedPostCount: 0,
 	},
-
-	plugins: [
-		Memento({
-			setTrustedPostCount: "trustedPostCount",
-		}, "kumori-vuex")
-	],
-
 	mutations: {
 		import(state, backup) {
 			Object.assign(state, backup)
@@ -116,10 +107,6 @@ const store = createStore({
 			}
 
 			state.feedLists[boardName] = newFeedList
-		},
-
-		setTrustedPostCount(state, payload) {
-			state.trustedPostCount = payload
 		},
 	},
 })
