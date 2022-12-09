@@ -14,19 +14,16 @@ export const usePostMarksStore = defineStore("post-marks", {
 	}),
 	actions: {
 		toggleHide(id: number) {
-			this.hidden.has(id)
-				? this.hidden.delete(id)
-				: this.hidden.add(id)
+			this.hidden.delete(id) || this.hidden.add(id)
+		},
+		removeBookmark(id: number) {
+			this.bookmarked.delete(id)
 		},
 		toggleBookmark(id: number) {
-			this.bookmarked.has(id)
-				? this.bookmarked.delete(id)
-				: this.bookmarked.add(id)
+			this.bookmarked.delete(id) || this.bookmarked.add(id)
 		},
 		toggleSelect(id: number) {
-			this.selected.has(id)
-				? this.selected.delete(id)
-				: this.selected.add(id)
+			this.selected.delete(id) || this.selected.add(id)
 		},
 		clearSelected() {
 			this.selected = new Set()
@@ -43,14 +40,12 @@ export const usePostMarksStore = defineStore("post-marks", {
 		key: "kumori-post-marks",
 		paths: ["bookmarked", "hidden"],
 		serializer: {
-			deserialize: json => JSON.parse(
-				json,
-				(_, value) => value instanceof Array ? new Set(value) : value
-			),
-			serialize: state => JSON.stringify(
-				state,
-				(_, value) => value instanceof Set ? [...value] : value
-			)
+			deserialize: json => JSON.parse(json, (_, value) => (
+				value instanceof Array ? new Set(value) : value
+			)),
+			serialize: state => JSON.stringify(state, (_, value) => (
+				value instanceof Set ? [...value] : value
+			))
 		}
 	},
 })
