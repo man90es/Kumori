@@ -228,19 +228,19 @@
 	}
 
 	textarea {
-		padding: 2%;
-		grid-column: 1/6;
-		min-height: 7em;
-		min-width: 30em;
-		width: 100%;
-		resize: none;
 		background-color: var(--background-color);
 		border: none;
+		box-sizing: border-box;
 		color: var(--text-color);
 		font-size: 1rem;
-		box-sizing: border-box;
-		margin-top: var(--gap-size);
+		grid-column: 1/6;
 		margin-bottom: 0;
+		margin-top: var(--gap-size);
+		min-height: 7em;
+		min-width: min(30em, calc(100vw - 1em));
+		padding: 2%;
+		resize: none;
+		width: 100%;
 	}
 
 	#attachmentsForm,
