@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': ^7.20.5
   '@babel/eslint-parser': ^7.19.1
-  '@bakaso/fkclient': ^1.4.1
+  '@bakaso/fkclient': ^1.5.0
   '@vue/cli-plugin-babel': ^5.0.8
   '@vue/cli-plugin-eslint': ^5.0.8
   '@vue/cli-plugin-pwa': ^5.0.8
@@ -34,7 +34,7 @@ specifiers:
 devDependencies:
   '@babel/core': 7.20.5
   '@babel/eslint-parser': 7.19.1_xthtwe2nrrwct2fnasddpvoro4
-  '@bakaso/fkclient': 1.4.1
+  '@bakaso/fkclient': 1.5.0
   '@vue/cli-plugin-babel': 5.0.8_4vzoj52adn4urlkms3xs45ndmu
   '@vue/cli-plugin-eslint': 5.0.8_ahd2ryzxtxggj3uin7n5hmm3ma
   '@vue/cli-plugin-pwa': 5.0.8_@vue+cli-service@5.0.8
@@ -1297,8 +1297,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@bakaso/fkclient/1.4.1:
-    resolution: {integrity: sha512-c8R+3p8/ofudEshULEAAlqKLoNRdWhfbU6pEduRXqd96jqfqoCRr2ef8G2ewAQ20WkmVzLNV/wtoTlVMOGDZWA==}
+  /@bakaso/fkclient/1.5.0:
+    resolution: {integrity: sha512-rIhFCgZnR0IibJS65Drs6uRCpVVM2px6rW/M0QUtezZ258/FCx9VrypvRS3EHyNIKnAT+8Xv4bonXDmBeCJmUw==}
     dev: true
 
   /@eslint/eslintrc/1.3.3:

@@ -1,14 +1,21 @@
 <template>
-	<ModalShell header="Humanity check" :closeable="false" :draggable="false" :closeHandler="close">
+	<ModalShell header="Captcha" :closeable="false" :draggable="false" :closeHandler="close">
 		<form @submit.prevent="submit()" id="captcha-form">
-			<img width="192" height="64" :src="imageSrc" @click="refresh" />
-			<input autocomplete="off" max="999999" min="0" placeholder="Captcha" type="number" v-model="code" />
+			<img width="192" height="64" :src="captcha.src" @click="refresh" />
+			<input
+				:max="captcha.max"
+				:min="captcha.min"
+				:type="captcha.type"
+				autocomplete="off"
+				placeholder="Code"
+				v-model="captcha.code"
+			/>
 		</form>
 	</ModalShell>
 </template>
 
 <script setup>
-	import { ref } from "vue"
+	import { reactive, watch } from "vue"
 	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
 
@@ -22,16 +29,28 @@
 			required: true,
 		},
 	})
-	const imageSrc = ref(null)
-	const code = ref("")
 
-	function submit() {
-		API.captcha.validate({ code })
-	}
+	const captcha = reactive({
+		code: "",
+		max: 10 ** API.captcha.size.max - 1,
+		min: 0,
+		src: null,
+		timestamp: 0,
+		type: API.captcha.type,
+	})
 
 	function refresh() {
-		imageSrc.value = API.captcha.imageURI
+		captcha.timestamp = Number(new Date())
 	}
+
+	function submit() {
+		API.captcha.validate(captcha)
+	}
+
+	watch(() => captcha.timestamp, () => {
+		captcha.code = ""
+		captcha.src = API.captcha.getImageURI(captcha)
+	})
 
 	function close() {
 		props.setBackdrop(false)
@@ -41,14 +60,7 @@
 	// Handle replies to captcha submission
 	API.addInMessageListener(
 		({ what }) => "checkCaptcha" === what.request,
-		({ data }) => {
-			if (data.trustedPostCount > 0) {
-				window.emitter.emit("captcha-solved", {})
-				return close()
-			}
-
-			refresh()
-		}
+		({ data }) => data.trustedPostCount > 0 && close()
 	)
 
 	props.setBackdrop(true)

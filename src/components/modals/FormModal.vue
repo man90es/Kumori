@@ -101,7 +101,7 @@
 	watch(() => props.postNumber, n => insertPostLink(n))
 
 	function initialCaptchaCheck() {
-		API.captcha.validate({ code: 0 })
+		API.captcha.getTrustedPostCount()
 	}
 
 	function attachmentChangeHandler({ target: { files } }) {
@@ -160,10 +160,9 @@
 
 	onMounted(() => {
 		insertPostLink(props.postNumber)
-		window.emitter.on("captcha-solved", submit)
 	})
 
-	const checkCaptchaCatcher = ({ what }) => "checkCaptcha" === what?.request
+	const checkCaptchaCatcher = ({ what }) => ["trustedPostCount", "checkCaptcha"].includes(what?.request)
 	const createPostCatcher = ({ what }) => "createPost" === what?.request
 
 	onMounted(() => {
