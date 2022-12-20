@@ -80,6 +80,16 @@ const store = createStore({
 			state.postLists[post.threadId].push(post.id)
 		},
 
+		unregisterPost(state, post) {
+			const postList = state.postLists[post.threadId]
+
+			if (undefined === postList) {
+				return
+			}
+
+			state.postLists[post.threadId] = postList.filter(id => post.id !== id)
+		},
+
 		// TODO: Non-pinned threads should go below pinned ones
 		pushThread(state, thread) {
 			state.posts[thread.head.id] = thread.head
@@ -91,6 +101,16 @@ const store = createStore({
 			}
 
 			state.threadLists[thread.boardName].unshift(thread.id)
+		},
+
+		unregisterThread(state, thread) {
+			const threadList = state.threadLists[thread.boardName]
+
+			if (undefined === threadList) {
+				return
+			}
+
+			state.threadLists[thread.boardName] = threadList.filter(id => thread.id !== id)
 		},
 
 		pushBoard(state, board) {
@@ -197,6 +217,18 @@ API.addInMessageListener(
 			board: "pushBoard",
 			post: "pushPost",
 			thread: "pushThread",
+		})[type]
+
+		action && store.commit(action, data)
+	},
+)
+
+API.addInMessageListener(
+	({ event }) => "deleted" === event,
+	({ type, data }) => {
+		const action = ({
+			post: "unregisterPost",
+			thread: "unregisterThread",
 		})[type]
 
 		action && store.commit(action, data)
