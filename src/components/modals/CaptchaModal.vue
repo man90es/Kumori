@@ -59,7 +59,7 @@
 
 	// Handle replies to captcha submission
 	API.addInMessageListener(
-		({ what }) => "checkCaptcha" === what.request,
+		({ what }) => "checkCaptcha" === what?.request,
 		({ data }) => data.trustedPostCount > 0 && close()
 	)
 
