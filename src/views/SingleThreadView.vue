@@ -9,8 +9,8 @@
 </template>
 
 <script setup>
-	import { computed } from "vue"
-	import { useRoute } from "vue-router"
+	import { computed, onMounted, onUnmounted } from "vue"
+	import { useRoute, useRouter } from "vue-router"
 	import { useStore } from "vuex"
 	import API from "@/api"
 	import MainSection from "@/components/layout/MainSection"
@@ -18,14 +18,29 @@
 	import NavBar from "@/components/layout/NavBar"
 	import ThreadItem from "@/components/misc/ThreadItem"
 
-	const store = useStore()
 	const route = useRoute()
+	const router = useRouter()
+	const store = useStore()
 
 	const threadId = parseInt(route.params.threadId)
 	const threadReady = computed(() => Boolean(store.state.threads[threadId]))
 	if (!threadReady.value) {
 		API.thread.request({ threadId })
 	}
+
+	function threadDeletedEventCatcher({ event, type, data }) {
+		return "deleted" === event && "thread" === type && threadId === data.id
+	}
+
+	onMounted(() => {
+		API.addInMessageListener(threadDeletedEventCatcher, ({ data }) => {
+			router.push({ name: "board", params: { boardName: data.boardName } })
+		})
+	})
+
+	onUnmounted(() => {
+		API.removeInMessageListener(threadDeletedEventCatcher)
+	})
 </script>
 
 <style>
