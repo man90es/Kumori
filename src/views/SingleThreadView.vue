@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-	import { computed, onMounted, onUnmounted } from "vue"
+	import { computed, onMounted, onUnmounted, watch } from "vue"
 	import { useRoute, useRouter } from "vue-router"
 	import { useStore } from "vuex"
 	import API from "@/api"
@@ -22,21 +22,31 @@
 	const router = useRouter()
 	const store = useStore()
 
-	const threadId = parseInt(route.params.threadId)
-	const threadReady = computed(() => Boolean(store.state.threads[threadId]))
-	if (!threadReady.value) {
-		API.thread.request({ threadId })
-	}
+	const threadId = computed(() => parseInt(route.params.threadId))
+	const threadReady = computed(() => Boolean(store.state.threads[threadId.value]))
 
 	function threadDeletedEventCatcher({ event, type, data }) {
-		return "deleted" === event && "thread" === type && threadId === data.id
+		return "deleted" === event && "thread" === type && threadId.value === data.id
 	}
 
-	onMounted(() => {
+	function requestThread() {
+		if (threadReady.value) {
+			return
+		}
+
+		API.removeInMessageListener(threadDeletedEventCatcher)
 		API.addInMessageListener(threadDeletedEventCatcher, ({ data }) => {
 			router.push({ name: "board", params: { boardName: data.boardName } })
 		})
-	})
+
+		API.thread.request({ threadId: threadId.value })
+	}
+
+	// Request thread when the page is opened
+	onMounted(requestThread)
+
+	// Request thread when user navigates to another thread
+	watch(() => route.params.threadId, requestThread)
 
 	onUnmounted(() => {
 		API.removeInMessageListener(threadDeletedEventCatcher)
