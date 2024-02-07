@@ -15,6 +15,10 @@
 	import { useDraggability } from "vue-draggability"
 	import { useSettingsStore } from "@/stores/settings"
 
+	defineOptions({
+		inheritAttrs: false,
+	})
+
 	const props = defineProps({
 		header: {
 			type: String,
@@ -44,12 +48,6 @@
 		props.draggable && useDraggability(dragElement, dragHandle)
 		setTimeout(() => (transparent.value = false), 1)
 	})
-</script>
-
-<script>
-	export default {
-		inheritAttrs: false,
-	}
 </script>
 
 <style scoped lang="scss">
