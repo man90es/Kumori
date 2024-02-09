@@ -13,10 +13,6 @@ const store = createStore({
 		threads: {},
 	},
 	mutations: {
-		import(state, backup) {
-			Object.assign(state, backup)
-		},
-
 		updateBoardList(state, payload) {
 			state.boardList = payload
 		},
