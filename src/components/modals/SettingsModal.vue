@@ -1,31 +1,20 @@
 <template>
 	<ModalShell header="Settings">
-		<div class="settings-grid">
-			<label v-for="item of items" :key="item.key">
-				<span>{{ item.label }}</span>
-				<ToggleSwitch
-					:modelValue="settings[item.key]"
-					@update:modelValue="(v) => updateItem(item.key, item.type(v))"
-					v-if="'checkbox' === item.inputType"
-				/>
-				<select
-					:value="settings[item.key]"
-					@change="({ target: t }) => updateItem(item.key, item.type(t.value))"
-					v-else-if="'select' === item.inputType"
-				>
-					<option v-for="option of item.options" :key="option" :value="option">
-						{{ option }}
-					</option>
-				</select>
-			</label>
-		</div>
+		<label :className="$style.label" v-for="item of items" :key="item.key">
+			<span>{{ item.label }}</span>
+			<ToggleSwitch :modelValue="settings[item.key]" @update:modelValue="(v) => updateItem(item.key, item.type(v))" v-if="'checkbox' === item.inputType" />
+			<select :className="$style.select" :value="settings[item.key]" @change="({ target: t }) => updateItem(item.key, item.type(t.value))" v-else-if="'select' === item.inputType">
+				<option v-for="option of item.options" :key="option" :value="option">
+					{{ option }}
+				</option>
+			</select>
+		</label>
 	</ModalShell>
 </template>
 
 <script setup>
+	import { ModalShell, ToggleSwitch } from "@/components/misc"
 	import { useSettingsStore } from "@/stores/settings"
-	import ModalShell from "@/components/misc/ModalShell"
-	import ToggleSwitch from "@/components/misc/ToggleSwitch"
 
 	const settings = useSettingsStore()
 
@@ -68,6 +57,13 @@
 			label: "Debug mode",
 			type: Boolean,
 		},
+		{
+			inputType: "select",
+			key: "apiURI",
+			label: "API",
+			options: process.env.VUE_APP_API_ENDPOINT.split(","),
+			type: String,
+		},
 	]
 
 	function updateItem(key, value) {
@@ -75,33 +71,24 @@
 	}
 </script>
 
-<style lang="scss" scoped>
-	.settings-grid {
+<style module>
+	.label {
 		align-items: center;
-		display: grid;
-		user-select: none;
+		display: flex;
+		gap: 1em;
+		justify-content: space-between;
 
-		label {
-			align-items: center;
-			display: flex;
-			gap: 1em;
-			justify-content: space-between;
-
-			& > :not(span) {
-				cursor: pointer;
-				height: 2em;
-				justify-self: right;
-			}
+		& > :not(span) {
+			cursor: pointer;
+			height: 2em;
 		}
 	}
 
-	select {
+	.select {
 		background-color: var(--background-color);
 		border: none;
 		color: var(--text-color);
 		margin: 0.3em 0;
-		outline: none;
-		padding: 0;
-		width: 10em;
+		min-width: 5rem;
 	}
 </style>
