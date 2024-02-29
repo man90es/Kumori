@@ -1,26 +1,14 @@
 <template>
 	<div>
-		<img
-			:class="{ nsfw: isNSFW }"
-			:height="API.thumb.height"
-			:src="`${API.thumb.path}${file.hash}.${API.thumb.format}`"
-			:width="API.thumb.width"
-			@click="clickHandler"
-			class="thumbnail"
-			loading="lazy"
-		/>
-		<img
-			class="video-marker"
-			src="@/assets/icons/play_circle.svg"
-			v-if="isVideo"
-		/>
+		<img :class="{ nsfw: isNSFW }" :height="API.thumb.height" :src="`${API.thumb.path}${file.hash}.${API.thumb.format}`" :width="API.thumb.width" @click="clickHandler" class="thumbnail" loading="lazy" />
+		<img class="video-marker" src="@/assets/icons/play_circle.svg" v-if="isVideo" />
 	</div>
 </template>
 
 <script setup>
-	import { computed } from "vue"
-	import API from "@/api"
+	import { computed, inject } from "vue"
 
+	const API = inject("API")
 	const props = defineProps({ file: Object })
 
 	const isNSFW = computed(() => props.file.modifiers?.includes("NSFW"))

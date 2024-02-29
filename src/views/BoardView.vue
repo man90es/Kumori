@@ -11,29 +11,24 @@
 				Nothing to see here, folks. Yet...<br />
 				Click here to create a thread.
 			</div>
-			<ThreadItem
-				:key="threadId"
-				:pageSize="settings.repliesOnBoardPage"
-				:threadId="threadId"
-				v-for="threadId in meta.threadList"
-			/>
+			<ThreadItem :key="threadId" :pageSize="settings.repliesOnBoardPage" :threadId="threadId" v-for="threadId in meta.threadList" />
 		</MainSection>
 		<MenuBar />
 	</div>
 </template>
 
 <script setup>
-	import { computed, onMounted, watch } from "vue"
+	import { computed, inject, onMounted, watch } from "vue"
 	import { useAtBottom } from "@/hooks/atBottom"
 	import { useRoute } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
-	import API from "@/api"
 	import MainSection from "@/components/layout/MainSection"
 	import MenuBar from "@/components/layout/MenuBar"
 	import NavBar from "@/components/layout/NavBar"
 	import ThreadItem from "@/components/misc/ThreadItem"
 
+	const API = inject("API")
 	const route = useRoute()
 	const settings = useSettingsStore()
 	const store = useStore()

@@ -12,12 +12,12 @@
 	import { computed, onMounted, onUnmounted, watch } from "vue"
 	import { useRoute, useRouter } from "vue-router"
 	import { useStore } from "vuex"
-	import API from "@/api"
 	import MainSection from "@/components/layout/MainSection"
 	import MenuBar from "@/components/layout/MenuBar"
 	import NavBar from "@/components/layout/NavBar"
 	import ThreadItem from "@/components/misc/ThreadItem"
 
+	const API = inject("API")
 	const route = useRoute()
 	const router = useRouter()
 	const store = useStore()

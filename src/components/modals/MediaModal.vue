@@ -9,10 +9,10 @@
 </template>
 
 <script setup>
-	import { ref, computed } from "vue"
-	import API from "@/api"
+	import { ref, computed, inject } from "vue"
 	import ModalShell from "@/components/misc/ModalShell"
 
+	const API = inject("API")
 	const props = defineProps({
 		hash: { type: String, required: true },
 		mime: { type: String, required: true },
@@ -32,8 +32,13 @@
 
 <style scoped lang="scss">
 	@keyframes spin {
-		0% { transform: rotate(0deg) scale(-1, 1) }
-		100% { transform: rotate(360deg) scale(-1, 1) }
+		0% {
+			transform: rotate(0deg) scale(-1, 1)
+		}
+
+		100% {
+			transform: rotate(360deg) scale(-1, 1)
+		}
 	}
 
 	#media-modal-body {
@@ -60,6 +65,6 @@
 
 		&:not(.placeholder):not(.ready) {
 			opacity: 0;
-		}
 	}
+}
 </style>

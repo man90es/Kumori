@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+	import { provide } from "vue"
 	import { useAuthHandler } from "@/hooks/authHandler"
 	import { useDisplayErrorToasts } from "@/hooks/displayErrorToasts"
 	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler"
@@ -23,6 +24,7 @@
 
 	useAuthHandler()
 	useDisplayErrorToasts()
+	provide("API", API)
 
 	const theme = useTheme()
 	usePostLinkEventHandler()

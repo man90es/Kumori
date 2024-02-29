@@ -2,23 +2,16 @@
 	<ModalShell header="Captcha" :closeable="false" :draggable="false" :closeHandler="close">
 		<form @submit.prevent="submit()" id="captcha-form">
 			<img width="192" height="64" :src="captcha.src" @click="refresh" />
-			<input
-				:max="captcha.max"
-				:min="captcha.min"
-				:type="captcha.type"
-				autocomplete="off"
-				placeholder="Code"
-				v-model="captcha.code"
-			/>
+			<input :max="captcha.max" :min="captcha.min" :type="captcha.type" autocomplete="off" placeholder="Code" v-model="captcha.code" />
 		</form>
 	</ModalShell>
 </template>
 
 <script setup>
-	import { reactive, watch } from "vue"
-	import API from "@/api"
+	import { inject, reactive, watch } from "vue"
 	import ModalShell from "@/components/misc/ModalShell"
 
+	const API = inject("API")
 	const props = defineProps({
 		closeHandler: {
 			type: Function,

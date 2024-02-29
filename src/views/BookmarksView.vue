@@ -11,12 +11,12 @@
 <script setup>
 	import { onMounted, onUnmounted } from "vue"
 	import { usePostMarksStore } from "@/stores/postMarks"
-	import API from "@/api"
 	import MainSection from "@/components/layout/MainSection"
 	import MenuBar from "@/components/layout/MenuBar"
 	import NavBar from "@/components/layout/NavBar"
 	import PostItem from "@/components/misc/PostItem"
 
+	const API = inject("API")
 	const store = usePostMarksStore()
 
 	function errorCatcher({ what, error }) {
