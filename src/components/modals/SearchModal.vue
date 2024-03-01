@@ -20,9 +20,10 @@
 </template>
 
 <script setup>
-	import { ref } from "vue"
-	import API from "@/api"
+	import { inject, ref } from "vue"
 	import ModalShell from "@/components/misc/ModalShell"
+
+	const API = inject("API")
 
 	const query = ref("")
 	const boardName = ref("")

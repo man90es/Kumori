@@ -3,9 +3,9 @@
 		<svg class="zero">
 			<!-- Used for blurring NSFW images -->
 			<filter id="sharpBlur">
-				<feGaussianBlur stdDeviation="5"></feGaussianBlur>
-				<feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0"></feColorMatrix>
-				<feComposite in2="SourceGraphic" operator="in"></feComposite>
+				<feGaussianBlur stdDeviation="5" />
+				<feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0" />
+				<feComposite in2="SourceGraphic" operator="in" />
 			</filter>
 		</svg>
 		<RouterView />
@@ -14,20 +14,30 @@
 </template>
 
 <script setup>
-	import { useAuthHandler } from "@/hooks/authHandler"
-	import { useDisplayErrorToasts } from "@/hooks/displayErrorToasts"
-	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler"
-	import { useTheme } from "@/hooks/theme"
-	import API from "@/api"
+	import { provide, watch } from "vue"
+	import { useAuthHandler, usePostLinkEventHandler, useTheme, useAPIHandlers } from "@/hooks"
+	import { useSettingsStore } from "./stores/settings"
+	import { useStore } from "vuex"
+	import FKClient from "@bakaso/fkclient"
 	import ModalsLayer from "@/components/layers/ModalsLayer"
 
-	useAuthHandler()
-	useDisplayErrorToasts()
+	const store = useStore()
+	const settings = useSettingsStore()
+	const API = new FKClient(settings.apiURI, 1e5)
+	provide("API", API)
+	API.board.requestMany()
+
+	watch(() => settings.apiURI, (value) => {
+		store.commit("clear")
+		API.reconnect(value)
+		API.board.requestMany()
+	})
+
+	useAPIHandlers(API)
+	useAuthHandler(API)
 
 	const theme = useTheme()
-	usePostLinkEventHandler()
-
-	API.board.requestMany()
+	usePostLinkEventHandler(API)
 
 	function emitSwipeEvent(direction) {
 		window.emitter.emit(`swipe-${direction}`)

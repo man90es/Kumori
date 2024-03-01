@@ -5,12 +5,7 @@
 		<form v-else-if="1 === loginPhase">
 			<input :disabled="formValues.invite.length" placeholder="Username" type="text" v-model="formValues.name" />
 			or
-			<input
-				:disabled="formValues.name.length"
-				placeholder="Invite code"
-				type="text"
-				v-model="formValues.invite"
-			/>
+			<input :disabled="formValues.name.length" placeholder="Invite code" type="text" v-model="formValues.invite" />
 			<button type="button" @click="submit">Submit</button>
 		</form>
 		<form v-else-if="2 === loginPhase">
@@ -34,12 +29,12 @@
 </template>
 
 <script setup>
-	import { computed, ref, reactive } from "vue"
+	import { computed, inject, ref, reactive } from "vue"
 	import { useUserStore } from "@/stores/user"
-	import api from "@/api"
 
-	const user = useUserStore()
+	const API = inject("API")
 	const loggedOn = computed(() => Boolean(user.id))
+	const user = useUserStore()
 
 	const loginPhase = ref(0)
 	const formValues = reactive({
@@ -60,7 +55,7 @@
 			return
 		}
 
-		api.auth.register(formValues)
+		API.auth.register(formValues)
 	}
 
 	function login() {
@@ -70,7 +65,7 @@
 			return
 		}
 
-		api.auth.logOn(formValues)
+		API.auth.logOn(formValues)
 	}
 
 	const backgroundStyle = computed(() => {

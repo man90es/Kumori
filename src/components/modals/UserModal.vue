@@ -11,10 +11,11 @@
 </template>
 
 <script setup>
+	import { inject } from "vue"
 	import { useUserStore } from "@/stores/user"
-	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
 
+	const API = inject("API")
 	const user = useUserStore()
 
 	function logOff() {

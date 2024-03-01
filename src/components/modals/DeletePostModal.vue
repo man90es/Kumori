@@ -12,11 +12,11 @@
 </template>
 
 <script setup>
-	import { computed } from "vue"
+	import { computed, inject } from "vue"
 	import { usePostMarksStore } from "@/stores/postMarks"
-	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
 
+	const API = inject("API")
 	const store = usePostMarksStore()
 	const props = defineProps({ closeHandler: { type: Function, required: true } })
 

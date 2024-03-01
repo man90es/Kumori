@@ -19,12 +19,7 @@
 				<button type="button" id="attachFile" @click="attachHandler" v-if="form.files.length < fileLimit">
 					<img class="icon" src="@/assets/icons/attach_file.svg" />
 				</button>
-				<div
-					:key="i"
-					:style="{ backgroundImage: thumbs[i] ? `url(${thumbs[i]})` : 'none' }"
-					class="thumb"
-					v-for="(file, i) in form.files"
-				>
+				<div :key="i" :style="{ backgroundImage: thumbs[i] ? `url(${thumbs[i]})` : 'none' }" class="thumb" v-for="(file, i) in form.files">
 					<button class="nsfwToggle" type="button" @click="toggleAttachmentNSFW(i)">
 						<img class="icon" v-if="form.attachmentNSFW[i]" src="@/assets/icons/nsfw.svg" />
 						<img class="icon" v-else src="@/assets/icons/sfw.svg" />
@@ -42,15 +37,15 @@
 </template>
 
 <script setup>
-	import { computed, reactive, ref, onMounted, watch, onUnmounted } from "vue"
+	import { computed, reactive, ref, onMounted, watch, onUnmounted, inject } from "vue"
 	import { generateThumbnail } from "@/utils"
 	import { useRouter } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
 	import { useToast } from "vue-toast-notification"
-	import API from "@/api"
 	import ModalShell from "@/components/misc/ModalShell"
 
+	const API = inject("API")
 	const props = defineProps({
 		threadId: {
 			type: Number,

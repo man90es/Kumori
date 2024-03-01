@@ -12,8 +12,8 @@ devDependencies:
     specifier: ^7.23.10
     version: 7.23.10(@babel/core@7.23.9)(eslint@8.56.0)
   '@bakaso/fkclient':
-    specifier: ^1.5.0
-    version: 1.5.0
+    specifier: ^1.6.0
+    version: 1.6.0
   '@types/node':
     specifier: ^20.11.16
     version: 20.11.16
@@ -1485,8 +1485,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@bakaso/fkclient@1.5.0:
-    resolution: {integrity: sha512-rIhFCgZnR0IibJS65Drs6uRCpVVM2px6rW/M0QUtezZ258/FCx9VrypvRS3EHyNIKnAT+8Xv4bonXDmBeCJmUw==}
+  /@bakaso/fkclient@1.6.0:
+    resolution: {integrity: sha512-s2iu0u9OuB+rCGntxdRUJEATOl0q1E/Zj62uuoBHKH0xjvDshZ8OW9CAzp5rmNUQFzAVIWZoDqwMzqpLM3uJTg==}
     dev: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.56.0):

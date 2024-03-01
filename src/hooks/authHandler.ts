@@ -1,9 +1,9 @@
 import { useUserStore } from "@/stores/user"
-import api from "@/api"
+import type FKClient from "@bakaso/fkclient"
 
 let initialised = false
 
-export function useAuthHandler(): void {
+export function useAuthHandler(API: FKClient): void {
 	const store = useUserStore()
 
 	if (initialised) {
@@ -12,7 +12,7 @@ export function useAuthHandler(): void {
 
 	initialised = true
 
-	api.addInMessageListener(
+	API.addInMessageListener(
 		({ what }) => /logon|register/i.test(what?.request || ""),
 		({ data }) => {
 			store.$patch(data)
@@ -20,7 +20,7 @@ export function useAuthHandler(): void {
 		}
 	)
 
-	api.addInMessageListener(
+	API.addInMessageListener(
 		({ what }) => /logoff/i.test(what?.request || ""),
 		({ data }) => {
 			if (data.success) {

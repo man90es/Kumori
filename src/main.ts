@@ -1,6 +1,6 @@
 import "./registerServiceWorker"
 import "vue-toast-notification/dist/theme-default.css"
-import { createApp } from "vue"
+import { createApp, type ObjectPlugin } from "vue"
 import { createPinia } from "pinia"
 import App from "./App.vue"
 import mitt from "mitt"
@@ -26,5 +26,5 @@ window.vm = createApp(App)
 	.use(router)
 	.use(store)
 	.use(ToastPlugin)
-	.use(Vue3TouchEvents)
+	.use(Vue3TouchEvents as ObjectPlugin)
 	.mount("body")

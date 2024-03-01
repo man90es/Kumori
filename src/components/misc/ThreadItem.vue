@@ -9,12 +9,12 @@
 </template>
 
 <script setup>
-	import { computed, watch } from "vue"
+	import { computed, inject, watch } from "vue"
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"
-	import API from "@/api"
 	import PostItem from "@/components/misc/PostItem"
 
+	const API = inject("API")
 	const props = defineProps({ threadId: Number, pageSize: Number })
 	const route = useRoute()
 	const store = useStore()

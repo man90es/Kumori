@@ -32,16 +32,16 @@
 </template>
 
 <script setup>
-	import { computed, ref, watch } from "vue"
+	import { computed, inject, ref, watch } from "vue"
 	import { truncateString, renderMarkup, getPrettyTimeDelta } from "@/utils"
 	import { usePostMarksStore } from "@/stores/postMarks"
 	import { useRouter, useRoute } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
-	import API from "@/api"
 	import PostAttachment from "@/components/misc/PostAttachment"
 	import PostMenu from "@/components/misc/PostMenu"
 
+	const API = inject("API")
 	const props = defineProps({
 		pinned: {
 			default: false,
