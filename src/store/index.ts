@@ -1,6 +1,30 @@
 import { createStore } from "vuex"
 
-export default createStore({
+type Board = {
+	name: string
+}
+
+type Thread = {
+	id: number
+	boardName: Board["name"]
+	head: Post
+	posts: number
+}
+
+type Post = {
+	id: number
+	threadId: Thread["id"]
+}
+
+export default createStore<{
+	boardList: Array<Board["name"]>
+	boards: Record<Board["name"], Board>
+	feedLists: Record<Board["name"], unknown[]>
+	postLists: Record<Thread["id"], Array<Post["id"]>>
+	posts: Record<Post["id"], Post>
+	threadLists: Record<Board["name"], Array<Thread["id"]>>
+	threads: Record<Thread["id"], Thread>
+}>({
 	state: {
 		boardList: [],
 		boards: {},
@@ -11,11 +35,11 @@ export default createStore({
 		threads: {},
 	},
 	mutations: {
-		updateBoardList(state, payload) {
+		updateBoardList(state, payload: Array<Board["name"]>) {
 			state.boardList = payload
 		},
 
-		updateBoards(state, payload) {
+		updateBoards(state, payload: Record<Board["name"], Board>) {
 			state.boards = { ...state.boards, ...payload }
 		},
 
@@ -33,8 +57,8 @@ export default createStore({
 			}
 		},
 
-		updateThreads(state, payload) {
-			for (let thread of payload) {
+		updateThreads(state, payload: Thread[]) {
+			for (const thread of payload) {
 				state.threads[thread.id] = thread
 			}
 		},
@@ -45,7 +69,7 @@ export default createStore({
 			}
 
 			if (page == 'tail') {
-				let totalPosts = state.threads[threadId].posts
+				const totalPosts = state.threads[threadId].posts
 
 				for (let i = Math.max(totalPosts - count, 0), j = 0; i < totalPosts; i++, j++) {
 					state.postLists[threadId][i] = payload[j]
@@ -57,13 +81,13 @@ export default createStore({
 			}
 		},
 
-		updatePosts(state, payload) {
-			for (let post of payload) {
+		updatePosts(state, payload: Post[]) {
+			for (const post of payload) {
 				state.posts[post?.id] = post
 			}
 		},
 
-		pushPost(state, post) {
+		pushPost(state, post: Post) {
 			state.posts[post.id] = post
 
 			if (state.postLists[post.threadId] === undefined) {
@@ -74,7 +98,7 @@ export default createStore({
 			state.postLists[post.threadId].push(post.id)
 		},
 
-		unregisterPost(state, post) {
+		unregisterPost(state, post: Post) {
 			const postList = state.postLists[post.threadId]
 
 			if (undefined === postList) {
@@ -85,7 +109,7 @@ export default createStore({
 		},
 
 		// TODO: Non-pinned threads should go below pinned ones
-		pushThread(state, thread) {
+		pushThread(state, thread: Thread) {
 			state.posts[thread.head.id] = thread.head
 			state.postLists[thread.id] = [thread.head.id]
 			state.threads[thread.id] = thread
@@ -97,7 +121,7 @@ export default createStore({
 			state.threadLists[thread.boardName].unshift(thread.id)
 		},
 
-		unregisterThread(state, thread) {
+		unregisterThread(state, thread: Thread) {
 			const threadList = state.threadLists[thread.boardName]
 
 			if (undefined === threadList) {
@@ -107,7 +131,7 @@ export default createStore({
 			state.threadLists[thread.boardName] = threadList.filter(id => thread.id !== id)
 		},
 
-		pushBoard(state, board) {
+		pushBoard(state, board: Board) {
 			state.threadLists[board.name] = []
 			state.boards[board.name] = board
 			state.boardList.push(board.name)
