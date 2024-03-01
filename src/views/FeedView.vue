@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-	import { computed, watch } from "vue"
+	import { computed, inject, watch } from "vue"
 	import { useAtBottom } from "@/hooks/atBottom"
 	import { useRoute } from "vue-router"
 	import { useStore } from "vuex"

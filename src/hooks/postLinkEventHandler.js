@@ -1,8 +1,7 @@
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
-import API from "@/api"
 
-export function usePostLinkEventHandler() {
+export function usePostLinkEventHandler(API) {
 	const store = useStore()
 	const route = useRoute()
 	const router = useRouter()

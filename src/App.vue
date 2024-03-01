@@ -3,9 +3,9 @@
 		<svg class="zero">
 			<!-- Used for blurring NSFW images -->
 			<filter id="sharpBlur">
-				<feGaussianBlur stdDeviation="5"></feGaussianBlur>
-				<feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0"></feColorMatrix>
-				<feComposite in2="SourceGraphic" operator="in"></feComposite>
+				<feGaussianBlur stdDeviation="5" />
+				<feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0" />
+				<feComposite in2="SourceGraphic" operator="in" />
 			</filter>
 		</svg>
 		<RouterView />
@@ -15,19 +15,18 @@
 
 <script setup>
 	import { provide } from "vue"
-	import { useAuthHandler } from "@/hooks/authHandler"
-	import { useDisplayErrorToasts } from "@/hooks/displayErrorToasts"
-	import { usePostLinkEventHandler } from "@/hooks/postLinkEventHandler"
-	import { useTheme } from "@/hooks/theme"
-	import API from "@/api"
+	import { useAuthHandler, usePostLinkEventHandler, useTheme, useAPIHandlers } from "@/hooks"
+	import FKClient from "@bakaso/fkclient"
 	import ModalsLayer from "@/components/layers/ModalsLayer"
 
-	useAuthHandler()
-	useDisplayErrorToasts()
+	const API = new FKClient(process.env.VUE_APP_API_ENDPOINT.split(",")[0], 1e5)
 	provide("API", API)
 
+	useAPIHandlers(API)
+	useAuthHandler(API)
+
 	const theme = useTheme()
-	usePostLinkEventHandler()
+	usePostLinkEventHandler(API)
 
 	API.board.requestMany()
 
