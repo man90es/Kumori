@@ -122,5 +122,15 @@ export default createStore({
 
 			state.feedLists[boardName] = newFeedList
 		},
+
+		clear(state) {
+			state.boardList = []
+			state.boards = {}
+			state.feedLists = {}
+			state.postLists = {}
+			state.posts = {}
+			state.threadLists = {}
+			state.threads = {}
+		}
 	},
 })
