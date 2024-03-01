@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-	import { onMounted, onUnmounted } from "vue"
+	import { inject, onMounted, onUnmounted } from "vue"
 	import { usePostMarksStore } from "@/stores/postMarks"
 	import MainSection from "@/components/layout/MainSection"
 	import MenuBar from "@/components/layout/MenuBar"

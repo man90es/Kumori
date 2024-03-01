@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-	import { computed, onMounted, onUnmounted, watch } from "vue"
+	import { computed, inject, onMounted, onUnmounted, watch } from "vue"
 	import { useRoute, useRouter } from "vue-router"
 	import { useStore } from "vuex"
 	import MainSection from "@/components/layout/MainSection"
