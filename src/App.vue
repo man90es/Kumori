@@ -16,15 +16,12 @@
 <script setup>
 	import { provide, watch } from "vue"
 	import { useAuthHandler, usePostLinkEventHandler, useTheme, useAPIHandlers } from "@/hooks"
-	// import { useRouter } from "vue-router"
 	import { useSettingsStore } from "./stores/settings"
 	import { useStore } from "vuex"
 	import FKClient from "@bakaso/fkclient"
 	import ModalsLayer from "@/components/layers/ModalsLayer"
 
-	// const router = useRouter()
 	const store = useStore()
-
 	const settings = useSettingsStore()
 	const API = new FKClient(settings.apiURI, 1e5)
 	provide("API", API)
@@ -33,7 +30,6 @@
 	watch(() => settings.apiURI, (value) => {
 		store.commit("clear")
 		API.reconnect(value)
-		// router.push("/")
 		API.board.requestMany()
 	})
 
