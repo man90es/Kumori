@@ -4,14 +4,14 @@ type Board = {
 	name: string
 }
 
-type Thread = {
+export type Thread = {
 	id: number
 	boardName: Board["name"]
 	head: Post
 	posts: number
 }
 
-type Post = {
+export type Post = {
 	id: number
 	threadId: Thread["id"]
 }

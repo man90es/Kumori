@@ -1,8 +1,10 @@
 import { getProps } from "@/utils"
 import { useStore } from "vuex"
 import { useToast } from "vue-toast-notification"
+import type { Post, Thread } from "@/store"
+import type FKClient from "@bakaso/fkclient"
 
-export default function useAPIHandlers(API) {
+export default function useAPIHandlers(API: FKClient) {
 	const store = useStore()
 	const toast = useToast()
 
@@ -23,12 +25,12 @@ export default function useAPIHandlers(API) {
 
 			store.commit("updateThreadList", {
 				...getProps(what, ["boardName", "count", "page"]),
-				payload: data.map(thread => thread.id),
+				payload: data.map((thread: Thread) => thread.id),
 			})
 
 			store.commit("updateThreads", data)
 
-			for (let thread of data) {
+			for (const thread of data) {
 				store.commit("updatePostList", {
 					threadId: thread.id,
 					payload: [thread.head.id],
@@ -64,13 +66,13 @@ export default function useAPIHandlers(API) {
 				// Feed
 				store.commit("updateFeed", {
 					...getProps(what, ["boardName", "count", "page"]),
-					payload: data.map(post => post.id),
+					payload: data.map((post: Post) => post.id),
 				})
 			} else {
 				// Thread
 				store.commit("updatePostList", {
 					...getProps(what, ["threadId", "count", "page"]),
-					payload: data.map(post => post.id),
+					payload: data.map((post: Post) => post.id),
 				})
 			}
 
@@ -88,6 +90,10 @@ export default function useAPIHandlers(API) {
 	API.addInMessageListener(
 		({ event, error }) => "created" === event && !error,
 		({ type, data }) => {
+			if (!type) {
+				return
+			}
+
 			const action = ({
 				board: "pushBoard",
 				post: "pushPost",
@@ -101,7 +107,13 @@ export default function useAPIHandlers(API) {
 	API.addInMessageListener(
 		({ event }) => "deleted" === event,
 		({ type, data }) => {
+			if (!type) {
+				return
+			}
+
 			const action = ({
+				// TODO: Handle board deletion
+				board: undefined,
 				post: "unregisterPost",
 				thread: "unregisterThread",
 			})[type]
@@ -113,7 +125,7 @@ export default function useAPIHandlers(API) {
 	API.addInMessageListener(
 		({ error }) => Boolean(error),
 		({ error }) => {
-			const text = error.description || `Error ${error.message} occured` || "Unexpected error occured"
+			const text = error!.description || `Error ${error!.message} occured` || "Unexpected error occured"
 			toast.error(text, { position: "top-right" })
 		}
 	)
