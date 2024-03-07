@@ -17,6 +17,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.11.16
     version: 20.11.16
+  '@types/webpack-env':
+    specifier: ^1.18.4
+    version: 1.18.4
   '@vue/cli-plugin-babel':
     specifier: ^5.0.8
     version: 5.0.8(@vue/cli-service@5.0.8)(core-js@3.35.1)(vue@3.4.15)
@@ -1927,8 +1930,8 @@ packages:
     resolution: {integrity: sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==}
     dev: true
 
-  /@types/webpack-env@1.18.0:
-    resolution: {integrity: sha512-56/MAlX5WMsPVbOg7tAxnYvNYMMWr/QJiIp6BxVSW3JJXUVzzOn64qW8TzQyMSqSUFM2+PVI4aUHcHOzIz/1tg==}
+  /@types/webpack-env@1.18.4:
+    resolution: {integrity: sha512-I6e+9+HtWADAWeeJWDFQtdk4EVSAbj6Rtz4q8fJ7mSr1M0jzlFcs8/HZ+Xb5SHzVm1dxH7aUiI+A8kA8Gcrm0A==}
     dev: true
 
   /@types/ws@8.5.3:
@@ -2321,7 +2324,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.23.9
-      '@types/webpack-env': 1.18.0
+      '@types/webpack-env': 1.18.4
       '@vue/cli-service': 5.0.8(@babel/core@7.23.9)(@vue/compiler-sfc@3.4.15)(sass-loader@14.1.0)(vue@3.4.15)
       '@vue/cli-shared-utils': 5.0.8
       babel-loader: 8.3.0(@babel/core@7.23.9)(webpack@5.90.1)
