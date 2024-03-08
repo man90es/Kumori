@@ -1,4 +1,5 @@
 export { default as capitalise } from "./capitalise"
+export { default as firstFromStringArrayOrString } from "./firstFromStringArrayOrString"
 export { default as generateThumbnail } from "./generateThumbnail"
 export { default as getPrettyTimeDelta } from "./getPrettyTimeDelta"
 export { default as getProps } from "./getProps"

@@ -13,10 +13,11 @@ export type Thread = {
 
 export type Post = {
 	id: number
+	number: number
 	threadId: Thread["id"]
 }
 
-export default createStore<{
+export type StoreState = {
 	boardList: Array<Board["name"]>
 	boards: Record<Board["name"], Board>
 	feedLists: Record<Board["name"], unknown[]>
@@ -24,7 +25,9 @@ export default createStore<{
 	posts: Record<Post["id"], Post>
 	threadLists: Record<Board["name"], Array<Thread["id"]>>
 	threads: Record<Thread["id"], Thread>
-}>({
+}
+
+export default createStore<StoreState>({
 	state: {
 		boardList: [],
 		boards: {},

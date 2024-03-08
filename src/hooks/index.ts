@@ -1,5 +1,5 @@
 export { default as useAPIHandlers } from "@/hooks/useAPIHandlers"
+export { default as usePostLinkEventHandler } from "@/hooks/usePostLinkEventHandler"
 export * from "@/hooks/authHandler"
-export * from "@/hooks/postLinkEventHandler"
 export * from "@/hooks/scroll"
 export * from "@/hooks/theme"

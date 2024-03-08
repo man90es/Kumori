@@ -6,12 +6,14 @@
 
 <script setup lang="ts">
 	import { computed } from "vue"
+	import { firstFromStringArrayOrString } from "@/utils"
+	import { StoreState } from "@/store"
 	import { useRoute, useRouter } from "vue-router"
 	import { useScroll } from "@/hooks"
 	import { useStore } from "vuex"
 
 	const props = defineProps<{ icon: string }>()
-	const store = useStore()
+	const store = useStore<StoreState>()
 	const route = useRoute()
 	const router = useRouter()
 
@@ -20,8 +22,8 @@
 	const src = computed(() => images(`./${props.icon}.svg`))
 
 	function dispatchEvent() {
-		const boardName = Array.isArray(route.params.boardName) ? route.params.boardName[0] : route.params.boardName || undefined
-		const threadId = parseInt(Array.isArray(route.params.threadId) ? route.params.threadId[0] : route.params.threadId) || undefined
+		const boardName = firstFromStringArrayOrString(route.params.boardName)
+		const threadId = parseInt(firstFromStringArrayOrString(route.params.threadId) ?? "") || undefined
 
 		switch (props.icon) {
 			case "chat":
