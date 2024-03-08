@@ -21,25 +21,20 @@
 				<PostAttachment v-for="(file, index) in post.attachments" :file="file" :key="index" />
 			</div>
 			<p v-if="post.text" v-html="parsedText" />
-			<ul class="replies" v-if="replies?.length">
-				Mentions:
-				<li v-for="reply of replies" :key="reply.href">
-					<RouterLink :to="reply.href">{{ reply.label }}</RouterLink>
-				</li>
-			</ul>
+			<PostRepliesList v-if="post?.replies?.length > 0" :replies="post.replies" />
 		</div>
 	</article>
 </template>
 
 <script setup>
 	import { computed, inject, ref, watch } from "vue"
+	import { PostAttachment, PostMenu } from "@/components/misc"
 	import { truncateString, renderMarkup, getPrettyTimeDelta } from "@/utils"
 	import { usePostMarksStore } from "@/stores/postMarks"
-	import { useRouter, useRoute } from "vue-router"
+	import { useRouter } from "vue-router"
 	import { useSettingsStore } from "@/stores/settings"
 	import { useStore } from "vuex"
-	import PostAttachment from "@/components/misc/PostAttachment"
-	import PostMenu from "@/components/misc/PostMenu"
+	import PostRepliesList from "./PostRepliesList"
 
 	const API = inject("API")
 	const props = defineProps({
@@ -54,7 +49,6 @@
 	})
 
 	const postMarksStore = usePostMarksStore()
-	const route = useRoute()
 	const router = useRouter()
 	const settings = useSettingsStore()
 	const store = useStore()
@@ -100,15 +94,6 @@
 	if (undefined === post.value) {
 		API.post.request({ postId: props.postId })
 	}
-
-	const replies = computed(() => (
-		post.value?.replies?.map(reply => ({
-			href: `/${reply.boardName}/${reply.threadId}`,
-			label: route.params.boardName === reply.boardName
-				? `#${reply.number}`
-				: `#/${reply.boardName}/${reply.number}`
-		}))
-	))
 </script>
 
 <style scoped lang="scss">
@@ -158,15 +143,6 @@
 		.icon.pre-icon {
 			vertical-align: middle;
 			height: 1.3em;
-		}
-
-		.replies {
-			display: flex;
-			font-size: 0.85em;
-			gap: 0.5em;
-			list-style: none;
-			margin: 1em 0 0 0;
-			padding: 0;
 		}
 	}
 </style>

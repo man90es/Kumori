@@ -15,6 +15,11 @@ export type Post = {
 	id: number
 	number: number
 	threadId: Thread["id"]
+	replies: Array<{
+		boardName: Board["name"]
+		number: Post["number"]
+		threadId: Thread["id"]
+	}>
 }
 
 export type StoreState = {
