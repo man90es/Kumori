@@ -56,5 +56,10 @@
 	},
 	"browserslist": [
 		"defaults"
-	]
+	],
+	"babel": {
+		"presets": [
+			"@vue/cli-plugin-babel/preset"
+		]
+	}
 }
