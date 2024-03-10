@@ -1,6 +1,7 @@
 <template>
 	<article v-if="![postId, post].includes()" :class="{ selected: marks.selected }">
 		<div class="postDetails">
+			<img v-if="marks.bookmarked" class="icon pre-icon" src="@/assets/icons/star.svg" />
 			<img v-if="props.pinned" class="icon pre-icon" src="@/assets/icons/push_pin.svg" />
 			<img v-if="post.modifiers?.includes('sage')" class="icon pre-icon" src="@/assets/icons/down.svg" />
 			<a class="refLink" @click="handleRefLinkClick">
