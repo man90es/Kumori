@@ -1,49 +1,49 @@
 <template>
-	<div class="postMenu" @click="emit('cancel')">
-		<div @click="hidePost">{{ marks.hidden ? "Show" : "Hide" }}</div>
-		<div @click="bookmarkPost">{{ marks.bookmarked ? "Remove from bookmarks" : "Bookmark" }}</div>
-		<div @click="deletePost">{{ marks.selected ? "Do not delete" : "Delete" }}</div>
-		<div>Cancel</div>
+	<div :class="$style.root" @click="emit('cancel')">
+		<div :class="$style.menuItem" @click="hidePost">{{ marks.hidden ? "Show" : "Hide" }}</div>
+		<div :class="$style.menuItem" @click="bookmarkPost">{{ marks.bookmarked ? "Remove star" : "Add star" }}</div>
+		<div :class="$style.menuItem" @click="deletePost">{{ marks.selected ? "Do not delete" : "Delete" }}</div>
+		<div :class="$style.menuItem">Cancel</div>
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import { computed } from "vue"
-	import { usePostMarksStore } from "@/stores/postMarks"
+	import { usePostMarksStore } from "@/stores"
 
 	const emit = defineEmits(["cancel"])
-	const props = defineProps({ postId: Number })
-	const store = usePostMarksStore()
+	const postMarksStore = usePostMarksStore()
+	const props = defineProps<{ postId: number }>()
 
 	function hidePost() {
-		store.toggleHide(props.postId)
+		postMarksStore.toggleHide(props.postId)
 	}
 
 	function bookmarkPost() {
-		store.toggleBookmark(props.postId)
+		postMarksStore.toggleBookmark(props.postId)
 	}
 
 	function deletePost() {
-		store.toggleSelect(props.postId)
+		postMarksStore.toggleSelect(props.postId)
 		window.emitter.emit("post-delete-button-click")
 	}
 
-	const marks = computed(() => store.postMarks(props.postId))
+	const marks = computed(() => postMarksStore.postMarks(props.postId))
 </script>
 
-<style scoped lang="scss">
-	.postMenu {
-		position: absolute;
+<style module>
+	.root {
 		background-color: var(--card-color);
+		position: absolute;
 		z-index: 99;
+	}
 
-		div {
-			cursor: pointer;
-			padding: var(--gap-size);
+	.menuItem {
+		cursor: pointer;
+		padding: var(--gap-size);
 
-			&:hover {
-				background-color: var(--card-secondary-color);
-			}
+		&:hover {
+			background-color: var(--card-secondary-color);
 		}
 	}
 </style>
