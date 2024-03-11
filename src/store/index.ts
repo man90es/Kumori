@@ -12,14 +12,23 @@ export type Thread = {
 }
 
 export type Post = {
+	attachments: Array<{
+		hash: string,
+		mime: string,
+		modifiers?: string[],
+	}>
+	created: string
 	id: number
 	number: number
-	threadId: Thread["id"]
+	modifiers?: string[]
 	replies: Array<{
 		boardName: Board["name"]
 		number: Post["number"]
 		threadId: Thread["id"]
 	}>
+	subject: string
+	text: string
+	threadId: Thread["id"]
 }
 
 export type StoreState = {
