@@ -1,7 +1,7 @@
 <template>
 	<div id="home">
 		<div id="background-layer" :style="backgroundStyle" />
-		<img v-if="loggedOn || 0 === loginPhase" src="logo.svg" @click="() => loggedOn || ++loginPhase" />
+		<img v-if="loggedOn || 0 === loginPhase" :src="logoURI" @click="() => loggedOn || ++loginPhase" />
 		<form v-else-if="1 === loginPhase">
 			<input :disabled="formValues.invite.length" placeholder="Username" type="text" v-model="formValues.name" />
 			or
@@ -35,6 +35,8 @@
 	const API = inject("API")
 	const loggedOn = computed(() => Boolean(user.id))
 	const user = useUserStore()
+
+	const logoURI = process.env.VUE_APP_LOGO || 'logo.svg'
 
 	const loginPhase = ref(0)
 	const formValues = reactive({

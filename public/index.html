@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= VUE_APP_LOCALE %>">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="icon" href="<%= BASE_URL %>favicon.ico">
 	<link rel="stylesheet" href="/index.css">
-	<title>kumori</title>
+	<title>
+		<%= VUE_APP_TITLE %>
+	</title>
 
 	<noscript>You need to enable JavaScript to run this app.</noscript>
 	<div id="app"></div>
