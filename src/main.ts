@@ -11,8 +11,8 @@ import Vue3TouchEvents from "vue3-touch-events"
 
 declare global {
 	interface Window {
-		emitter: any
-		vm: any
+		emitter: ReturnType<typeof mitt>
+		vm: ReturnType<ReturnType<typeof createApp>["mount"]>
 	}
 }
 
