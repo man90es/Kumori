@@ -1,4 +1,3 @@
-import "./registerServiceWorker"
 import "vue-toast-notification/dist/theme-default.css"
 import { createApp, type ObjectPlugin } from "vue"
 import { createPinia } from "pinia"
