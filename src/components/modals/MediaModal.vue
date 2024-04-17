@@ -57,14 +57,15 @@
 		animation-timing-function: linear;
 	}
 
-	img {
-		max-width: 80vw;
-		max-height: 80vh;
+	img,
+	video {
+		max-width: 90vw;
+		max-height: 90vh;
 		width: auto;
 		height: auto;
-
-		&:not(.placeholder):not(.ready) {
-			opacity: 0;
 	}
-}
+
+	img:not(.placeholder):not(.ready) {
+		opacity: 0;
+	}
 </style>
